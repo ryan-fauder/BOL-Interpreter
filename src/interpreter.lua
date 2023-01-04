@@ -1,21 +1,17 @@
 require "files"
 require "strings"
 
-
---[[
-	error(message)
-	- Imprime uma mensagem de erro na tela e encerra o programa
-]]
+---Imprime uma mensagem de erro na tela e encerra o programa
+---@param message string
 local function error(message)
     print("[Programa encerrado]\nCausa: " .. message)
     os.exit()
 end
 
 
---[[
-	variables_interpreter(tokens)
-	- Interpreta as declarações de variáveis do tipo "vars a, b, c"
-]]
+---Interpreta as declarações de variáveis do tipo "vars a, b, c"
+---@param tokens string
+---@return table|nil
 local function variables_interpreter(tokens)
 	-- Provavelmente a função terá outro nome, como attr_def_interpreter
     local variables, var = {}, nil
@@ -34,10 +30,10 @@ local function variables_interpreter(tokens)
 end
 
 
---[[
-	class_interpreter(class_name, line)
-	- Interpreta o conteúdo de uma classe
-]]
+---Interpreta o conteúdo de uma classe
+---@param class_name string
+---@param line string
+---@return boolean
 local function class_interpreter(class_name, line)
     local tokens, variables = {}, nil
     local class_flag, vars_flag = 0, 0
@@ -86,10 +82,9 @@ local function class_interpreter(class_name, line)
 end
 
 
---[[
-	main_body_interpreter(line)
-	- Interpreta o conteúdo do trecho principal do programa
-]]
+---Interpreta o conteúdo do trecho principal do programa
+---@param line string
+---@return boolean
 local function main_body_interpreter(line)
     local tokens = {}
 
@@ -108,10 +103,7 @@ local function main_body_interpreter(line)
 end
 
 
---[[
-	program_interpreter()
-	- Função que inicia a interpretação geral do programa
-]]
+---Função que inicia a interpretação geral do programa
 local function program_interpreter()
     File = Get_file(arg[1])
     local tokens = {}
@@ -146,5 +138,5 @@ local function program_interpreter()
 end
 
 
--- Main
+---Main
 program_interpreter()
