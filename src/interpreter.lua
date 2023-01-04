@@ -1,11 +1,5 @@
---[[
-	trim(string)
-	- Remove os espaços no início e no final da string
-	- Remove os espaços extras entre palavras
-]]
-local function trim(string)
-    return (string:match("^%s*(.-)%s*$"):gsub("%s+", " "))
-end
+require "files"
+require "strings"
 
 
 --[[
@@ -15,39 +9,6 @@ end
 local function error(message)
     print("[Programa encerrado]\nCausa: " .. message)
     os.exit()
-end
-
-
---[[
-	get_file(file_name)
-	- Verifica se o arquivo é válido, se ele existe e o abre para leitura
-]]
-local function get_file(file_name)
-    if type(file_name) ~= "string" then error("Arquivo invalido") end
-    local file = io.open(file_name, "r")
-    if file then return file else error("Arquivo inexistente") end
-end
-
-
---[[
-	read_line(file)
-	- Lê a próxima linha do arquivo
-]]
-local function read_line(file)
-    return file:read("*line")
-end
-
-
---[[
-	tokenize(input)
-	- Gera tokens de uma string, separando com base nos espaços
-]]
-local function tokenize(input)
-    local tokens = {}
-    for token in string.gmatch(input, "[^%s]+") do
-        table.insert(tokens, token)
-    end
-    return tokens
 end
 
 
@@ -73,7 +34,6 @@ local function variables_interpreter(tokens)
 end
 
 
-
 --[[
 	class_interpreter(class_name, line)
 	- Interpreta o conteúdo de uma classe
@@ -84,13 +44,13 @@ local function class_interpreter(class_name, line)
 
     ::loop::
     while true do
-        line = read_line(File)
+        line = Read_line(File)
         if not line then return false end
 
         -- Temporário (para visualização)
-        print("[class]\t", trim(line))
+        print("[class]\t", Trim(line))
 
-        tokens = tokenize(line)
+        tokens = Tokenize(line)
         if #tokens == 0 then goto loop end
 
         if (tokens[1] == "method") then
@@ -135,12 +95,12 @@ local function main_body_interpreter(line)
 
     ::loop::
     while true do
-        line = read_line(File)
+        line = Read_line(File)
         if not line then return false end
 
-        print("[main-body]", trim(line))
+        print("[main-body]", Trim(line))
 
-        tokens = tokenize(line)
+        tokens = Tokenize(line)
         if #tokens == 0 then goto loop end
 
         if (tokens[1] == "end") then return true end
@@ -153,18 +113,18 @@ end
 	- Função que inicia a interpretação geral do programa
 ]]
 local function program_interpreter()
-    File = get_file(arg[1])
+    File = Get_file(arg[1])
     local tokens = {}
 
     ::loop::
     while true do
-        local line = read_line(File)
+        local line = Read_line(File)
         if not line then break end
 
         -- Temporário (para visualização)
-        print("[prog]\t", trim(line))
+        print("[prog]\t", Trim(line))
 
-        tokens = tokenize(line)
+        tokens = Tokenize(line)
         if #tokens == 0 then goto loop end
 
         if (tokens[1] == "class" and #tokens == 2) then
