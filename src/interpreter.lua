@@ -49,7 +49,7 @@ local function class_interpreter(class_name, line)
         tokens = Tokenize(line)
         if #tokens == 0 then goto loop end
 
-        if (tokens[1] == "method") then
+        if tokens[1] == "method" then
             -- Verificar:
             -- formato "method <name>()" ou "method <name>([<name-list>])"
             -- begin
@@ -59,7 +59,7 @@ local function class_interpreter(class_name, line)
             goto loop -- Após as verificações
         end
 
-        if (tokens[1] == "vars" and vars_flag == 0) then
+        if tokens[1] == "vars" and vars_flag == 0 then
             variables = variables_interpreter(tokens)
             if not variables then return false end
 
@@ -72,7 +72,7 @@ local function class_interpreter(class_name, line)
             goto loop
         end
 
-        if (tokens[1] == "end-class" and class_flag == 1) then
+        if tokens[1] == "end-class" and class_flag == 1 then
             if #tokens == 1 then return true
             else return false end
         end
@@ -82,7 +82,7 @@ local function class_interpreter(class_name, line)
 end
 
 
----Interpreta o conteúdo do trecho principal do programa
+---Interpreta o conteúdo do corpo principal do programa
 ---@param line string
 ---@return boolean
 local function main_body_interpreter(line)
@@ -98,12 +98,12 @@ local function main_body_interpreter(line)
         tokens = Tokenize(line)
         if #tokens == 0 then goto loop end
 
-        if (tokens[1] == "end") then return true end
+        if tokens[1] == "end" then return true end
     end
 end
 
 
----Função que inicia a interpretação geral do programa
+---Função que inicia a interpretação do programa
 local function program_interpreter()
     File = Get_file(arg[1])
     local tokens = {}
@@ -119,14 +119,14 @@ local function program_interpreter()
         tokens = Tokenize(line)
         if #tokens == 0 then goto loop end
 
-        if (tokens[1] == "class" and #tokens == 2) then
+        if #tokens == 2 and tokens[1] == "class" then
             local class_name = string.match(tokens[2], "^[%a]+$")
             if not class_name then error("Nome de classe invalido") end
             if class_interpreter(class_name, line) then goto loop
             else error("Erro na classe") end
         end
 
-        if (tokens[1] == "begin" and #tokens == 1) then
+        if #tokens == 1 and tokens[1] == "begin" then
             if main_body_interpreter(line) then goto loop
             else error("Erro no corpo principal") end
         end
