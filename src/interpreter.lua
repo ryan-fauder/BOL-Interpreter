@@ -10,7 +10,7 @@ end
 
 
 ---Interpreta as declarações de variáveis do tipo "vars a, b, c"
----@param tokens string
+---@param tokens table
 ---@return table|nil
 local function variables_interpreter(tokens)
 	-- Provavelmente a função terá outro nome, como attr_def_interpreter
