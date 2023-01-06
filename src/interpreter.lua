@@ -120,7 +120,7 @@ local function program_interpreter()
         if #tokens == 0 then goto loop end
 
         if #tokens == 2 and tokens[1] == "class" then
-            local class_name = string.match(tokens[2], "^[%a]+$")
+            local class_name = tokens[2]:match("^[%a]+$")
             if not class_name then error("Nome de classe invalido") end
             if class_interpreter(class_name, line) then goto loop
             else error("Erro na classe") end
