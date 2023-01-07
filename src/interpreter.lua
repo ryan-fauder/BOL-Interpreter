@@ -79,6 +79,7 @@ local function class_interpreter(class_name, line)
 
         return false
     end
+
 end
 
 
@@ -100,6 +101,7 @@ local function main_body_interpreter(line)
 
         if tokens[1] == "end" then return true end
     end
+
 end
 
 
