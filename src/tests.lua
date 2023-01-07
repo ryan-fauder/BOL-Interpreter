@@ -11,8 +11,21 @@ local statements_patterns = {
     _Meta_action_pattern_,
     _Prototype_pattern_,
     _Return_pattern_,
+
     _If_pattern_,
-    _If_else_pattern_
+    _If_else_pattern_,
+
+    _Assignment_pattern_.var_case.number_arg,
+    _Assignment_pattern_.var_case.var_arg,
+    _Assignment_pattern_.var_case.attr_arg,
+    _Assignment_pattern_.var_case.method_call_arg,
+    _Assignment_pattern_.var_case.obj_creation_arg,
+
+    _Assignment_pattern_.attr_case.number_arg,
+    _Assignment_pattern_.attr_case.var_arg,
+    _Assignment_pattern_.attr_case.attr_arg,
+    _Assignment_pattern_.attr_case.method_call_arg,
+    _Assignment_pattern_.attr_case.obj_creation_arg
 }
 
 
@@ -72,9 +85,22 @@ end
 -- Main
 local method_body = [==[
 className.method()
+    i = 10
+    varA = varB
+    a = b.c
+    obj = new className
+    temp = cls.met()
+
+    cls.attr = 10
+    cls.attr = varB
+    cls.attr = b.c
+    cls.attr = new className
+    cls.attr = cls.met() 
+
     var._prototype = obj
     className.attribute = tempOne / tempTwo
     obj.met._replace(5): x = Class.Met()
+
     if a eq b then
         x = y
         className.method()
@@ -82,6 +108,7 @@ className.method()
         y = a + b  
         var._prototype = obj
     end-if
+
     a = x * y
     return x
 ]==]

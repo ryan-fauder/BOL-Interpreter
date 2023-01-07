@@ -45,9 +45,11 @@ _Bin_operation_pattern_ = {
 _Method_call_pattern_ = "[%s]*[%a]+%.[%a]+%(.-%)[%s]*"
 
 
--- Ifs
+-- If-then
 _If_pattern_ = "[%s]*if[%s]+[%a]+[%s]+[%l][%l][%s]+[%a]+[%s]+then[%s]*\n.-\n[%s]*end%-if[%s]*"
 
+
+-- If-then-else
 _If_else_pattern_ = "[%s]*if[%s]+[%a]+[%s]+[%l][%l][%s]+[%a]+[%s]+then[%s]*\n.-\n[%s]*else[%s*]\n.-\n[%s]*end%-if[%s]*"
 
 
