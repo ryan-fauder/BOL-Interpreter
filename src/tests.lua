@@ -3,6 +3,7 @@ require "strings"
 require "patterns"
 
 
+-- Vetor contendo os padrões (regexs)
 local statements_patterns = {
     _Bin_operation_pattern_.var_case,
     _Bin_operation_pattern_.attr_case,
@@ -12,16 +13,23 @@ local statements_patterns = {
     _Return_pattern_
 }
 
----comment
----@param statement string
+
+---Recebe uma string contendo vários statements e retira
+---o primeiro deles, baseado no padrão informado
+---@param statements string
 ---@param pattern string
 ---@return string
-local function next_statement(statement, pattern)
-    return (statement:gsub(pattern, "", 1))
+local function pop_statement(statements, pattern)
+    -- A função gsub substitui as ocorrências do
+    -- padrão encontrado por uma string, nesse caso a string vazia, 
+    -- o parâmetro 1 garante que isso só será feito para a 
+    -- primeira ocorrência
+    return (statements:gsub(pattern, "", 1))
 end
 
 
----comment
+---Analisa sintaticamente cada statement do method body
+---e retorna uma tabela contendo cada um deles
 ---@param method_body_string string
 ---@return table
 local function parse_method(method_body_string)
@@ -39,6 +47,7 @@ local function parse_method(method_body_string)
             break
         end
 
+        -- Testa o vetor de padrões
         for i = 1, #statements_patterns do
             current_pattern = statements_patterns[i]
             match = next_stmts:match("^" .. current_pattern .. "\n")
@@ -51,7 +60,7 @@ local function parse_method(method_body_string)
 
         table.insert(method_statements, Trim(match))
 
-        next_stmts = next_statement(next_stmts, current_pattern)
+        next_stmts = pop_statement(next_stmts, current_pattern)
     end
 
     return method_statements
@@ -67,7 +76,6 @@ local method_body = [==[
     a = x * y
     return x
 ]==]
-
 
 local method_statements = parse_method(method_body)
 
