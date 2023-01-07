@@ -4,11 +4,11 @@ require "strings"
 local _number_patt_ = "[%%d]+"
 local _name_patt_ = "[%%a]+"
 local _class_attr_patt_ = "[%%a]+%%.[%%a]+"
-local _method_call_patt_ = "[%%a]+%%.[%%a]+%%(.*%%)"
+local _method_call_patt_ = "[%%a]+%%.[%%a]+%%(.-%%)"
 local _obj_creation_patt_ = "new[%%s]+[%%a]+"
 
 
--- Assignment
+-- Assignments
 _Assignment_pattern_ = {
     var_case = {},
     attr_case = {}
@@ -34,29 +34,29 @@ _Assignment_pattern_.attr_case = {
 }
 
 
--- Binary operation
+-- Binary operations
 _Bin_operation_pattern_ = {
-    var_case = "^[%s]*[%a]+[%s]*=[%s]*[%a]+[%s]*[%+%-%*%/][%s]*[%a]+[%s]*$",
-    attr_case = "^[%s]*[%a]+%.[%a]+[%s]*=[%s]*[%a]+[%s]*[%+%-%*%/][%s]*[%a]+[%s]*$"
+    var_case = "[%s]*[%a]+[%s]*=[%s]*[%a]+[%s]*[%+%-%*%/][%s]*[%a]+[%s]*",
+    attr_case = "[%s]*[%a]+%.[%a]+[%s]*=[%s]*[%a]+[%s]*[%+%-%*%/][%s]*[%a]+[%s]*"
 }
 
 
 -- Method call
-_Method_call_pattern_ = "^[%s]*[%a]+%.[%a]+%(.*%)[%s]*$"
+_Method_call_pattern_ = "[%s]*[%a]+%.[%a]+%(.-%)[%s]*"
 
 
--- If
-_If_pattern_ = "^$"
-_If_else_pattern_ = "^$"
+-- Ifs
+-- _If_pattern_ = "^$"
+-- _If_else_pattern_ = "^$"
 
 
 -- Meta action
-_Meta_action_pattern_ = "^[%s]*[%a]+%.[%a]+%._[%a]+%([%s]*[%d]+[%s]*%)[%s]*:.*[%s]*$"
+_Meta_action_pattern_ = "[%s]*[%a]+%.[%a]+%._[%a]+%([%s]*[%d]+[%s]*%)[%s]*:[^\n]*[%s]*"
 
 
 -- Prototype
-_Prototype_pattern_ = "^[%s]*[%a]+%._prototype[%s]+=[%s]+[%a]+[%s]*$"
+_Prototype_pattern_ = "[%s]*[%a]+%._prototype[%s]+=[%s]+[%a]+[%s]*"
 
 
 -- Return
-_Return_pattern_ = "^[%s]*return[%s]+[%a]+[%s]*$"
+_Return_pattern_ = "[%s]*return[%s]+[%a]+[%s]*"

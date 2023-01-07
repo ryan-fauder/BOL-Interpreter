@@ -1,3 +1,11 @@
+---Imprime uma mensagem de erro na tela e encerra o programa
+---@param message string
+function Error(message)
+    print("[Programa encerrado]\nCausa: " .. message)
+    os.exit()
+end
+
+
 ---A partir de uma string contendo uma lista de nomes 
 ---separados por vírgula, retorna uma tabela contendo 
 ---cada nome

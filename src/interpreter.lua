@@ -1,12 +1,6 @@
 require "files"
 require "strings"
-
----Imprime uma mensagem de erro na tela e encerra o programa
----@param message string
-local function error(message)
-    print("[Programa encerrado]\nCausa: " .. message)
-    os.exit()
-end
+require "utils"
 
 
 ---Interpreta as declarações de variáveis do tipo "vars a, b, c"
@@ -123,17 +117,17 @@ local function program_interpreter()
 
         if #tokens == 2 and tokens[1] == "class" then
             local class_name = tokens[2]:match("^[%a]+$")
-            if not class_name then error("Nome de classe invalido") end
+            if not class_name then Error("Nome de classe invalido") end
             if class_interpreter(class_name, line) then goto loop
-            else error("Erro na classe") end
+            else Error("Erro na classe") end
         end
 
         if #tokens == 1 and tokens[1] == "begin" then
             if main_body_interpreter(line) then goto loop
-            else error("Erro no corpo principal") end
+            else Error("Erro no corpo principal") end
         end
 
-        error("Erro na sintaxe")
+        Error("Erro na sintaxe")
     end
 
     File:close()
