@@ -10,7 +10,9 @@ local statements_patterns = {
     _Method_call_pattern_,
     _Meta_action_pattern_,
     _Prototype_pattern_,
-    _Return_pattern_
+    _Return_pattern_,
+    _If_pattern_,
+    _If_else_pattern_
 }
 
 
@@ -69,10 +71,17 @@ end
 
 -- Main
 local method_body = [==[
-    className.method()
+className.method()
     var._prototype = obj
     className.attribute = tempOne / tempTwo
     obj.met._replace(5): x = Class.Met()
+    if a eq b then
+        x = y
+        className.method()
+    else
+        y = a + b  
+        var._prototype = obj
+    end-if
     a = x * y
     return x
 ]==]

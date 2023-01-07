@@ -14,8 +14,8 @@ _Assignment_pattern_ = {
     attr_case = {}
 }
 
-local var_case_base = "^[%s]*[%a]+[%s]*=[%s]*{mask}[%s]*$"
-local attr_case_base = "^[%s]*[%a]+%.[%a]+[%s]*=[%s]*{mask}[%s]*$"
+local var_case_base = "[%s]*[%a]+[%s]*=[%s]*{mask}[%s]*"
+local attr_case_base = "[%s]*[%a]+%.[%a]+[%s]*=[%s]*{mask}[%s]*"
 
 _Assignment_pattern_.var_case = {
     ["number_arg"] = var_case_base:gsub("{mask}", _number_patt_),
@@ -46,8 +46,9 @@ _Method_call_pattern_ = "[%s]*[%a]+%.[%a]+%(.-%)[%s]*"
 
 
 -- Ifs
--- _If_pattern_ = "^$"
--- _If_else_pattern_ = "^$"
+_If_pattern_ = "[%s]*if[%s]+[%a]+[%s]+[%l][%l][%s]+[%a]+[%s]+then[%s]*\n.-\n[%s]*end%-if[%s]*"
+
+_If_else_pattern_ = "[%s]*if[%s]+[%a]+[%s]+[%l][%l][%s]+[%a]+[%s]+then[%s]*\n.-\n[%s]*else[%s*]\n.-\n[%s]*end%-if[%s]*"
 
 
 -- Meta action
