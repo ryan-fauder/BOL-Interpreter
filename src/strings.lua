@@ -12,7 +12,7 @@ end
 ---@return table
 function Tokenize(string)
     local tokens = {}
-    for token in string.gmatch(string, "[^%s]+") do
+    for token in string:gmatch("[^%s]+") do
         table.insert(tokens, token)
     end
     return tokens

@@ -36,8 +36,8 @@ _Assignment_pattern_.attr_case = {
 
 -- Binary operation
 _Bin_operation_pattern_ = {
-    var_case = "^[%s]*[%a]+[%s]+=[%s]+[%a]+[%s]+[%+%-%*%/][%a]+[%s]*$",
-    attr_case = "^[%s]*[%a]+%.[%a]+[%s]+=[%s]+[%a]+[%s]+[%+%-%*%/][%a]+[%s]*$"
+    var_case = "^[%s]*[%a]+[%s]*=[%s]*[%a]+[%s]*[%+%-%*%/][%s]*[%a]+[%s]*$",
+    attr_case = "^[%s]*[%a]+%.[%a]+[%s]*=[%s]*[%a]+[%s]*[%+%-%*%/][%s]*[%a]+[%s]*$"
 }
 
 
@@ -51,7 +51,7 @@ _If_else_pattern_ = "^$"
 
 
 -- Meta action
-_Meta_action_pattern_ = "^[%s]*[%a]+%.[%a]+%._[%a]+%([%s]*[%d]+[%s]*%):.*[%s]*$"
+_Meta_action_pattern_ = "^[%s]*[%a]+%.[%a]+%._[%a]+%([%s]*[%d]+[%s]*%)[%s]*:.*[%s]*$"
 
 
 -- Prototype
