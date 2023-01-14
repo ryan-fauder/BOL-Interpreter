@@ -2,9 +2,13 @@
 ---@param file_name string
 ---@return file*
 function Get_file(file_name)
-    if type(file_name) ~= "string" then error("Arquivo invalido") end
+    if type(file_name) ~= "string" then
+        error("Arquivo invalido") end
+
     local file = io.open(file_name, "r")
-    if file then return file else error("Arquivo inexistente") end
+
+    if file then return file
+    else error("Arquivo inexistente") end
 end
 
 

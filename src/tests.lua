@@ -2,33 +2,6 @@ require "utils"
 require "strings"
 require "patterns"
 
-
--- Vetor contendo os padrões (regexs)
-local statements_patterns = {
-    _Bin_operation_pattern_.var_case,
-    _Bin_operation_pattern_.attr_case,
-    _Method_call_pattern_,
-    _Meta_action_pattern_,
-    _Prototype_pattern_,
-    _Return_pattern_,
-
-    _If_pattern_,
-    _If_else_pattern_,
-
-    _Assignment_pattern_.var_case.number_arg,
-    _Assignment_pattern_.var_case.var_arg,
-    _Assignment_pattern_.var_case.attr_arg,
-    _Assignment_pattern_.var_case.method_call_arg,
-    _Assignment_pattern_.var_case.obj_creation_arg,
-
-    _Assignment_pattern_.attr_case.number_arg,
-    _Assignment_pattern_.attr_case.var_arg,
-    _Assignment_pattern_.attr_case.attr_arg,
-    _Assignment_pattern_.attr_case.method_call_arg,
-    _Assignment_pattern_.attr_case.obj_creation_arg
-}
-
-
 ---Recebe uma string contendo vários statements e retira
 ---o primeiro deles, baseado no padrão informado
 ---@param statements string
@@ -63,8 +36,8 @@ local function parse_method(method_body_string)
         end
 
         -- Testa o vetor de padrões
-        for i = 1, #statements_patterns do
-            current_pattern = statements_patterns[i]
+        for i = 1, #Statements_patterns do
+            current_pattern = Statements_patterns[i]
             match = next_stmts:match("^" .. current_pattern .. "\n")
             if match then break end
         end
@@ -84,7 +57,7 @@ end
 
 -- Main
 local method_body = [==[
-className.method()
+    className.method()
     i = 10
     varA = varB
     a = b.c

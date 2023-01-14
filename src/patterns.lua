@@ -63,3 +63,29 @@ _Prototype_pattern_ = "[%s]*[%a]+%._prototype[%s]+=[%s]+[%a]+[%s]*"
 
 -- Return
 _Return_pattern_ = "[%s]*return[%s]+[%a]+[%s]*"
+
+
+-- Vetor contendo os padrões (regexs)
+Statements_patterns = {
+    _Bin_operation_pattern_.var_case,
+    _Bin_operation_pattern_.attr_case,
+    _Method_call_pattern_,
+    _Meta_action_pattern_,
+    _Prototype_pattern_,
+    _Return_pattern_,
+
+    _If_pattern_,
+    _If_else_pattern_,
+
+    _Assignment_pattern_.var_case.number_arg,
+    _Assignment_pattern_.var_case.var_arg,
+    _Assignment_pattern_.var_case.attr_arg,
+    _Assignment_pattern_.var_case.method_call_arg,
+    _Assignment_pattern_.var_case.obj_creation_arg,
+
+    _Assignment_pattern_.attr_case.number_arg,
+    _Assignment_pattern_.attr_case.var_arg,
+    _Assignment_pattern_.attr_case.attr_arg,
+    _Assignment_pattern_.attr_case.method_call_arg,
+    _Assignment_pattern_.attr_case.obj_creation_arg
+}
