@@ -3,6 +3,7 @@ require "types"
 
 Env = {}
 
+--- Cria um objeto Env
 function Env:new()
     env = {vars = {}}
     setmetatable(env, self)
@@ -10,26 +11,32 @@ function Env:new()
     return env
 end
 
+--- Define um variavel no ambiente
+---@param name string
+---@param var table
 function Env:setVar(name, var)
     if (name == nil) then
         Error("Erro em Env_addVar: name não definido")
     end
     self.vars[name] = var
-    self.vars[name]:print()
 end
 
+--- Define um variavel no ambiente
+---@param name string
+---@param var table
 function Env:getVar(name)
     if (name == nil) then
-        Error("Erro em Env_addVar: name não definido")
+        Error("Erro em Env_getVar: name não definido")
     end
 
     return self.vars[name]
 end
 
+--- Imprime um objeto Env
 function Env:print()
-    print("Env - vars: ")
+    print("~ Env - vars: ~")
     for name,var in pairs(self.vars) do
-        print(name..":")
+        print("=>> "..name..":")
         var:print()
     end
 end
@@ -43,8 +50,8 @@ local function env_test()
     env:setVar(number_var2.name, number_var2)
     env:print()
     
-    local number_var3 = NumberVar:new(nil, "VAR2", 500)
-    env:setVar(number_var3.name, number_var3)
+    local class_var2 = ClassVar:new(nil, "VAR2", class_table1, class_table1.methods)
+    env:setVar(class_var2.name, class_var2)
     env:print()
 end
 
