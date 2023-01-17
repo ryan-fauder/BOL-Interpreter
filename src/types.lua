@@ -78,15 +78,15 @@ end
 
 
 local function types_numbervar_test()
-    number_var1 = NumberVar:new(nil, "VAR1", 12)
-    number_var2 = NumberVar:new(nil, "VAR2", 124)
+    local number_var1 = NumberVar:new(nil, "VAR1", 12)
+    local number_var2 = NumberVar:new(nil, "VAR2", 124)
     number_var1:print()
     number_var2:print()
 end
 
 local function types_classvar_test()
-    class_var1 = ClassVar:new(nil, "OBJ1", class_table, class_table.methods)
-    class_var2 = ClassVar:new(nil, "OBJ2", class_table, class_table.methods)
+    local class_var1 = ClassVar:new(nil, "OBJ1", class_table, class_table.methods)
+    local class_var2 = ClassVar:new(nil, "OBJ2", class_table, class_table.methods)
     class_var2:set_attr("end1", {rua = "Rua 1",casa = "Casa 2"})
     
     class_var1:print()
