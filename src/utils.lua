@@ -28,3 +28,13 @@ function Get_name_list(name_list_str)
 
     return name_list
 end
+
+function Print_table(table)
+    for i,v in pairs(table) do
+        if(v == nil) then
+            print(i, "nil") 
+        else
+            print(i,v)
+        end
+    end
+end
