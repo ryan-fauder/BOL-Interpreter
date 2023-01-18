@@ -7,5 +7,5 @@ begin
     sub line 4
     sub line 5
     sub line 6
-end
+end-method
 

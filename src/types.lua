@@ -22,6 +22,7 @@ class_table = {
     _prototype = nil
 }
 
+
 class_table1 = {
     attr = {"account", "address"},
     methods = {
@@ -72,12 +73,15 @@ function NumberVar:new(object, name, value)
     return object
 end
 
+
 ---@description Imprime um NumberVar
 function NumberVar:print()
     print("Name: " .. self.name .. " = { Type: " .. self.type .. ", Value: " .. self.value .. "}")
 end
 
+
 ClassVar = {}
+
 --- Cria um objeto ClassVar
 ---@param object table
 ---@param name string
@@ -113,12 +117,14 @@ function ClassVar:new(object, name, class_table, methods_table)
     return object
 end
 
+
 --- Define um atributo em um objeto ClassVar
 ---@param name string
 ---@param value string
 function ClassVar:set_attr(name, value)
     self.attr[name] = value
 end
+
 
 --- Imprime um objeto de ClassVar
 function ClassVar:print()
@@ -130,12 +136,14 @@ function ClassVar:print()
     print("}\n")
 end
 
+
 local function types_numbervar_test()
     local number_var1 = NumberVar:new(nil, "VAR1", 12)
     local number_var2 = NumberVar:new(nil, "VAR2")
     number_var1:print()
     number_var2:print()
 end
+
 
 local function types_classvar_test()
     local class_var1 = ClassVar:new(nil, "OBJ1", class_table, class_table.methods)

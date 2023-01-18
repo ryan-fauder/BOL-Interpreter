@@ -11,7 +11,8 @@ function Env:new()
     return env
 end
 
---- Define um variavel no ambiente
+
+--- Define uma variável no ambiente
 ---@param name string
 ---@param var table
 function Env:setVar(name, var)
@@ -21,7 +22,8 @@ function Env:setVar(name, var)
     self.vars[name] = var
 end
 
---- Define um variavel no ambiente
+
+--- Define uma variável no ambiente
 ---@param name string
 ---@param var table
 function Env:getVar(name)
@@ -32,6 +34,7 @@ function Env:getVar(name)
     return self.vars[name]
 end
 
+
 --- Imprime um objeto Env
 function Env:print()
     print("~ Env - vars: ~")
@@ -40,6 +43,7 @@ function Env:print()
         var:print()
     end
 end
+
 
 local function env_test()
     local number_var1 = NumberVar:new(nil, "VAR1", 12)

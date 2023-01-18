@@ -5,13 +5,13 @@ require "utils"
 ---@return file*
 function Get_file(file_name)
     if type(file_name) ~= "string" then
-        Error("Arquivo invalido")
+        Error("Erro em Get_file: Nome do arquivo diferente de string")
     end
 
     local file = io.open(file_name, "r")
 
     if not file then
-        Error("Arquivo inexistente")
+        Error("Erro em Get_file: Arquivo inexistente")
     end
 
     return file

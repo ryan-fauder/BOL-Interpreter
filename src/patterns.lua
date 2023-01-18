@@ -1,4 +1,4 @@
-require "strings"
+-- Patterns module
 
 -- Basic patterns
 local _number_patt_ = "[%%d]+"

@@ -1,4 +1,4 @@
-require "utils"
+require "utils.lua"
 require "strings"
 require "patterns"
 
