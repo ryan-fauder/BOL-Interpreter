@@ -50,7 +50,7 @@ _If_pattern_ = "[%s]*if[%s]+[%a]+[%s]+[%l][%l][%s]+[%a]+[%s]+then[%s]*\n.-\n[%s]
 
 
 -- If-then-else
-_If_else_pattern_ = "[%s]*if[%s]+[%a]+[%s]+[%l][%l][%s]+[%a]+[%s]+then[%s]*\n.-\n[%s]*else[%s*]\n.-\n[%s]*end%-if[%s]*"
+_If_else_pattern_ = "[%s]*if[%s]+[%a]+[%s]+[%l][%l][%s]+[%a]+[%s]+then[%s]*\n.-\n[%s]*else[%s]*\n.-\n[%s]*end%-if[%s]*"
 
 
 -- Meta action
@@ -65,7 +65,7 @@ _Prototype_pattern_ = "[%s]*[%a]+%._prototype[%s]+=[%s]+[%a]+[%s]*"
 _Return_pattern_ = "[%s]*return[%s]+[%a]+[%s]*"
 
 
--- Vetor contendo os padrões (regexs)
+-- Vetor contendo os padrões de statements (regexs)
 Statements_patterns = {
     _Bin_operation_pattern_.var_case,
     _Bin_operation_pattern_.attr_case,
@@ -89,3 +89,26 @@ Statements_patterns = {
     _Assignment_pattern_.attr_case.method_call_arg,
     _Assignment_pattern_.attr_case.obj_creation_arg
 }
+
+
+-- Class definition
+_Class_def_begin_pattern_ = "^[%s]*class[%s]+([%a]+)[%s]*$"
+_Class_def_end_pattern_ = "^[%s]*end%-class[%s]*$"
+
+
+-- Main body
+_Main_body_begin_pattern_ = "^[%s]*begin[%s]*$"
+_Main_body_end_pattern_ = "^[%s]*end[%s]*$"
+
+
+-- Method header
+_Method_header_pattern_ = "^[%s]*method[%s]+[%a]+%(.-%)[%s]*$"
+_Method_end_pattern_ = "^[%s]*end%-method[%s]*$"
+
+
+-- Variables definition
+_Variables_def_pattern_ = "^[%s]*vars[%s]+.-[%s]*$"
+
+
+-- Empty line
+_Empty_line_pattern_ = "^[%s]*$"

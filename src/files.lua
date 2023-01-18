@@ -1,18 +1,24 @@
----Verifica se o arquivo é válido, se ele existe e o abre para leitura
+require "utils"
+
+--- Verifica se o arquivo é válido, se ele existe e o abre para leitura
 ---@param file_name string
 ---@return file*
 function Get_file(file_name)
     if type(file_name) ~= "string" then
-        error("Arquivo invalido") end
+        Error("Arquivo invalido")
+    end
 
     local file = io.open(file_name, "r")
 
-    if file then return file
-    else error("Arquivo inexistente") end
+    if not file then
+        Error("Arquivo inexistente")
+    end
+
+    return file
 end
 
 
----Lê a próxima linha do arquivo
+--- Lê a próxima linha do arquivo
 ---@param file file*
 ---@return string
 function Read_line(file)

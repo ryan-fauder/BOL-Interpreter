@@ -1,14 +1,14 @@
----Imprime uma mensagem de erro na tela e encerra o programa
+--- Imprime uma mensagem de erro na tela e encerra o programa
 ---@param message string
 function Error(message)
-    print("[Programa encerrado]\nCausa: " .. message)
+    print("[Programa encerrado]\n" .. message)
     os.exit()
 end
 
 
----A partir de uma string contendo uma lista de nomes 
----separados por vírgula, retorna uma tabela contendo 
----cada nome
+--- A partir de uma string contendo uma lista de nomes 
+--- separados por vírgula, retorna uma tabela contendo 
+--- cada nome
 ---@param name_list_str string
 ---@return table|nil
 function Get_name_list(name_list_str)
@@ -29,10 +29,13 @@ function Get_name_list(name_list_str)
     return name_list
 end
 
+
+--- Imprime cada chave e o valor correspondente de uma tabela
+---@param table table
 function Print_table(table)
     for i,v in pairs(table) do
-        if(v == nil) then
-            print(i, "nil") 
+        if v == nil then
+            print(i, "nil")
         else
             print(i,v)
         end
