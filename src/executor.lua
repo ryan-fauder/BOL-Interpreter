@@ -10,10 +10,10 @@ function Main_interpreter()
 end
 
 
-function Method_interpreter(Env e, Table method)
+function Method_interpreter(env, method_buffer)
 
 end
 
-function If_interpreter(Env e, Table method)
+function If_interpreter(env, if_buffer)
 
 end

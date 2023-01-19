@@ -1,3 +1,4 @@
+require "utils"
 require "patterns"
 
 --- Lê a próxima linha do arquivo
@@ -20,7 +21,7 @@ function Read_block(file, line, stop_pattern)
 
     while line do
         if not line:match(_Empty_line_pattern_) then
-            table.insert(block_content, line)
+            table.insert(block_content, Trim(line))
         end
 
         if line:match(stop_pattern) then
@@ -44,10 +45,10 @@ function Read_class_block(file, line)
     local class_block_content = Read_block(file, line, _Class_def_end_pattern_)
 
     if not class_block_content then
-        Error("Erro em Read_class_block: 'end-class' nao encontrado")
+        Error("Erro em Read_class_block: 'end-class' não encontrado")
     end
-
-    return class_block_content
+    
+    return class_block_content or {}
 end
 
 
@@ -64,22 +65,24 @@ function Read_main_block(file, line)
         Error("Erro em Read_main_block: 'end' nao encontrado")
     end
 
-    return main_block_content
+    return main_block_content or {}
 end
 
 
---- Função de leitura de method_block
---- Lê a linhas do arquivo até "end-method", armazena as 
---- linhas em uma tabela e retorna a tabela
----@param file file* 
----@param line string
----@return table
+ -- Deve receber o buffer da classe
+ -- Então, o método é extraído até o end-method
+ -- Retorna um buffer com o método
 function Read_method_block(file, line)
     local method_block_content = Read_block(file, line, _Method_end_pattern_)
 
     if not method_block_content then
-        Error("Erro em Read_method_block: 'end-method' nao encontrado")
+        Error("Erro em Read_method_block: 'end-method' não encontrado")
     end
 
-    return method_block_content
+    return method_block_content or {}
+end
+
+
+local function read_test()
+    local file = Get_file("program.bol")
 end

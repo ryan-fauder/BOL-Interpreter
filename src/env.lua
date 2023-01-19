@@ -16,8 +16,9 @@ end
 ---@param name string
 ---@param var table
 function Env:setVar(name, var)
-    if (name == nil) then
+    if name == nil then
         Error("Erro em Env_addVar: name não definido")
+        return
     end
     self.vars[name] = var
 end
@@ -25,10 +26,10 @@ end
 
 --- Define uma variável no ambiente
 ---@param name string
----@param var table
 function Env:getVar(name)
-    if (name == nil) then
+    if name == nil then
         Error("Erro em Env_getVar: name não definido")
+        return
     end
 
     return self.vars[name]
@@ -59,4 +60,4 @@ local function env_test()
     env:print()
 end
 
-env_test()
+--env_test()

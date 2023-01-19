@@ -1,11 +1,29 @@
-class NomeDaClasse
+    class   NomeDaClasse     
     vars x, y, z
     method
-end-class
+     end-class        
+
+    class   NomeDaClasse     
+    vars x, y, z
+    method
+     end-class      
+
+         class   NomeDaClasse     
+    vars x, y, z
+    method
+     end     
+
+
+         class   NomeDaClasse     
+    vars x, y, z
+    method
+     end-class      
+
 
 begin
-    sub line 4
-    sub line 5
-    sub line 6
-end-method
-
+    bla
+    bla
+    
+    bla
+end
+end

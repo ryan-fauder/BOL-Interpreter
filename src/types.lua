@@ -61,9 +61,11 @@ function NumberVar:new(object, name, value)
 
     if (type(value) ~= "number") then
         Error("Erro em Create_number_var: value não é um Number")
+        return
     end
     if (name == nil or value == nil) then
         Error("Erro em Create_number_var: name ou value não definido")
+        return
     end
 
     object.name = name
@@ -94,6 +96,7 @@ function ClassVar:new(object, name, class_table, methods_table)
 
     if (class_table == nil) then
         Error("Erro em ClassVar.new: class não definida")
+        return
     end
 
     local attr = {}
@@ -157,5 +160,5 @@ local function types_classvar_test()
     class_var2:print()
 end
 
-types_numbervar_test()
-types_classvar_test()
+--types_numbervar_test()
+--types_classvar_test()

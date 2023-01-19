@@ -1,5 +1,4 @@
-require "utils.lua"
-require "strings"
+require "utils"
 require "patterns"
 
 ---Recebe uma string contendo vários statements e retira
@@ -21,7 +20,7 @@ end
 ---@param method_body_string string
 ---@return table
 local function parse_method(method_body_string)
-    local current_pattern, next_stmts, match
+    local current_pattern, next_stmts, match, types
     local method_statements = {}
 
     if type(method_body_string) ~= "string" then
@@ -37,9 +36,15 @@ local function parse_method(method_body_string)
 
         -- Testa o vetor de padrões
         for i = 1, #Statements_patterns do
-            current_pattern = Statements_patterns[i]
+            types, current_pattern = table.unpack(Statements_patterns[i])
             match = next_stmts:match("^" .. current_pattern .. "\n")
-            if match then break end
+            if match then 
+                print("{")
+                Print_table(types)
+                print("}")
+                break
+             end
+
         end
 
         if not match then
@@ -78,6 +83,28 @@ local method_body = [==[
         x = y
         className.method()
     else
+        y = a + b  
+        var._prototype = obj
+    end-if
+
+    if a eq b then
+        x = y
+        className.method()
+        y = a + b  
+        var._prototype = obj
+    end-if
+
+    if a eq b then
+        x = y
+        className.method()
+    else
+        y = a + b  
+        var._prototype = obj
+    end-if
+
+    if a eq b then
+        x = y
+        className.method()
         y = a + b  
         var._prototype = obj
     end-if
