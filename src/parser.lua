@@ -3,7 +3,7 @@ require "utils"
 require "args"
 require "utils"
 
-function Parser_return( lexer )
+function Parser_return(lexer)
   if (lexer == nil) then
     Error("Erro em Parser_return: Lexer vazio")
     return {}
@@ -22,10 +22,9 @@ function Parser_return( lexer )
   local ast = {}
   ast.type = lexer.types.type
   ast.arg = Parser_arg_var(lexer.tokens[1])
-  
+
   return ast
 end
-
 
 function Parser_method_call(lexer)
   if (lexer == nil) then
@@ -50,7 +49,7 @@ function Parser_method_call(lexer)
   vars_list = Parser_var_list(lexer.tokens[3])
   ast.type = lexer.types.type
   ast.arg = Parser_arg_method_call(var_name, method_name, vars_list)
-  
+
   return ast
 end
 
@@ -96,12 +95,9 @@ function Parser_if(lexer)
   else
     ast.if_block = if_block
   end
-  
+
   return ast
 end
-
-
-
 
 local if_else_body = [==[
     if a eq b then
@@ -127,7 +123,7 @@ local function parser_if_test()
   types, current_pattern = table.unpack(Statements_patterns[5])
   print("IF TEST")
   match = { if_body:match("^" .. current_pattern .. "\n") }
-  
+
   if #match >= 1 then
     local ast = Parser_if({ types = types, tokens = match })
     Print_table(ast)
@@ -159,13 +155,12 @@ local function parser_method_call_test()
   match = { method_call_string:match("^" .. pattern .. "\n") }
   Print_table(match)
   if #match >= 1 then
-    local ast = Parser_method_call({types = types, tokens = match})
+    local ast = Parser_method_call({ types = types, tokens = match })
     Print_table(ast)
     Print_table(ast.arg)
     Print_table(ast.arg.vars_list)
   end
 end
-
 
 local function parser_return_test()
   local match, types, pattern
@@ -174,10 +169,11 @@ local function parser_return_test()
   match = { method_call_string:match("^" .. pattern .. "\n") }
   Print_table(match)
   if #match >= 1 then
-    local ast = Parser_return({types = types, tokens = match})
+    local ast = Parser_return({ types = types, tokens = match })
     Print_table(ast)
     Print_table(ast.arg)
   end
 
 end
+
 parser_return_test()
