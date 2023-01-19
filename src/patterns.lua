@@ -12,18 +12,18 @@ local _bin_operation_patt_ = "[%%a]+[%%s]*[%%+%%-%%*%%/][%%s]*[%%a]+"
 -- =================================================================================== --
 
 -- Class definition
-_Class_def_begin_pattern_ = "^[%s]*class[%s]+([%a]+)[%s]*$"
-_Class_def_end_pattern_ = "^[%s]*end%-class[%s]*$"
+_Class_def_begin_pattern_ = "[%s]*class[%s]+([%a]+)[%s]*"
+_Class_def_end_pattern_ = "[%s]*end%-class[%s]*"
 
 
 -- Main body
-_Main_body_begin_pattern_ = "^[%s]*begin[%s]*$"
-_Main_body_end_pattern_ = "^[%s]*end[%s]*$"
+_Main_body_begin_pattern_ = "[%s]*begin[%s]*"
+_Main_body_end_pattern_ = "[%s]*end[%s]*"
 
 
 -- Method header
-_Method_header_pattern_ = "^[%s]*method[%s]+[%a]+%(.-%)[%s]*$"
-_Method_end_pattern_ = "^[%s]*end%-method[%s]*$"
+_Method_header_pattern_ = "[%s]*method[%s]+[%a]+%(.-%)[%s]*"
+_Method_end_pattern_ = "[%s]*end%-method[%s]*"
 
 
 -- Variables definition

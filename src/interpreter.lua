@@ -11,12 +11,12 @@ local function main()
     local class_block, main_block
 
     while line do
-        if line:match(_Class_def_begin_pattern_) then
+        if line:match("^" .. _Class_def_begin_pattern_ .. "$") then
             class_block = Read_class_block(file, line)
             Print_table(class_block)
             -- Describe_class(class_block)
 
-        elseif line:match(_Main_body_begin_pattern_) then
+        elseif line:match("^" .. _Main_body_begin_pattern_ .. "$") then
             main_block = Read_main_block(file, line)
             -- Describe_main(main_block)
             Print_table(main_block)

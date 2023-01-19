@@ -88,7 +88,7 @@ function Read_method_block(class_block_content, index)
 end
 
 
---- Funções de teste
+--- Testes
 
 local function read_class_test()
     -- lua reader.lua program.bol
