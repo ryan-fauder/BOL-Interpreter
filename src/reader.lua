@@ -88,8 +88,47 @@ function Read_method_block(class_block_content, index)
 end
 
 
---- Função de teste
-local function read_test()
+--- Funções de teste
+
+local function read_class_test()
+    -- lua reader.lua program.bol
+    require "files"
+    local file = Get_file(arg[1])
+    local line = Read_line(file)
+
+    while line do
+        if line:match(_Class_def_begin_pattern_) then
+            local class_block = Read_class_block(file, line)
+            print("\nClass Block:")
+            Print_table(class_block)
+        end
+        line = Read_line(file)
+    end
+
+    print()
+end
+
+
+local function read_main_test()
+    -- lua reader.lua program.bol
+    require "files"
+    local file = Get_file(arg[1])
+    local line = Read_line(file)
+
+    while line do
+        if line:match(_Main_body_begin_pattern_) then
+            local main_block = Read_main_block(file, line)
+            print("\nMain Block:")
+            Print_table(main_block)
+        end
+        line = Read_line(file)
+    end
+
+    print()
+end
+
+
+local function read_method_test()
     local method_block_content, next_index
     local class_block_content = {
         "class MyClass",
@@ -127,4 +166,6 @@ local function read_test()
 end
 
 
--- read_test()
+-- read_class_test()
+-- read_main_test()
+-- read_method_test()

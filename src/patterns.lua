@@ -142,6 +142,6 @@ Statements_patterns = {
         _Assignment_pattern_.attr_case.obj_creation_arg },
 
     { { type = "assignment", lhs = "attr_case", rhs = "binary_operation_arg" },
-        _Assignment_pattern_.attr_case.bin_operation_arg },
+        _Assignment_pattern_.attr_case.bin_operation_arg }
 
 }
