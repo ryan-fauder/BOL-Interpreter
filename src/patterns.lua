@@ -42,8 +42,8 @@ _Assignment_pattern_ = {
     attr_case = {}
 }
 
-local var_case_base = "[%s]*[%a]+[%s]*=[%s]*{mask}[%s]*"
-local attr_case_base = "[%s]*[%a]+%.[%a]+[%s]*=[%s]*{mask}[%s]*"
+local var_case_base = "[%s]*([%a]+)[%s]*=[%s]*({mask})[%s]*"
+local attr_case_base = "[%s]*([%a]+%.[%a]+)[%s]*=[%s]*({mask})[%s]*"
 
 
 _Assignment_pattern_.var_case = {
@@ -78,11 +78,11 @@ _If_else_pattern_ = "[%s]*if[%s]+[%a]+[%s]+[%l][%l][%s]+[%a]+[%s]+then[%s]*\n.-\
 _Else_pattern_ = "(.-)\n[%s]*else[%s]*\n(.*)"
 
 -- Meta action
-_Meta_action_pattern_ = "[%s]*[%a]+%.[%a]+%._[%a]+%([%s]*[%d]+[%s]*%)[%s]*:[^\n]*[%s]*"
+_Meta_action_pattern_ = "[%s]*([%a]+)%.([%a]+)%._([%a]+)%([%s]*([%d]+)[%s]*%)[%s]*:([^\n]*)[%s]*"
  
 
 -- Prototype
-_Prototype_pattern_ = "[%s]*[%a]+%._prototype[%s]+=[%s]+[%a]+[%s]*"
+_Prototype_pattern_ = "[%s]*([%a]+)%._prototype[%s]+=[%s]+([%a]+)[%s]*"
 
 
 -- Return
