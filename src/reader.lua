@@ -69,9 +69,13 @@ function Read_main_block(file, line)
 end
 
 
- -- Deve receber a tabela de linhas da classe
- -- Então, o método é lido até "end-method"
- -- Retorna um tabela de linhas com o método e o novo índice
+--- Recebe a tabela de linhas da classe e o índice do header de um método
+--- O método é lido até "end-method"
+--- Retorna uma tabela de linhas com o método e o índice depois de "end-method"
+---@param class_block_content table
+---@param index number
+---@return table
+---@return integer
 function Read_method_block(class_block_content, index)
     local method_block_content = {}
 
@@ -84,6 +88,7 @@ function Read_method_block(class_block_content, index)
 end
 
 
+--- Função de teste
 local function read_test()
     local method_block_content, next_index
     local class_block_content = {
