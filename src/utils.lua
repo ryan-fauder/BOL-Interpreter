@@ -9,11 +9,11 @@ end
 --- Imprime cada chave e o valor correspondente de uma tabela
 ---@param table table
 function Print_table(table)
-    for i,v in pairs(table) do
+    for i, v in pairs(table) do
         if v == nil then
             print(i, "nil")
         else
-            print(i,v)
+            print(i, v)
         end
     end
 end

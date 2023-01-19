@@ -69,20 +69,57 @@ function Read_main_block(file, line)
 end
 
 
- -- Deve receber o buffer da classe
- -- Então, o método é extraído até o end-method
- -- Retorna um buffer com o método
-function Read_method_block(file, line)
-    local method_block_content = Read_block(file, line, _Method_end_pattern_)
+ -- Deve receber a tabela de linhas da classe
+ -- Então, o método é lido até "end-method"
+ -- Retorna um tabela de linhas com o método e o novo índice
+function Read_method_block(class_block_content, index)
+    local method_block_content = {}
 
-    if not method_block_content then
-        Error("Erro em Read_method_block: 'end-method' não encontrado")
-    end
+    repeat
+        table.insert(method_block_content, class_block_content[index])
+        index = index + 1
+    until class_block_content[index - 1]:match(_Method_end_pattern_)
 
-    return method_block_content or {}
+    return method_block_content, index
 end
 
 
 local function read_test()
-    local file = Get_file("program.bol")
+    local method_block_content, next_index
+    local class_block_content = {
+        "class MyClass",
+        "vars a, b, c",
+
+        "method myMethodOne(x, y)",
+        "vars i, j",
+        "begin",
+            "self.a = x + y",
+            "i = 10",
+            "return y",
+        "end-method",
+
+        "method myMethodTwo()",
+        "begin",
+            "self.a = 20",
+        "end-method",
+    }
+
+    print("Class block:")
+    Print_table(class_block_content)
+
+    method_block_content, next_index = Read_method_block(class_block_content, 3)
+
+    print("\nMethod 1:")
+    Print_table(method_block_content)
+    print("Next index = " .. next_index)
+
+    method_block_content, next_index = Read_method_block(class_block_content, next_index)
+
+    print("\nMethod 2:")
+    Print_table(method_block_content)
+    print("Next index = " .. next_index)
+
 end
+
+
+-- read_test()
