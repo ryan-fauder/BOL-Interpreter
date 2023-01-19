@@ -26,3 +26,11 @@ end
 function Trim(string)
     return (string:match("^%s*(.-)%s*$"):gsub("%s+", " "))
 end
+
+function Pop_statement(statements, pattern)
+    -- A função gsub substitui as ocorrências do
+    -- padrão encontrado por uma string, nesse caso a string vazia, 
+    -- o parâmetro 1 garante que isso só será feito para a 
+    -- primeira ocorrência
+    return (statements:gsub(pattern, "", 1))
+end

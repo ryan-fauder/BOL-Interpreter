@@ -27,8 +27,9 @@ _Method_end_pattern_ = "^[%s]*end%-method[%s]*$"
 
 
 -- Variables definition
-_Variables_def_pattern_ = "^[%s]*vars[%s]+.-[%s]*$"
-
+_Variables_def_pattern_ = "[%s]*vars[%s]+(.-)[%s]*"
+_Variable_def_pattern_ = "[%s]*([%a]+),[%s]*"
+_Variable_Last_def_pattern_ = "[%s]*[%a]+[%s]*"
 
 -- Empty line
 _Empty_line_pattern_ = "^[%s]*$"
@@ -65,7 +66,7 @@ _Assignment_pattern_.attr_case = {
 
 
 -- Method call
-_Method_call_pattern_ = "[%s]*[%a]+%.[%a]+%(.-%)[%s]*"
+_Method_call_pattern_ = "[%s]*([%a]+)%.([%a]+)%((.-)%)[%s]*"
 
 
 -- If-then

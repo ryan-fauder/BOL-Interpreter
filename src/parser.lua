@@ -1,16 +1,68 @@
 require "patterns"
 require "utils"
+require "args"
+require "utils"
 
-function parser_io(lexer)
-  -- body
+function Parser_var_list(vars_string)
+  local var_list = {}
+
+  if(type(vars_string) == nil ) then
+    Error("Erro em Parser_var_list: Vars_string está vazio")
+    return {}
+  end
+
+  if(type(vars_string) ~= "string") then
+    Error("Erro em Parser_var_list: Vars_string não é uma string")
+    return {}
+  end
+
+  for var in string.gmatch(vars_string, _Variable_def_pattern_ ) do
+    table.insert( var_list, var )
+    vars_string = Pop_statement( vars_string, _Variable_def_pattern_ )
+  end
+
+  if(vars_string == nil) then
+    Error("Erro em Parser_var_list: Vars inválido")
+    return {}
+  end
+
+  local var = string.match(vars_string, "^".. _Variable_Last_def_pattern_.."$")
+
+  if(var == nil) then
+    Error("Erro em Parser_var_list: Vars inválido")
+    return {}
+  end
+
+  table.insert( var_list, var )
+
+  return var_list
 end
 
-function Parser_arg_var(name)
-  if name == nil then
-    Error("Erro em Parser_arg_var: Name não informado")
-    return
+function Parser_method_call(lexer)
+  if (lexer == nil) then
+    Error("Erro em Parser_method_call: Lexer vazio")
+    return {}
   end
-  return { var_name = name }
+
+  if (lexer.types.type ~= "method_call") then
+    Error("Erro em Parser_method_call: Lexer não é do tipo 'method_call'")
+    return {}
+  end
+
+  if (#lexer.tokens < 3) then
+    Error("Erro em Parser_method_call: Tokens não suficientes no Lexer")
+    return {}
+  end
+
+  local ast = {}
+  local var_name, method_name, vars_list
+  var_name = lexer.tokens[1]
+  method_name = lexer.tokens[2]
+  vars_list = Parser_var_list(lexer.tokens[3])
+  ast.type = lexer.types.type
+  ast.arg = Parser_arg_method_call(var_name, method_name, vars_list)
+  
+  return ast
 end
 
 --- func desc
@@ -32,8 +84,6 @@ function Parser_if(lexer)
     return {}
   end
 
-  
-  
   local if_block
   local ast = {}
   ast.type = lexer.types.type
@@ -61,6 +111,9 @@ function Parser_if(lexer)
   return ast
 end
 
+
+
+
 local if_else_body = [==[
     if a eq b then
         x = y
@@ -86,7 +139,7 @@ local function parser_if_test()
   print("IF TEST")
   match = { if_body:match("^" .. current_pattern .. "\n") }
   
-  if match then
+  if #match >= 1 then
     local ast = Parser_if({ types = types, tokens = match })
     Print_table(ast)
   end
@@ -99,4 +152,29 @@ local function parser_if_test()
   end
 end
 
-parser_if_test()
+local function parser_var_list_test()
+  local match
+  local vars_string = "vars a, b, c\n"
+  match = { vars_string:match("^" .. _Variables_def_pattern_ .. "\n") }
+  Print_table(match)
+  if #match >= 1 then
+    local ast = Parser_var_list(match[1])
+    Print_table(ast)
+  end
+end
+
+local function parser_method_call_test()
+  local match, types, pattern
+  local method_call_string = "variable.methodo(abedecadara, b, c)\n"
+  types, pattern = table.unpack(Statements_patterns[1])
+  match = { method_call_string:match("^" .. pattern .. "\n") }
+  Print_table(match)
+  if #match >= 1 then
+    local ast = Parser_method_call({types = types, tokens = match})
+    Print_table(ast)
+    Print_table(ast.arg)
+    Print_table(ast.arg.vars_list)
+  end
+end
+
+parser_method_call_test()
