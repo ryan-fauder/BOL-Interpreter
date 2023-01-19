@@ -5,10 +5,19 @@ function Error(message)
     os.exit()
 end
 
-
 --- Imprime cada chave e o valor correspondente de uma tabela
 ---@param table table
 function Print_table(table)
+
+    if (table == nil) then
+        Error("Erro em Print_table: Paramêtro vazio")
+        return
+    end
+    if (type(table) ~= "table") then
+        Error("Erro em Print_table: Paramêtro não é um table")
+        return
+    end
+
     for i, v in pairs(table) do
         if v == nil then
             print(i, "nil")
@@ -17,7 +26,6 @@ function Print_table(table)
         end
     end
 end
-
 
 ---Remove os espaços no início e no final da string
 ---Remove os espaços extras entre palavras
@@ -29,8 +37,8 @@ end
 
 function Pop_statement(statements, pattern)
     -- A função gsub substitui as ocorrências do
-    -- padrão encontrado por uma string, nesse caso a string vazia, 
-    -- o parâmetro 1 garante que isso só será feito para a 
+    -- padrão encontrado por uma string, nesse caso a string vazia,
+    -- o parâmetro 1 garante que isso só será feito para a
     -- primeira ocorrência
     return (statements:gsub(pattern, "", 1))
 end
