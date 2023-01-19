@@ -86,7 +86,7 @@ _Prototype_pattern_ = "[%s]*[%a]+%._prototype[%s]+=[%s]+[%a]+[%s]*"
 
 
 -- Return
-_Return_pattern_ = "[%s]*return[%s]+[%a]+[%s]*"
+_Return_pattern_ = "[%s]*return[%s]+([%a]+)[%s]*"
 
 
 -- Vetor contendo os padrões de statements (regexs)
