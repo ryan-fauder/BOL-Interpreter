@@ -11,13 +11,22 @@ function Main_interpreter(main_block_buffer)
         Error("Erro em Main_interpreter: Tipo de main_block_buffer diferente de string")
     end
 
-    local pattern, tokens, types, ast
+    local main_env = Env:new()
+    local pattern, tokens, types, var_list_string, var_list, ast
+    local control_flag = 0
+
     main_block_buffer = Pop_statement(main_block_buffer, "^" .. _Main_body_begin_pattern_)
 
+    var_list_string = main_block_buffer:match("^" .. _Variables_def_pattern_ .. "\n")
+
+    if var_list_string then
+        -- var_list = Parser_vars_def({types="vars_def", tokens={var_list_string}})
+        -- Eval_vars_def(main_env, var_list)
+        main_block_buffer = Pop_statement(main_block_buffer, "^" .. _Variables_def_pattern_ .. "\n")
+        control_flag = 1
+    end
+
     while true do
-        if main_block_buffer == "" then
-            break
-        end
 
         for index, pattern_info in ipairs(Statements_patterns) do
             types, pattern = table.unpack(pattern_info)
@@ -27,16 +36,21 @@ function Main_interpreter(main_block_buffer)
             end
         end
 
+        if main_block_buffer:match(_Main_body_end_pattern_) and control_flag == 1 then
+            break
+        end
+
         Error("Erro em Main_interpreter: Sintaxe incorreta")
 
         ::parsing::
         -- ast = Parser_main_stmt({types, tokens})
 
         -- if not ast then
-            -- Error("Erro em Main_interpreter: Sintaxe incorreta")
+        --     Error("Erro em Main_interpreter: Sintaxe incorreta")
         -- end
 
-        -- Eval_controller(ast)
+        -- Eval_controller(main_env, ast)
+        control_flag = 1
 
         main_block_buffer = Pop_statement(main_block_buffer, pattern)
     end
@@ -45,7 +59,6 @@ end
 
 
 function Method_interpreter(env, method_buffer)
-
 end
 
 
@@ -56,6 +69,8 @@ end
 
 --- Testes
 local main_block_buffer = [==[
+begin
+    vars one, two, three
     className.method()
     i = 10
     varA = varB
@@ -103,14 +118,15 @@ local main_block_buffer = [==[
     end-if
 
     a = x * y
+end
 ]==]
 
 
 local function main_interpreter_test()
-    print("================================")
-    print("Main block buffer:")
-    print(main_block_buffer)
-    print("================================")
+    -- print("================================")
+    -- print("Main block buffer:")
+    -- print(main_block_buffer)
+    -- print("================================")
     Main_interpreter(main_block_buffer)
 end
 
