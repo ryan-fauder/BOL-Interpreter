@@ -86,4 +86,3 @@ function Read_method_block(class_block_content, index)
 
     return method_block_content, index
 end
-
