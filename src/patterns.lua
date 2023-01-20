@@ -2,12 +2,12 @@
 
 -- =================================================================================== --
 -- Basic patterns
-local _number_patt_ = "[%%d]+"
-local _name_patt_ = "[%%a]+"
-local _class_attr_patt_ = "[%%a]+%%.[%%a]+"
-local _method_call_patt_ = "[%%a]+%%.[%%a]+%%(.-%%)"
-local _obj_creation_patt_ = "new[%%s]+[%%a]+"
-local _bin_operation_patt_ = "[%%a]+[%%s]*[%%+%%-%%*%%/][%%s]*[%%a]+"
+local _number_patt_ = "([%%d]+)"
+local _name_patt_ = "([%%a]+)"
+local _class_attr_patt_ = "([%%a]+)%%.([%%a]+)"
+local _method_call_patt_ = "([%%a]+)%%.([%%a]+)%%((.-)%%)"
+local _obj_creation_patt_ = "new[%%s]+([%%a]+)"
+local _bin_operation_patt_ = "([%%a]+)[%%s]*([%%+%%-%%*%%/])[%%s]*([%%a]+)"
 
 -- =================================================================================== --
 
@@ -42,8 +42,8 @@ _Assignment_pattern_ = {
     attr_case = {}
 }
 
-local var_case_base = "[%s]*([%a]+)[%s]*=[%s]*({mask})[%s]*"
-local attr_case_base = "[%s]*([%a]+%.[%a]+)[%s]*=[%s]*({mask})[%s]*"
+local var_case_base = "[%s]*([%a]+)[%s]*=[%s]*{mask}[%s]*"
+local attr_case_base = "[%s]*([%a]+)%.([%a]+)[%s]*=[%s]*{mask}[%s]*"
 
 
 _Assignment_pattern_.var_case = {

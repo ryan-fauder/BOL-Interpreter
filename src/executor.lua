@@ -43,7 +43,7 @@ function Main_interpreter(main_block_buffer)
         Error("Erro em Main_interpreter: Sintaxe incorreta")
 
         ::parsing::
-        -- ast = Parser_main_stmt({types, tokens})
+        -- ast = Parser_main_stmt({types=types, tokens=tokens})
 
         -- if not ast then
         --     Error("Erro em Main_interpreter: Sintaxe incorreta")
