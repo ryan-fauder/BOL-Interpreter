@@ -3,6 +3,33 @@ require "utils"
 require "args"
 require "utils"
 
+function Parser_prototype(lexer)
+  if (lexer == nil) then
+    Error("Erro em Parser_prototype: Lexer vazio")
+    return {}
+  end
+
+  if (lexer.types.type ~= "prototype") then
+    Error("Erro em Parser_prototype: Lexer não é do tipo 'prototype'")
+    return {}
+  end
+
+  if (#lexer.tokens < 2) then
+    Error("Erro em Parser_prototype: Tokens não suficientes no Lexer")
+    return {}
+  end
+
+  local ast = {}
+  local lhs_name, rhs_name
+  lhs_name = Parser_arg_var(lexer.tokens[1])
+  rhs_name = Parser_arg_var(lexer.tokens[2])
+  ast.type = lexer.types.type
+  ast.lhs = lhs_name
+  ast.rhs = rhs_name
+
+  return ast
+end
+
 function Parser_return(lexer)
   if (lexer == nil) then
     Error("Erro em Parser_return: Lexer vazio")
@@ -151,6 +178,7 @@ end
 local function parser_method_call_test()
   local match, types, pattern
   local method_call_string = "variable.methodo(abedecadara, b, c)\n"
+  local method_call_string = "io.print(var)\n"
   types, pattern = table.unpack(Statements_patterns[1])
   match = { method_call_string:match("^" .. pattern .. "\n") }
   Print_table(match)
@@ -176,4 +204,17 @@ local function parser_return_test()
 
 end
 
-parser_return_test()
+local function parser_prototype_test()
+  local match, types, pattern
+  local prototype_string = "obj._prototype =   object\n"
+  types, pattern = table.unpack(Statements_patterns[3])
+  match = { prototype_string:match("^" .. pattern .. "\n") }
+  Print_table(match)
+  if #match >= 1 then
+    local ast = Parser_prototype({ types = types, tokens = match })
+    Print_table(ast)
+    Print_table(ast.rhs)
+    Print_table(ast.lhs)
+  end
+end
+parser_method_call_test()
