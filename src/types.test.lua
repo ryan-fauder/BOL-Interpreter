@@ -65,6 +65,6 @@ local function types_classvar_test()
   class_var2:print()
 end
 
---types_numbervar_test()
---types_classvar_test()
+-- types_numbervar_test()
+-- types_classvar_test()
 

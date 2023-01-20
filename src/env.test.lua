@@ -1,7 +1,50 @@
 require "utils"
 require "types"
 require "env"
-require "types.test"
+
+class_table = {
+  attr = {"name", "age"},
+  methods = {
+      ["setAge"] = {
+          params = {"age"},
+          vars = nil,
+          body = {"self.age = age"}
+      },
+      ["getAge"] = {
+          params = nil,
+          vars = nil,
+          body = {"io.print(self.age)", "return self.name"}
+      },
+      ["getName"] = {
+          params = nil,
+          vars = nil,
+          body = {"io.print(self.name)", "return self.name"}
+      }
+  },
+  _prototype = nil
+}
+
+class_table1 = {
+attr = {"account", "address"},
+methods = {
+  ["setAge"] = {
+      params = {"age"},
+      vars = nil,
+      body = {"self.age = age"}
+  },
+  ["getAge"] = {
+      params = nil,
+      vars = nil,
+      body = {"io.print(self.age)", "return self.name"}
+  },
+  ["getName"] = {
+      params = nil,
+      vars = nil,
+      body = {"io.print(self.name)", "return self.name"}
+  }
+},
+_prototype = nil
+}
 
 local function env_test()
   local number_var1 = NumberVar:new(nil, "VAR1", 12)
@@ -17,4 +60,4 @@ local function env_test()
   env:print()
 end
 
---env_test()
+env_test()
