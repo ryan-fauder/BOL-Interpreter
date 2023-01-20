@@ -36,9 +36,9 @@ function Parser_assign(lexer)
   ast.lhs.type = lexer.types.lhs
   
   if lexer.types.lhs == "var_case" then
-    ast.lhs.arg = Parser_arg_var(lexer.tokens[1])
+    ast.lhs.arg = Arg_var(lexer.tokens[1])
   elseif lexer.types.lhs == "attr_case" then
-    ast.lhs.arg = Parser_arg_attr(lexer.tokens[1], lexer.tokens[2])
+    ast.lhs.arg = Arg_attr(lexer.tokens[1], lexer.tokens[2])
     index = index + 1
   else
     Error("Erro em Parser_assign: Tipo de lhs não reconhecido")
@@ -48,32 +48,32 @@ function Parser_assign(lexer)
   ast.rhs.type = lexer.types.rhs
   if lexer.types.rhs == "number_arg" then
     local number = lexer.tokens[index + 1]
-    ast.rhs.arg = Parser_arg_number(number)
+    ast.rhs.arg = Arg_number(number)
 
   elseif lexer.types.rhs == "var_arg" then
     local var_name = lexer.tokens[index + 1]
-    ast.rhs.arg = Parser_arg_var(var_name)
+    ast.rhs.arg = Arg_var(var_name)
 
   elseif lexer.types.rhs == "attr_arg" then
     local var_name = lexer.tokens[index + 1]
     local attr_name = lexer.tokens[index + 2]
-    ast.rhs.arg = Parser_arg_attr(var_name, attr_name)
+    ast.rhs.arg = Arg_attr(var_name, attr_name)
 
   elseif lexer.types.rhs == "method_call_arg" then
     local var_name = lexer.tokens[index + 1]
     local method_name = lexer.tokens[index + 2]
-    local vars_list = Parser_var_list(lexer.tokens[index + 3])
-    ast.rhs.arg = Parser_arg_method_call(var_name, method_name, vars_list)
+    local vars_list = Arg_var_list(lexer.tokens[index + 3])
+    ast.rhs.arg = Arg_method_call(var_name, method_name, vars_list)
 
   elseif lexer.types.rhs == "obj_creation_arg" then
     local class_name = lexer.tokens[index + 1]
-    ast.rhs.arg = Parser_arg_obj_creation(class_name)
+    ast.rhs.arg = Arg_obj_creation(class_name)
 
   elseif lexer.types.rhs == "binary_operation_arg" then
     local var_name1 = lexer.tokens[index + 1]
     local var_name2 = lexer.tokens[index + 3]
     local operator = lexer.tokens[index + 2]
-    ast.rhs.arg = Parser_arg_binary_operation(var_name1, var_name2, operator)
+    ast.rhs.arg = Arg_binary_operation(var_name1, var_name2, operator)
 
   else
     Error("Erro em Parser_assign: Tipo de rhs não reconhecido")
@@ -92,7 +92,7 @@ function Parser_var(lexer)
 
   vars_string = lexer.tokens[1]
   ast.type = lexer.types.type
-  ast.var_list = Parser_var_list(vars_string)
+  ast.var_list = Arg_var_list(vars_string)
 
   return ast
 end
@@ -106,7 +106,7 @@ function Parser_vars_def(lexer)
 
   vars_string = lexer.tokens[1]
   ast.type = lexer.types.type
-  ast.var_list = Parser_var_list(vars_string)
+  ast.var_list = Arg_var_list(vars_string)
 
   return ast
 end
@@ -126,7 +126,7 @@ function Parser_meta_action(lexer)
   line_number = { line_number = lexer.tokens[4] }
 
   ast.type = lexer.types.type
-  ast.arg = Parser_arg_method_call(var_name, method_name, line_number)
+  ast.arg = Arg_method_call(var_name, method_name, line_number)
   ast.action_type = lexer.tokens[3] or {}
   ast.str_no_nl = lexer.tokens[5]
 
@@ -142,8 +142,8 @@ function Parser_prototype(lexer)
 
   local ast = {}
   local lhs_name, rhs_name
-  lhs_name = Parser_arg_var(lexer.tokens[1])
-  rhs_name = Parser_arg_var(lexer.tokens[2])
+  lhs_name = Arg_var(lexer.tokens[1])
+  rhs_name = Arg_var(lexer.tokens[2])
   ast.type = lexer.types.type
   ast.lhs = lhs_name
   ast.rhs = rhs_name
@@ -160,7 +160,7 @@ function Parser_return(lexer)
 
   local ast = {}
   ast.type = lexer.types.type
-  ast.arg = Parser_arg_var(lexer.tokens[1])
+  ast.arg = Arg_var(lexer.tokens[1])
 
   return ast
 end
@@ -176,9 +176,9 @@ function Parser_method_call(lexer)
   local var_name, method_name, vars_list
   var_name = lexer.tokens[1]
   method_name = lexer.tokens[2]
-  vars_list = Parser_var_list(lexer.tokens[3])
+  vars_list = Arg_var_list(lexer.tokens[3])
   ast.type = lexer.types.type
-  ast.arg = Parser_arg_method_call(var_name, method_name, vars_list)
+  ast.arg = Arg_method_call(var_name, method_name, vars_list)
 
   return ast
 end
@@ -193,8 +193,8 @@ function Parser_if(lexer)
   local if_block
   local ast = {}
   ast.type = lexer.types.type
-  ast.lhs = Parser_arg_var(lexer.tokens[1]) or {}
-  ast.rhs = Parser_arg_var(lexer.tokens[3]) or {}
+  ast.lhs = Arg_var(lexer.tokens[1]) or {}
+  ast.rhs = Arg_var(lexer.tokens[3]) or {}
   ast.cmp = lexer.tokens[2] or {}
   if_block = lexer.tokens[4] or {}
 
@@ -221,17 +221,11 @@ end
 function Parser_main_stmt(lexer)
   if lexer.types.type == "method_call" then
     return Parser_method_call(lexer)
-  end
-
-  if lexer.types.type == "meta_action" then
+  elseif lexer.types.type == "meta_action" then
     return Parser_meta_action(lexer)
-  end
-
-  if lexer.types.type == "if" then
+  elseif lexer.types.type == "if" then
     return Parser_if(lexer)
-  end
-
-  if lexer.types.type == "assignment" then
+  elseif lexer.types.type == "assignment" then
     return Parser_assign(lexer)
   end
 end
@@ -240,25 +234,15 @@ end
 function Parser_method_stmt(lexer)
   if lexer.types.type == "method_call" then
     return Parser_method_call(lexer)
-  end
-
-  if lexer.types.type == "meta_action" then
+  elseif lexer.types.type == "meta_action" then
     return Parser_meta_action(lexer)
-  end
-
-  if lexer.types.type == "if" then
+  elseif lexer.types.type == "if" then
     return Parser_if(lexer)
-  end
-
-  if lexer.types.type == "assignment" then
+  elseif lexer.types.type == "assignment" then
     return Parser_assign(lexer)
-  end
-
-  if lexer.types.type == "return" then
+  elseif lexer.types.type == "return" then
     return Parser_return(lexer)
-  end
-
-  if lexer.types.type == "prototype" then
+  elseif lexer.types.type == "prototype" then
     return Parser_prototype(lexer)
   end
 end
@@ -267,17 +251,11 @@ end
 function Parser_if_stmt(lexer)
   if lexer.types.type == "method_call" then
     return Parser_method_call(lexer)
-  end
-
-  if lexer.types.type == "meta_action" then
+  elseif lexer.types.type == "meta_action" then
     return Parser_meta_action(lexer)
-  end
-
-  if lexer.types.type == "assignment" then
+  elseif lexer.types.type == "assignment" then
     return Parser_assign(lexer)
-  end
-
-  if lexer.types.type == "return" then
+  elseif lexer.types.type == "return" then
     return Parser_return(lexer)
   end
 end

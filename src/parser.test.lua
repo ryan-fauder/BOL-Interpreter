@@ -42,13 +42,13 @@ local function parser_if_test()
   end
 end
 
-local function parser_var_list_test()
+local function Arg_var_list_test()
   local match
   local vars_string = "vars a, b, c\n"
   match = { vars_string:match("^" .. _Variables_def_pattern_ .. "\n") }
   Print_table(match)
   if #match >= 1 then
-    local ast = Parser_var_list(match[1])
+    local ast = Arg_var_list(match[1])
     Print_table(ast)
   end
 end
@@ -131,7 +131,7 @@ end
 
 local function parser_assign_test()
   local match
-  local vars_string = "var.att = obj.methodo(varC, varB, varN) \n"
+  local vars_string = "var.att = 10\n"
   local types, pattern, tokens
 
   for index, pattern_info in ipairs(Statements_patterns) do
@@ -148,7 +148,6 @@ local function parser_assign_test()
       Print_table(ast.rhs)
       print("\nARG-RHS")
       Print_table(ast.rhs.arg)
-      Print_table(ast.rhs.arg.params)
     end
   end
 
@@ -160,4 +159,4 @@ parser_assign_test()
 -- parser_method_call_test()
 -- parser_prototype_test()
 -- parser_return_test()
--- parser_var_list_test()
+-- Arg_var_list_test()

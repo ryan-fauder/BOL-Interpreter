@@ -1,12 +1,12 @@
-function Parser_var_list(vars_string)
+function Arg_var_list(vars_string)
   local var_list = {}
   if (type(vars_string) == nil) then
-    Error("Erro em Parser_var_list: Vars_string está vazio")
+    Error("Erro em Arg_var_list: Vars_string está vazio")
     return {}
   end
   
   if (type(vars_string) ~= "string") then
-    Error("Erro em Parser_var_list: Vars_string não é uma string")
+    Error("Erro em Arg_var_list: Vars_string não é uma string")
     return {}
   end
   
@@ -16,14 +16,14 @@ function Parser_var_list(vars_string)
   end
   
   if (vars_string == nil) then
-    Error("Erro em Parser_var_list: Vars inválido")
+    Error("Erro em Arg_var_list: Vars inválido")
     return {}
   end
 
   local var = string.match(vars_string, "^" .. _Variable_Last_def_pattern_ .. "$")
 
   if (var == nil) then
-    Error("Erro em Parser_var_list: Vars inválido")
+    Error("Erro em Arg_var_list: Vars inválido")
     return {}
   end
 
@@ -33,62 +33,62 @@ function Parser_var_list(vars_string)
 end
 
 
-function Parser_arg_method_call(var_name, method_name, vars_list)
+function Arg_method_call(var_name, method_name, vars_list)
   if (var_name == nil) then
-    Error("Erro em Parser_arg_method_call: Var_name não informado")
+    Error("Erro em Arg_method_call: Var_name não informado")
     return
   end
   if (method_name == nil) then
-    Error("Erro em Parser_arg_method_call: Method_name não informado")
+    Error("Erro em Arg_method_call: Method_name não informado")
     return
   end
   if (type(vars_list) ~= "table") then
-    Error("Erro em Parser_arg_method_call: Name não informado")
+    Error("Erro em Arg_method_call: Name não informado")
     return
   end
   return { var_name = var_name, method_name = method_name, params = vars_list }
 end
 
 
-function Parser_arg_var(name)
+function Arg_var(name)
   if name == nil then
-    Error("Erro em Parser_arg_var: Name não informado")
+    Error("Erro em Arg_var: Name não informado")
     return
   end
   return { var_name = name }
 end
 
 
-function Parser_arg_attr(var_name, attr_name)
+function Arg_attr(var_name, attr_name)
   if var_name == nil or attr_name == nil then
-    Error("Erro em Parser_arg_var: Parâmetro nulo informado")
+    Error("Erro em Arg_var: Parâmetro nulo informado")
     return
   end
   return { var_name = var_name, attr_name = attr_name }
 end
 
 
-function Parser_arg_obj_creation(class_name)
+function Arg_obj_creation(class_name)
   if class_name == nil then
-    Error("Erro em Parser_arg_obj_creation: Class_name não informado")
+    Error("Erro em Arg_obj_creation: Class_name não informado")
     return
   end
   return { class_name = class_name }
 end
 
 
-function Parser_arg_number(number)
+function Arg_number(number)
   if number == nil then
-    Error("Erro em Parser_arg_number: Number não informado")
+    Error("Erro em Arg_number: Number não informado")
     return
   end
   return { value = number }
 end
 
 
-function Parser_arg_binary_operation(first_var, second_var, operator)
+function Arg_binary_operation(first_var, second_var, operator)
   if first_var == nil or second_var == nil or operator == nil then
-    Error("Erro em Parser_arg_bin: Parâmetro nulo informado")
+    Error("Erro em Arg_bin: Parâmetro nulo informado")
     return
   end
 
