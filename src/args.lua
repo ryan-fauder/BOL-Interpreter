@@ -46,7 +46,7 @@ function Parser_arg_method_call(var_name, method_name, vars_list)
     Error("Erro em Parser_arg_method_call: Name não informado")
     return
   end
-  return { var_name = var_name, method_name = method_name, vars_list = vars_list }
+  return { var_name = var_name, method_name = method_name, params = vars_list }
 end
 
 function Parser_arg_var(name)
