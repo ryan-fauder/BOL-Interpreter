@@ -1,11 +1,13 @@
 require "describer"
 
 local test_method_table = {
-    "method showid()",
-      "begin",
-      "self.id = 10",
-      "io.print(self.id)",
-      "return 0",
+    "method calc(x)",
+    "vars y",
+    "begin",
+      "y = x + self.num",
+      "io.print(y)",
+      "y = new Base",
+      "return y",
     "end-method"
 }
 
