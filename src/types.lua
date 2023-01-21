@@ -80,12 +80,36 @@ function ClassVar:set_attr(name, value)
     self.attr[name] = value
 end
 
+--- Captura um atributo de um objeto
+---@param name string
+---@return table
+function ClassVar:get_attr(name)
+    local value = self.attr[name]
+    if(value == nil and self._prototype ~= nil) then
+        value = self._prototype:get_attr(name)
+    end
+    return value
+end
+
+--- Captura um atributo de um objeto
+---@param name string
+---@return table
+function ClassVar:get_method(name)
+    local method = self.methods[name]
+    if(method == nil and self._prototype ~= nil) then
+        method = self._prototype:get_method(name)
+    end
+    return method
+end
+
 --- Imprime um objeto de ClassVar
 function ClassVar:print()
     print("Name: " .. self.name .. " = {\n Type: " .. self.type .. ",\n Attr: {")
     Print_table(self.attr)
     print(" }\n Methods: {")
     Print_table(self.methods)
+    print(" }\n Prototype: {")
+    Print_table(self._prototype or {})
     print(" }")
     print("}\n")
 end
