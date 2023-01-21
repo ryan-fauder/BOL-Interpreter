@@ -228,6 +228,8 @@ function Parser_main_stmt(lexer)
     return Parser_if(lexer)
   elseif lexer.types.type == "assignment" then
     return Parser_assign(lexer)
+  else
+    Error("Erro em Parser_main_stmt: Declaração com sintaxe incorreta")
   end
 end
 
@@ -245,6 +247,8 @@ function Parser_method_stmt(lexer)
     return Parser_return(lexer)
   elseif lexer.types.type == "prototype" then
     return Parser_prototype(lexer)
+  else
+    Error("Erro em Parser_method_stmt: Declaração com sintaxe incorreta")
   end
 end
 
@@ -258,5 +262,7 @@ function Parser_if_stmt(lexer)
     return Parser_assign(lexer)
   elseif lexer.types.type == "return" then
     return Parser_return(lexer)
+  else
+    Error("Erro em Parser_if_stmt: Declaração com sintaxe incorreta")
   end
 end

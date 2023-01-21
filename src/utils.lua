@@ -5,6 +5,14 @@ function Error(message)
     os.exit()
 end
 
+
+function Check_type(function_name, variable, variable_name, type_name)
+    if type(variable) ~= type_name then
+        Error("Erro em " .. function_name  .. ": Tipo de '" .. variable_name .. "' inválido")
+    end
+end
+
+
 --- Imprime cada chave e o valor correspondente de uma tabela
 ---@param table table
 function Print_table(table)
@@ -26,6 +34,7 @@ function Print_table(table)
         end
     end
 end
+
 
 ---Remove os espaços no início e no final da string
 ---Remove os espaços extras entre palavras

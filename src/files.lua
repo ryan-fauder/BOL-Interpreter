@@ -14,7 +14,7 @@ function Get_file(file_name)
         Error("Erro em Get_file: Arquivo inexistente")
     end
 
-    return file
+    return file or {}
 end
 
 

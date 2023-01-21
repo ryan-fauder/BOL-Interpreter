@@ -2,14 +2,13 @@
 require "utils"
 require "patterns"
 require "env"
+require "args"
 
 
 --- Executor do corpo principal do programa
 ---@param main_block_buffer string
 function Main_interpreter(main_block_buffer)
-    if type(main_block_buffer) ~= "string" then
-        Error("Erro em Main_interpreter: Tipo de main_block_buffer diferente de string")
-    end
+    Check_type("Main_interpreter", main_block_buffer, "main_block_buffer", "string")
 
     local main_env = Env:new()
     local pattern, tokens, types, var_list_string, var_list, ast
@@ -45,10 +44,6 @@ function Main_interpreter(main_block_buffer)
         ::parsing::
         -- ast = Parser_main_stmt({types=types, tokens=tokens})
 
-        -- if not ast then
-        --     Error("Erro em Main_interpreter: Sintaxe incorreta")
-        -- end
-
         -- Eval_controller(main_env, ast)
         control_flag = 1
 
@@ -58,12 +53,66 @@ function Main_interpreter(main_block_buffer)
 end
 
 
-function Method_interpreter(env, method_buffer)
+function Method_interpreter(method_env, method_buffer)
+    Check_type("Method_interpreter", method_env, "method_env", "table")
+    Check_type("Method_interpreter", method_buffer, "method_buffer", "string")
+
+    local pattern, tokens, types, ast, eval_return
+
+    while true do
+        for index, pattern_info in ipairs(Statements_patterns) do
+            types, pattern = table.unpack(pattern_info)
+            tokens = {method_buffer:match("^" .. pattern .. "\n")}
+            if #tokens >= 1 then
+                goto parsing
+            end
+        end
+
+        Error("Erro em Method_interpreter: Sintaxe incorreta")
+
+        ::parsing::
+        ast = Parser_method_stmt({types=types, tokens=tokens})
+
+        eval_return = Eval_controller(method_env, ast)
+
+        if eval_return then
+            return eval_return
+        end
+
+        method_buffer = Pop_statement(method_buffer, pattern)
+    end
 
 end
 
 
-function If_interpreter(env, if_buffer)
+function If_interpreter(if_env, if_buffer)
+    Check_type("If_interpreter", if_env, "if_env", "table")
+    Check_type("If_interpreter", if_buffer, "if_buffer", "string")
+
+    local pattern, tokens, types, ast, eval_return
+
+    while true do
+        for index, pattern_info in ipairs(Statements_patterns) do
+            types, pattern = table.unpack(pattern_info)
+            tokens = {if_buffer:match("^" .. pattern .. "\n")}
+            if #tokens >= 1 then
+                goto parsing
+            end
+        end
+
+        Error("Erro em Method_interpreter: Sintaxe incorreta")
+
+        ::parsing::
+        ast = Parser_if_stmt({types=types, tokens=tokens})
+
+        eval_return = Eval_controller(method_env, ast)
+
+        if eval_return then
+            return eval_return
+        end
+
+        if_buffer = Pop_statement(if_buffer, pattern)
+    end
 
 end
 
