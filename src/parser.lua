@@ -176,10 +176,11 @@ function Parser_method_call(lexer)
   local var_name, method_name, vars_list
   var_name = lexer.tokens[1]
   method_name = lexer.tokens[2]
+  -- Parser_vars_def({types={type="vars_def"}, tokens=lexer.tokens[3]})
   vars_list = Arg_var_list(lexer.tokens[3])
   ast.type = lexer.types.type
   ast.arg = Arg_method_call(var_name, method_name, vars_list)
-
+  
   return ast
 end
 

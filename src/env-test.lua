@@ -46,7 +46,7 @@ methods = {
 _prototype = nil
 }
 
-local function env_test()
+local function Test_env()
   local number_var1 = NumberVar:new(nil, "VAR1", 12)
   local number_var2 = NumberVar:new(nil, "VAR2", 124)
   
@@ -60,4 +60,4 @@ local function env_test()
   env:print()
 end
 
-env_test()
+Test_env()

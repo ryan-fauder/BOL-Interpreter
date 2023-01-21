@@ -23,7 +23,7 @@ local if_body = [==[
   end-if
 ]==]
 
-local function parser_if_test()
+local function Test_parser_if()
   local types, current_pattern, match
   types, current_pattern = table.unpack(Statements_patterns[5])
   print("IF TEST")
@@ -42,7 +42,7 @@ local function parser_if_test()
   end
 end
 
-local function Arg_var_list_test()
+local function Test_arg_var_list()
   local match
   local vars_string = "vars a, b, c\n"
   match = { vars_string:match("^" .. _Variables_def_pattern_ .. "\n") }
@@ -53,7 +53,7 @@ local function Arg_var_list_test()
   end
 end
 
-local function parser_method_call_test()
+local function Test_parser_method_call()
   local match, types, pattern
   local method_call_string = "variable.methodo(abedecadara, b, c)\n"
   local method_call_string = "io.print(var)\n"
@@ -68,7 +68,7 @@ local function parser_method_call_test()
   end
 end
 
-local function parser_return_test()
+local function Test_parser_return()
   local match, types, pattern
   local method_call_string = "return x\n"
   types, pattern = table.unpack(Statements_patterns[4])
@@ -82,7 +82,7 @@ local function parser_return_test()
 
 end
 
-local function parser_prototype_test()
+local function Test_parser_prototype()
   local match, types, pattern
   local prototype_string = "obj._prototype =   object\n"
   types, pattern = table.unpack(Statements_patterns[3])
@@ -96,7 +96,7 @@ local function parser_prototype_test()
   end
 end
 
-local function parser_meta_action_test()
+local function Test_parser_meta_action()
   local match, types, pattern
   local meta_action_string = "variable.methodo._delete(1):\n"
   types, pattern = table.unpack(Statements_patterns[2])
@@ -117,19 +117,20 @@ local function parser_meta_action_test()
   end
 end
 
-local function parser_vars_def_test()
-  local match
+function Test_parser_vars_def()
+  local match, ast
   local vars_string = "vars a, b, c\n"
   match = { vars_string:match("^" .. _Variables_def_pattern_ .. "\n") }
   Print_table(match)
   if #match >= 1 then
-    local ast = Parser_vars_def({types={type="vars_def"}, tokens=match})
+    ast = Parser_vars_def({types={type="vars_def"}, tokens=match})
     Print_table(ast)
     Print_table(ast.var_list)
   end
+  return ast
 end
 
-local function parser_assign_test()
+local function Test_parser_assign()
   local match
   local vars_string = "var.att = 10\n"
   local types, pattern, tokens
@@ -153,10 +154,10 @@ local function parser_assign_test()
 
 end
 
-parser_assign_test()
--- parser_vars_def_test()
--- parser_if_test()
--- parser_method_call_test()
--- parser_prototype_test()
--- parser_return_test()
--- Arg_var_list_test()
+-- Test_parser_assign()
+-- Test_parser_vars_def()
+-- Test_parser_if()
+-- Test_parser_method_call()
+-- Test_parser_prototype()
+-- Test_parser_return()
+-- Test_arg_var_list()

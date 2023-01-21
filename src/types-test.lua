@@ -45,7 +45,7 @@ methods = {
 _prototype = nil
 }
 
-local function types_numbervar_test()
+local function Test_types_numbervar()
   local number_var1 = NumberVar:new(nil, "VAR1", 12)
   local number_var2 = NumberVar:new(nil, "VAR2")
   number_var1:print()
@@ -53,7 +53,7 @@ local function types_numbervar_test()
 end
 
 
-local function types_classvar_test()
+local function Test_types_classvar()
   local class_var1 = ClassVar:new(nil, "OBJ1", class_table, class_table.methods)
   local class_var2 = ClassVar:new(nil, "OBJ2", class_table1, class_table1.methods)
   class_var2:set_attr("end1", {
@@ -65,6 +65,6 @@ local function types_classvar_test()
   class_var2:print()
 end
 
--- types_numbervar_test()
--- types_classvar_test()
+-- Test_types_numbervar()
+-- Test_types_classvar()
 

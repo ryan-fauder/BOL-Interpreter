@@ -4,7 +4,7 @@ require "patterns"
 require "reader"
 
 
-local function read_class_test()
+local function Test_read_class()
     -- lua reader.lua program.bol
     require "files"
     local file = Get_file(arg[1])
@@ -23,7 +23,7 @@ local function read_class_test()
 end
 
 
-local function read_main_test()
+local function Test_read_main()
     -- lua reader.lua program.bol
     require "files"
     local file = Get_file(arg[1])
@@ -42,7 +42,7 @@ local function read_main_test()
 end
 
 
-local function read_method_test()
+local function Test_read_method()
     local method_block_content, next_index
     local class_block_content = {
         "class MyClass",
@@ -80,6 +80,6 @@ local function read_method_test()
 end
 
 
-read_class_test()
-read_main_test()
-read_method_test()
+Test_read_class()
+Test_read_main()
+Test_read_method()
