@@ -33,7 +33,7 @@ function Arg_var_list(vars_string)
 end
 
 
-function Arg_method_call(var_name, method_name, vars_list)
+function Arg_method_call(var_name, method_name, params)
   if (var_name == nil) then
     Error("Erro em Arg_method_call: Var_name não informado")
     return
@@ -42,11 +42,11 @@ function Arg_method_call(var_name, method_name, vars_list)
     Error("Erro em Arg_method_call: Method_name não informado")
     return
   end
-  if (type(vars_list) ~= "table") then
+  if (type(params) ~= "table") then
     Error("Erro em Arg_method_call: Name não informado")
     return
   end
-  return { var_name = var_name, method_name = method_name, params = vars_list }
+  return { var_name = var_name, method_name = method_name, params = params }
 end
 
 

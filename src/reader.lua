@@ -9,7 +9,7 @@ function Read_line(file)
 end
 
 
---- Lê a linhas do arquivo até encontrar o padrão
+--- Lê as linhas do arquivo até encontrar o padrão
 --- especificado, armazena as linhas em uma tabela 
 --- e retorna a tabela
 ---@param file file*

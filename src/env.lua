@@ -24,7 +24,7 @@ function Env:setVar(name, var)
 end
 
 
---- Define uma variável no ambiente
+--- comment
 ---@param name string
 function Env:getVar(name)
     if name == nil then
@@ -32,14 +32,14 @@ function Env:getVar(name)
         return
     end
 
-    return self.vars[name]
+    return self.vars[name] or Error("Erro em Env_getVar: '" .. name .. "' não definida")
 end
 
 
 --- Imprime um objeto Env
 function Env:print()
     print("~ Env - vars: ~")
-    for name,var in pairs(self.vars) do
+    for name, var in pairs(self.vars) do
         print("=>> "..name..":")
         var:print()
     end

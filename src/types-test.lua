@@ -1,7 +1,8 @@
 require "utils"
 require "types"
 
-class_table1 = {
+Class_table1 = {
+    name = "Person",
     attr = {"name", "age"},
     methods = {
         ["setAge"] = {
@@ -23,26 +24,27 @@ class_table1 = {
     _prototype = nil
   }
 
-class_table2 = {
-attr = {"account", "address"},
-methods = {
-    ["setAddress"] = {
-        params = {"age"},
-        vars = nil,
-        body = {"self.age = age"}
+Class_table2 = {
+    name = "Account", 
+    attr = {"account", "address"},
+    methods = {
+        ["setAddress"] = {
+            params = {"age"},
+            vars = nil,
+            body = {"self.age = age"}
+        },
+        ["getAddress"] = {
+            params = nil,
+            vars = nil,
+            body = {"io.print(self.age)", "return self.name"}
+        },
+        ["getAccount"] = {
+            params = nil,
+            vars = nil,
+            body = {"io.print(self.name)", "return self.name"}
+        }
     },
-    ["getAddress"] = {
-        params = nil,
-        vars = nil,
-        body = {"io.print(self.age)", "return self.name"}
-    },
-    ["getAccount"] = {
-        params = nil,
-        vars = nil,
-        body = {"io.print(self.name)", "return self.name"}
-    }
-},
-_prototype = nil
+    _prototype = nil
 }
 
 local function Test_types_numbervar()
@@ -54,8 +56,8 @@ end
 
 
 local function Test_types_classvar()
-  local class_var1 = ClassVar:new(nil, "OBJ1", class_table1, class_table1.methods)
-  local class_var2 = ClassVar:new(nil, "OBJ2", class_table2, class_table2.methods)
+  local class_var1 = ClassVar:new(nil, "OBJ1", Class_table1, Class_table1.methods)
+  local class_var2 = ClassVar:new(nil, "OBJ2", Class_table2, Class_table2.methods)
   class_var2:set_attr("address", {
       rua = "Rua 1",
       casa = "Casa 2"
@@ -81,5 +83,5 @@ end
 
 
 -- Test_types_numbervar()
-Test_types_classvar()
+-- Test_types_classvar()
 

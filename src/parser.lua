@@ -123,7 +123,7 @@ function Parser_meta_action(lexer)
 
   var_name = lexer.tokens[1]
   method_name = lexer.tokens[2]
-  line_number = { line_number = lexer.tokens[4] }
+  line_number = { line_number = tonumber(lexer.tokens[4]) }
 
   ast.type = lexer.types.type
   ast.arg = Arg_method_call(var_name, method_name, line_number)

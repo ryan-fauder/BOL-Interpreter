@@ -1,7 +1,7 @@
--- Regex patterns module
+--- Regex patterns module
 
 -- =================================================================================== --
--- Basic patterns
+--- Basic patterns
 local _number_patt_ = "([%%d]+)"
 local _name_patt_ = "([%%a]+)"
 local _class_attr_patt_ = "([%%a]+)%%.([%%a]+)"
@@ -31,10 +31,12 @@ _Variables_def_pattern_ = "[%s]*vars[%s]+(.-)[%s]*"
 _Variable_def_pattern_ = "[%s]*([%a]+),[%s]*"
 _Variable_Last_def_pattern_ = "[%s]*[%a]+[%s]*"
 
+
 -- Empty line
 _Empty_line_pattern_ = "^[%s]*$"
 
 -- =================================================================================== --
+--- Statements patterns
 
 -- Assignments
 _Assignment_pattern_ = {
