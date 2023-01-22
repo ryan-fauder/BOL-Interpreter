@@ -8,12 +8,14 @@ require "types-test"
 
 local obj1 = ClassVar:new(nil, "person", Class_table1, Class_table1.methods)
 local obj2 = ClassVar:new(nil, "account", Class_table2, Class_table2.methods)
-local number_var1 = NumberVar:new(nil, "number", 124)
+local number_var1 = NumberVar:new(nil, "first", 12)
+local number_var2 = NumberVar:new(nil, "second", 12)
 
 local env = Env:new()
 env:setVar(obj1.name, obj1)
 env:setVar(obj2.name, obj2)
 env:setVar(number_var1.name, number_var1)
+env:setVar(number_var2.name, number_var2)
 
 
 function Test_eval_vars_def()
@@ -50,6 +52,36 @@ function Test_eval_meta_action()
 end
 
 
+function Test_eval_binary_operation()
+  local ast = Test_parser_assign()
+  Print_table(ast.rhs)
+  ast.rhs.arg.var_name = "VAR"
+  local result = Eval_binary_operation(env, ast.rhs)
+  Print_table(result)
+end
+
+
+function Test_eval_obj_creation()
+
+end
+
+
+function Test_eval_method_call()
+  local ast = Test_parser_method_call()
+  Eval_method_call(env, ast)
+end
+
+
+function Test_eval_if()
+  local ast = Test_parser_if()
+  Eval_if(env, ast)
+end
+
+
+-- Test_eval_method_call()
+-- Test_eval_assign()
+-- Test_eval_if()
+-- Test_eval_binary_operation()
 -- Test_eval_vars_def()
 -- Test_eval_return()
-Test_eval_meta_action()
+--Test_eval_meta_action()

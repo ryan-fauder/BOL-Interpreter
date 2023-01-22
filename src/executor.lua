@@ -2,6 +2,8 @@
 require "utils"
 require "patterns"
 require "env"
+require "eval"
+require "parser"
 require "args"
 
 
@@ -19,8 +21,8 @@ function Main_interpreter(main_block_buffer)
     var_list_string = main_block_buffer:match("^" .. _Variables_def_pattern_ .. "\n")
 
     if var_list_string then
-        -- var_list = Parser_vars_def({types="vars_def", tokens={var_list_string}})
-        -- Eval_vars_def(main_env, var_list)
+        var_list = Parser_vars_def({types={type="vars_def"}, tokens={var_list_string}})
+        Eval_vars_def(main_env, var_list)
         main_block_buffer = Pop_statement(main_block_buffer, "^" .. _Variables_def_pattern_ .. "\n")
         control_flag = 1
     end
@@ -29,7 +31,7 @@ function Main_interpreter(main_block_buffer)
 
         for index, pattern_info in ipairs(Statements_patterns) do
             types, pattern = table.unpack(pattern_info)
-            tokens = {main_block_buffer:match("^" .. pattern .. "\n")}
+            tokens = { main_block_buffer:match("^" .. pattern .. "\n") }
             if #tokens >= 1 then
                 goto parsing
             end
@@ -42,9 +44,9 @@ function Main_interpreter(main_block_buffer)
         Error("Erro em Main_interpreter: Sintaxe incorreta")
 
         ::parsing::
-        -- ast = Parser_main_stmt({types=types, tokens=tokens})
+        ast = Parser_main_stmt({types=types, tokens=tokens})
 
-        -- Eval_controller(main_env, ast)
+        Eval_controller(main_env, ast)
         control_flag = 1
 
         main_block_buffer = Pop_statement(main_block_buffer, pattern)
@@ -62,7 +64,7 @@ function Method_interpreter(method_env, method_buffer)
     while true do
         for index, pattern_info in ipairs(Statements_patterns) do
             types, pattern = table.unpack(pattern_info)
-            tokens = {method_buffer:match("^" .. pattern .. "\n")}
+            tokens = { method_buffer:match("^" .. pattern .. "\n") }
             if #tokens >= 1 then
                 goto parsing
             end
@@ -94,18 +96,18 @@ function If_interpreter(if_env, if_buffer)
     while true do
         for index, pattern_info in ipairs(Statements_patterns) do
             types, pattern = table.unpack(pattern_info)
-            tokens = {if_buffer:match("^" .. pattern .. "\n")}
+            tokens = { if_buffer:match("^" .. pattern .. "\n") }
             if #tokens >= 1 then
                 goto parsing
             end
         end
 
-        Error("Erro em Method_interpreter: Sintaxe incorreta")
+        Error("Erro em If_interpreter: Sintaxe incorreta")
 
         ::parsing::
         ast = Parser_if_stmt({types=types, tokens=tokens})
 
-        eval_return = Eval_controller(method_env, ast)
+        eval_return = Eval_controller(if_env, ast)
 
         if eval_return then
             return eval_return
@@ -115,70 +117,3 @@ function If_interpreter(if_env, if_buffer)
     end
 
 end
-
-
---- Testes
-local main_block_buffer = [==[
-begin
-    vars one, two, three
-    className.method()
-    i = 10
-    varA = varB
-    a = b.c
-    obj = new className
-    temp = cls.met()
-
-    cls.attr = 10
-    cls.attr = varB
-    cls.attr = b.c
-    cls.attr = new className
-    cls.attr = cls.met() 
-
-    className.attribute = tempOne / tempTwo
-    obj.met._replace(5): x = Class.Met()
-
-    if a eq b then
-        x = y
-        className.method()
-    else
-        y = a + b  
-        var._prototype = obj
-    end-if
-
-    if a eq b then
-        x = y
-        className.method()
-        y = a + b  
-        var._prototype = obj
-    end-if
-
-    if a eq b then
-        x = y
-        className.method()
-    else
-        y = a + b  
-        var._prototype = obj
-    end-if
-
-    if a eq b then
-        x = y
-        className.method()
-        y = a + b  
-        var._prototype = obj
-    end-if
-
-    a = x * y
-end
-]==]
-
-
-local function main_interpreter_test()
-    -- print("================================")
-    -- print("Main block buffer:")
-    -- print(main_block_buffer)
-    -- print("================================")
-    Main_interpreter(main_block_buffer)
-end
-
-
-main_interpreter_test()

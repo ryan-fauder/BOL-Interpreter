@@ -78,11 +78,15 @@ end
 ---@return integer
 function Read_method_block(class_block_content, index)
     local method_block_content = {}
+    local itr_limit = #class_block_content + 1
 
     repeat
         table.insert(method_block_content, class_block_content[index])
+        if index == itr_limit then
+            Error("Erro em Read_method_block: 'end-method' não encontrado")
+        end
         index = index + 1
-    until class_block_content[index - 1]:match(_Method_end_pattern_)
+    until class_block_content[index - 1]:match("^".._Method_end_pattern_.."$")
 
     return method_block_content, index
 end

@@ -5,7 +5,7 @@ require "utils"
 require "parser"
 
 local if_else_body = [==[
-  if a eq b then
+  if first eq second then
       x = y
       className.method()
   else
@@ -15,7 +15,7 @@ local if_else_body = [==[
 ]==]
 
 local if_body = [==[
-  if a eq b then
+  if first eq second then
       x = y
       className.method()
       y = a + b  
@@ -70,8 +70,7 @@ function Test_parser_method_call()
   print("======= Test_parser_method_call =======")
   local match, types, pattern, ast
 
-  local method_call_string = "variable.methodo(abedecadara, b, c)\n"
-  local method_call_string = "io.print(var)\n"
+  local method_call_string = "person.setAge(first)\n"
 
   types, pattern = table.unpack(Statements_patterns[1])
   match = { method_call_string:match("^" .. pattern .. "\n") }
@@ -171,7 +170,7 @@ function Test_parser_assign()
   local match
   local types, pattern, tokens, ast
   
-  local vars_string = "var.att = 10\n"
+  local vars_string = "var = first * second\n"
 
   for index, pattern_info in ipairs(Statements_patterns) do
     types, pattern = table.unpack(pattern_info)
@@ -179,6 +178,7 @@ function Test_parser_assign()
     if #tokens >= 1 then
       ast = Parser_assign({types=types, tokens=tokens})
       Print_table(ast)
+      break
     else
       print("NO MATCH")
     end

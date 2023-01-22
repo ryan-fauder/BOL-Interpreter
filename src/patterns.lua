@@ -2,7 +2,7 @@
 
 -- =================================================================================== --
 --- Basic patterns
-local _number_patt_ = "([%%d]+)"
+local _number_patt_ = "([+-]?[%%d]+)"
 local _name_patt_ = "([%%a]+)"
 local _class_attr_patt_ = "([%%a]+)%%.([%%a]+)"
 local _method_call_patt_ = "([%%a]+)%%.([%%a]+)%%((.-)%%)"

@@ -5,6 +5,7 @@ require "reader"
 
 
 function Test_read_class()
+    print("========== Test_read_class ==========")
     -- lua reader.lua program.bol
     require "files"
     local file = Get_file(arg[1])
@@ -24,6 +25,7 @@ end
 
 
 function Test_read_main()
+    print("========== Test_read_main ==========")
     -- lua reader.lua program.bol
     require "files"
     local file = Get_file(arg[1])
@@ -43,6 +45,8 @@ end
 
 
 function Test_read_method()
+    print("========== Test_read_method ==========\n")
+
     local method_block_content, next_index
     local class_block_content = {
         "class MyClass",
@@ -80,6 +84,6 @@ function Test_read_method()
 end
 
 
-Test_read_class()
-Test_read_main()
+-- Test_read_class()
+-- Test_read_main()
 Test_read_method()

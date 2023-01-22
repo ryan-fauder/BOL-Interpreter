@@ -4,7 +4,7 @@ require "utils"
 NumberVar = {}
 
 --- Cria um objeto NumberVar
----@param object table
+---@param object table|nil
 ---@param name string
 ---@param value number
 function NumberVar:new(object, name, value)
@@ -30,6 +30,13 @@ function NumberVar:new(object, name, value)
     return object
 end
 
+
+function NumberVar:copy(name)
+    local clone = NumberVar:new(nil, name, self.value)
+    return clone
+end
+
+
 ---@description Imprime um NumberVar
 function NumberVar:print()
     print("Name: " .. self.name .. " = { Type: " .. self.type .. ", Value: " .. self.value .. "}")
@@ -38,7 +45,7 @@ end
 ClassVar = {}
 
 --- Cria um objeto ClassVar
----@param object table
+---@param object table|nil
 ---@param name string
 ---@param class_table table
 ---@param methods_table table
@@ -101,6 +108,12 @@ function ClassVar:get_method(name)
     end
     return method
 end
+
+
+function ClassVar:copy()
+    return self
+end
+
 
 --- Imprime um objeto de ClassVar
 function ClassVar:print()

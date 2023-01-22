@@ -50,12 +50,12 @@ function Arg_method_call(var_name, method_name, params)
 end
 
 
-function Arg_var(name)
-  if name == nil then
+function Arg_var(var_name)
+  if var_name == nil then
     Error("Erro em Arg_var: Name não informado")
     return
   end
-  return { var_name = name }
+  return { var_name = var_name }
 end
 
 
@@ -77,12 +77,13 @@ function Arg_obj_creation(class_name)
 end
 
 
-function Arg_number(number)
-  if number == nil then
-    Error("Erro em Arg_number: Number não informado")
+function Arg_number(value)
+  if type(value) ~= "string" then
+    Error("Erro em Arg_number: Number não é uma string")
     return
   end
-  return { value = number }
+  
+  return { value = tonumber(value) }
 end
 
 
