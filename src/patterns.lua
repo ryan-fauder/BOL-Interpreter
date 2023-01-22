@@ -23,6 +23,7 @@ _Main_body_end_pattern_ = "[%s]*end[%s]*"
 
 -- Method header
 _Method_header_pattern_ = "[%s]*method[%s]+[%a]+%(.-%)[%s]*"
+_Method_body_begin_pattern_ = "[%s]*begin[%s]*"
 _Method_end_pattern_ = "[%s]*end%-method[%s]*"
 
 
@@ -34,6 +35,9 @@ _Variable_Last_def_pattern_ = "[%s]*[%a]+[%s]*"
 
 -- Empty line
 _Empty_line_pattern_ = "^[%s]*$"
+
+
+
 
 -- =================================================================================== --
 --- Statements patterns
