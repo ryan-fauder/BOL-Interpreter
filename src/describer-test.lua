@@ -3,9 +3,17 @@ require "utils"
 
 local test_class_table = {
   "class Pessoa",
-    "vars num",
+    "vars num, banana",
     "method calc(x)",
     "vars y, z",
+    "begin",
+      "y = x + self.num",
+      "io.print(y)",
+      "y = new Base",
+      "return y",
+    "end-method",
+    "method mult(x, y)",
+    "vars z",
     "begin",
       "y = x + self.num",
       "io.print(y)",
@@ -22,7 +30,8 @@ local test_method_table = {
       "io.print(y)",
       "y = new Base",
       "return y",
-    "end-method"
+    "end-method",
+    ""
 }
 
 local function test_set_class()
@@ -30,7 +39,15 @@ local function test_set_class()
 
   local described_class_table = describer:set_class(test_class_table)
 
-  Print_table(described_class_table.methods)
+  print("\nDescricao da Classe")
+  print(described_class_table.name)
+  print("Attr:")
+  Print_table(described_class_table.attr)
+  print("------------")
+  for key, value in pairs(described_class_table.methods) do
+    Print_table(value)
+    print("------------")
+  end
 
 end
 

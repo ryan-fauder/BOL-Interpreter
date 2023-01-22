@@ -1,5 +1,6 @@
 require "patterns"
 require "args"
+require "reader"
 
 require "utils"
 
@@ -15,21 +16,52 @@ end
 
 
 function Describer:set_class(class_block)
+
   local described_class_table = {
+    name = nil,
     attr = {},
     methods = {},
     _prototype = nil
   }
 
-  local method_block
   local index = 1
+
+  local name = class_block[index]:match(_Class_def_begin_pattern_)
+
+  if not name then
+    Error("Erro em Describer:set_class: esperado nome de classe na linha:\n" .. class_block[index])
+  end
+
+  described_class_table.name = name
+
+  index = index + 1 -- avança para a linha de atributos da classe ou começo de método
+
+  local attrs_keyword, attrs = class_block[index]:match("^[%s]*([%l]+)[%s]+(.-)[%s]*$")
+  print(attrs_keyword, attrs)
+  if attrs_keyword ~= nil and attrs_keyword == "vars" then
+    described_class_table.attr = Arg_var_list(attrs)
+
+    index = index + 1 -- avança para a linha do method
+
+  elseif attrs_keyword == nil then
+    Error("Erro em Describer:set_class: Esperado uma declaração de atributos ou início de método na linha:\n" .. class_block[index])
+  end
+
+  -- Seção de leitura dos métodos da classe
+  local method_block
+  local class_block_size = #class_block
+
   local match = class_block[index]:match("[%s]*method[%s]+([%a]+)%(.-%)[%s]*")
 
   while match do
     method_block, index = Read_method_block(class_block, index)
 
-    table.insert(described_class_table.methods, match, self.set_method(method_block))
-    
+    described_class_table.methods[match] = Describer:set_method(method_block)
+
+    if index > class_block_size then
+      break
+    end
+
     match = class_block[index]:match("[%s]*method[%s]+([%a]+)%(.-%)[%s]*")
   end
 
@@ -53,7 +85,7 @@ function Describer:set_method(method_block)
 
   local i = 1
 
-  local name, params = method_block[i]:match("^[%s]*method[%s]+([%a]+)%((.-)%)[%s]*$") -- verificar se é necessário mudar essa regex em "patterns", incluído '^' e '$'
+  local name, params = method_block[i]:match("^[%s]*method[%s]+([%a]+)%((.-)%)[%s]*$")
 
   described_method_table.name = name
 
@@ -61,7 +93,7 @@ function Describer:set_method(method_block)
 
   i = i + 1 -- avança para a linha de vars ou begin, caso não tenha vars
 
-  local vars_keyword, vars = method_block[i]:match("^[%s]*([%l]+)[%s]+(.-)[%s]*$") -- verificar se é necessário mudar essa regex em "patterns", incluído '^' e '$'
+  local vars_keyword, vars = method_block[i]:match("^[%s]*([%l]+)[%s]+(.-)[%s]*$")
 
   if vars_keyword ~= nil and vars_keyword < "vars" or vars_keyword > "vars" then
     Error("Erro em Describer:set_method: Esperado 'vars', lido " .. "'" .. vars_keyword .. "'")
