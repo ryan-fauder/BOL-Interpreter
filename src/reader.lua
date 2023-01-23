@@ -36,7 +36,7 @@ end
 
 
 --- Função de leitura de class_block
---- Lê a linhas do arquivo até "end-class", armazena as 
+--- Lê as linhas do arquivo até "end-class", armazena as 
 --- linhas em uma tabela e retorna a tabela
 ---@param file file*
 ---@param line string
@@ -53,7 +53,7 @@ end
 
 
 --- Função de leitura de main_block
---- Lê a linhas do arquivo até "end", armazena as 
+--- Lê as linhas do arquivo até "end", armazena as 
 --- linhas em uma tabela e retorna a tabela
 ---@param file file*
 ---@param line string
