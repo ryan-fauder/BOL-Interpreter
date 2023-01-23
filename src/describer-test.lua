@@ -37,14 +37,14 @@ local test_method_table = {
 local function test_set_class()
   local describer = Get_describer()
 
-  local described_class_table = describer:set_class(test_class_table)
+  describer:insert_class(test_class_table)
 
   print("\nDescricao da Classe")
-  print(described_class_table.name)
+  print(describer.classes["Pessoa"].name)
   print("Attr:")
-  Print_table(described_class_table.attr)
+  Print_table(describer.classes["Pessoa"].attr)
   print("------------")
-  for key, value in pairs(described_class_table.methods) do
+  for key, value in pairs(describer.classes["Pessoa"].methods) do
     Print_table(value)
     print("------------")
   end
@@ -54,7 +54,7 @@ end
 local function test_set_method()
   local describer = Get_describer()
 
-  local described_method_table = describer:set_method(test_method_table)
+  local described_method_table = describer:describe_method(test_method_table)
   
   print(described_method_table.name)
   Print_table(described_method_table.params)

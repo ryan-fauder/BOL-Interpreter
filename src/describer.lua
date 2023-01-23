@@ -15,13 +15,21 @@ function Get_describer()
 end
 
 
-function Describer:set_class(class_block)
+function Describer:insert_class(class_block)
+
+  local described_class_table = Describer:describe_class(class_block)
+
+  Describer.classes[described_class_table.name] = described_class_table
+
+end
+
+
+function Describer:describe_class(class_block)
 
   local described_class_table = {
     name = nil,
     attr = {},
-    methods = {},
-    _prototype = nil
+    methods = {}
   }
 
   local index = 1
@@ -56,7 +64,7 @@ function Describer:set_class(class_block)
   while match do
     method_block, index = Read_method_block(class_block, index)
 
-    described_class_table.methods[match] = Describer:set_method(method_block)
+    described_class_table.methods[match] = Describer:describe_method(method_block)
 
     if index > class_block_size then
       break
@@ -74,7 +82,7 @@ function Describer:get_class()
 end
 
 
-function Describer:set_method(method_block)
+function Describer:describe_method(method_block)
 
   local described_method_table = {
     name = nil,
