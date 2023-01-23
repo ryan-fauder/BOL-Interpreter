@@ -81,7 +81,7 @@ _If_pattern_ = "[%s]*if[%s]+([%a]+)[%s]+([%l][%l])[%s]+([%a]+)[%s]+then[%s]*\n(.
 -- If-then-else
 _If_else_pattern_ = "[%s]*if[%s]+[%a]+[%s]+[%l][%l][%s]+[%a]+[%s]+then[%s]*\n.-\n[%s]*else[%s]*\n.-\n[%s]*end%-if[%s]*"
 
-_Else_pattern_ = "(.-)\n[%s]*else[%s]*\n(.*)"
+_Else_pattern_ = "(.-\n)[%s]*else[%s]*\n(.*)"
 
 -- Meta action
 _Meta_action_pattern_ = "[%s]*([%a]+)%.([%a]+)%.(_[%a]+)%([%s]*([%d]+)[%s]*%)[%s]*:([^\n]*)[%s]*"

@@ -4,13 +4,19 @@ local main_block_buffer = [==[
 begin
     vars a, b, c
     a = 1
-    b = 1
-    if a eq b then
+    b = 10
+    if a ne b then
         a = 2
         io.print(a)
-        a = 1
+        a = 100
         io.print(a)
+    else
+        a = 200
+        io.print(b)
+        c = a * b
     end-if
+    io.print(a)
+    io.print(c)
 end
 ]==]
 
