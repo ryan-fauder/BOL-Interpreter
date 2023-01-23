@@ -1,27 +1,59 @@
-    class   NomeDaClasse     
-    vars x, y, z
-    method
-     end-class        
+  class Pessoa
+    vars name, age
 
-    class   NomeDaClasse     
-    vars x, y, z
-    method
-     end-class      
+    method setName(name)
+    vars a
+    begin
+        self.name = name
+        io.print(name)
+    end-method
 
-         class   NomeDaClasse     
-    vars x, y, z
-    method
-     end     
+    method getName()
+    vars name
+    begin
+      name = self.name
+      return name
+    end-method
 
+end-class
 
-         class   NomeDaClasse     
-    vars x, y, z
-    method
-     end-class      
+  class Account
+    vars id, owner
 
+    method setId(id)
+    vars a
+    begin
+      self.id = id
+    end-method
+
+    method printId()
+    vars id
+    begin
+        id = self.id
+        io.print(id)
+    end-method
+
+end-class
 
 begin
     line 1
     line 2
     line 3
 end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

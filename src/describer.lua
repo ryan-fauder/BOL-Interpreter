@@ -48,7 +48,7 @@ function Describer:describe_class(class_block)
   print(attrs_keyword, attrs)
   if attrs_keyword ~= nil and attrs_keyword == "vars" then
     described_class_table.attr = Arg_var_list(attrs)
-
+    
     index = index + 1 -- avança para a linha do method
 
   elseif attrs_keyword == nil then
@@ -60,7 +60,7 @@ function Describer:describe_class(class_block)
   local class_block_size = #class_block
 
   local match = class_block[index]:match("[%s]*method[%s]+([%a]+)%(.-%)[%s]*")
-
+  
   while match do
     method_block, index = Read_method_block(class_block, index)
 
@@ -94,6 +94,7 @@ function Describer:describe_method(method_block)
   local i = 1
 
   local name, params = method_block[i]:match("^[%s]*method[%s]+([%a]+)%((.-)%)[%s]*$")
+
 
   described_method_table.name = name
 

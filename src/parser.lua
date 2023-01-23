@@ -5,25 +5,35 @@ require "utils"
 
 
 ---comment
----@param lexer any
+---@param lexer table {types: {}, tokens: {}}
 ---@param parser_id string
 ---@param type string
----@param qty_tokens integer
+---@param qty_tokens number
+---@return nil
 local function check_lexer(lexer, parser_id, type, qty_tokens)
   if lexer == nil or lexer.types == nil or lexer.tokens == nil then
     Error("Erro em " .. parser_id .. ": Lexer vazio")
+    return
   end
 
   if lexer.types.type ~= type then
     Error("Erro em " .. parser_id .. ": Lexer não é do tipo '" .. type .. "'")
+    return
   end
 
   if #lexer.tokens < qty_tokens then
     Error("Erro em " .. parser_id .. ": Tokens não suficientes no Lexer")
+    return
   end
 end
 
-
+--- func desc
+---@param lexer table {types: {type, lhs, rhs}, tokens: {}}
+---@return table
+--- Returns ast:
+---- type: string
+---- lhs: {type: string, arg: Arg_var | Arg_attr }
+---- rhs: {type: string, arg: Arg_Number | Arg_Var | Arg_Attr | Arg_Obj_Creation | Arg_Method_Call}
 function Parser_assign(lexer)
   check_lexer(lexer, "Parser_assign", "assignment", 1)
 
@@ -83,7 +93,12 @@ function Parser_assign(lexer)
   return ast
 end
 
-
+--- Desc
+---@param lexer table {types: {type}, tokens: {}}
+---@return table
+--- Returns ast:
+---- type: string
+---- var_list: Arg_var_list
 function Parser_var(lexer)
   check_lexer(lexer, "Parser_vars_def", "vars_def", 1)
 
@@ -97,7 +112,12 @@ function Parser_var(lexer)
   return ast
 end
 
-
+--- Desc
+---@param lexer table {types: {type}, tokens: {}}
+---@return table
+--- Returns ast:
+---- type: string
+---- var_list: Arg_var_list
 function Parser_vars_def(lexer)
   check_lexer(lexer, "Parser_vars_def", "vars_def", 1)
 
@@ -112,9 +132,14 @@ function Parser_vars_def(lexer)
 end
 
 
----comment
----@param lexer any
+--- Desc
+---@param lexer table {types: {type}, tokens: {}}
 ---@return table
+--- Returns ast:
+---- type: string
+---- action_type: string
+---- str_no_nl: string
+---- arg: Arg_Method_Call {var_name, method_name, params: line_number}
 function Parser_meta_action(lexer)
   check_lexer(lexer, "Parser_meta_action", "meta_action", 5)
 
@@ -134,9 +159,13 @@ function Parser_meta_action(lexer)
 end
 
 
----comment
----@param lexer any
+--- func desc
+---@param lexer table {types: {type}, tokens: {}}
 ---@return table
+--- Returns ast:
+---- type: string
+---- lhs: Arg_var {var_name}
+---- rhs: Arg_var {var_name}
 function Parser_prototype(lexer)
   check_lexer(lexer, "Parser_prototype", "prototype", 2)
 
@@ -152,9 +181,12 @@ function Parser_prototype(lexer)
 end
 
 
----comment
----@param lexer any
+--- func desc
+---@param lexer table {types: {type}, tokens: {}}
 ---@return table
+--- Returns ast:
+---- type: string
+---- arg: Arg_var
 function Parser_return(lexer)
   check_lexer(lexer, "Parser_return", "return", 1)
 
@@ -166,9 +198,12 @@ function Parser_return(lexer)
 end
 
 
----comment
----@param lexer any
+--- func desc
+---@param lexer table {types: {type}, tokens: {}}
 ---@return table
+--- Returns ast:
+---- type: string
+---- arg: Arg_method_call {var_name, method_name, params: Arg_var_list}
 function Parser_method_call(lexer)
   check_lexer(lexer, "Parser_method_call", "method_call", 3)
 
@@ -189,9 +224,17 @@ function Parser_method_call(lexer)
 end
 
 
+
 --- func desc
----@param lexer table
+---@param lexer table {types: {type}, tokens: {}}
 ---@return table
+--- Returns ast:
+---- type: string
+---- lhs: Arg_var
+---- rhs: Arg_var
+---- cmp: string
+---- if_block: string
+---- else_block: string
 function Parser_if(lexer)
   check_lexer(lexer, "Parser_if", "if", 4)
 
@@ -200,7 +243,7 @@ function Parser_if(lexer)
   ast.type = lexer.types.type
   ast.lhs = Arg_var(lexer.tokens[1]) or {}
   ast.rhs = Arg_var(lexer.tokens[3]) or {}
-  ast.cmp = lexer.tokens[2] or {}
+  ast.cmp = lexer.tokens[2] or ""
   if_block = lexer.tokens[4] or {}
 
 
@@ -222,7 +265,10 @@ function Parser_if(lexer)
   return ast
 end
 
-
+--- func desc
+---@param lexer table {types: {type}, tokens: {}}
+---@return table
+--- Returns ast
 function Parser_main_stmt(lexer)
   if lexer.types.type == "method_call" then
     return Parser_method_call(lexer)
@@ -234,10 +280,14 @@ function Parser_main_stmt(lexer)
     return Parser_assign(lexer)
   else
     Error("Erro em Parser_main_stmt: Declaração com sintaxe incorreta")
+    return {}
   end
 end
 
-
+--- func desc
+---@param lexer table {types: {type}, tokens: {}}
+---@return table
+--- Returns ast
 function Parser_method_stmt(lexer)
   if lexer.types.type == "method_call" then
     return Parser_method_call(lexer)
@@ -253,10 +303,14 @@ function Parser_method_stmt(lexer)
     return Parser_prototype(lexer)
   else
     Error("Erro em Parser_method_stmt: Declaração com sintaxe incorreta")
+    return {}
   end
 end
 
-
+--- func desc
+---@param lexer table {types: {type}, tokens: {}}
+---@return table
+--- Returns ast
 function Parser_if_stmt(lexer)
   if lexer.types.type == "method_call" then
     return Parser_method_call(lexer)
@@ -268,5 +322,23 @@ function Parser_if_stmt(lexer)
     return Parser_return(lexer)
   else
     Error("Erro em Parser_if_stmt: Declaração com sintaxe incorreta")
+    return {}
   end
 end
+
+--- Desc
+---@param lexer table {types: {type}, tokens: {}}
+---@return table
+--- Returns ast:
+---- type: string
+---- lhs: {type: string, arg: Arg_var | Arg_attr }
+---- rhs: {type: string, arg: Arg_Number | Arg_Var | Arg_Attr | Arg_Obj_Creation | Arg_Method_Call}
+---- var_list: Arg_var_list
+---- action_type: string
+---- str_no_nl: string
+---- arg: Arg_Method_Call {var_name, method_name, params: line_number}
+---- lhs: Arg_var
+---- rhs: Arg_var
+---- cmp: string
+---- if_block: string
+---- else_block: string
