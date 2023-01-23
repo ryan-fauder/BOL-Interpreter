@@ -114,6 +114,7 @@ function If_interpreter(if_env, if_buffer)
         end
 
         if_buffer = Pop_statement(if_buffer, pattern)
+        if(if_buffer == "") then break end
     end
 
 end

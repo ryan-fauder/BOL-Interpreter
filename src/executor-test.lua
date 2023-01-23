@@ -5,7 +5,12 @@ begin
     vars a, b, c
     a = 1
     b = 1
-    io.print(a)
+    if a eq b then
+        a = 2
+        io.print(a)
+        a = 1
+        io.print(a)
+    end-if
 end
 ]==]
 
