@@ -15,6 +15,11 @@ function Get_describer()
 end
 
 
+function Describer:describe_main()
+
+end
+
+
 function Describer:insert_class(class_block)
 
   local described_class_table = Describer:describe_class(class_block)
@@ -45,7 +50,7 @@ function Describer:describe_class(class_block)
   index = index + 1 -- avança para a linha de atributos da classe ou começo de método
 
   local attrs_keyword, attrs = class_block[index]:match("^[%s]*([%l]+)[%s]+(.-)[%s]*$")
-  print(attrs_keyword, attrs)
+  
   if attrs_keyword ~= nil and attrs_keyword == "vars" then
     described_class_table.attr = Arg_var_list(attrs)
     
@@ -127,5 +132,32 @@ end
 
 
 function Describer:get_method()
+  
+end
+
+---Função que retorna uma tabela de strings em uma string só, separadas por '\n'
+---@param string_table table <string>
+---@return string
+function Describer:string_table_to_string(string_table)
+
+  local result_string
+
+  if not string_table then
+    Error("Tabela de string passada é nula.")
+  end
+
+  result_string = string_table[1]
+
+  if #string_table > 1 then
+
+    for i = 2, #string_table do
+      result_string = result_string .. "\n" .. string_table[i]
+    end
+
+  else
+    result_string = result_string .. "\n"
+  end
+  
+  return result_string
   
 end

@@ -30,8 +30,7 @@ local test_method_table = {
       "io.print(y)",
       "y = new Base",
       "return y",
-    "end-method",
-    ""
+    "end-method"
 }
 
 local function test_set_class()
@@ -55,14 +54,14 @@ local function test_set_method()
   local describer = Get_describer()
 
   local described_method_table = describer:describe_method(test_method_table)
-  
-  print(described_method_table.name)
-  Print_table(described_method_table.params)
-  Print_table(described_method_table.vars)
-  Print_table(described_method_table.body)
-  
+
+  --print(described_method_table.name)
+  --Print_table(described_method_table.params)
+  --Print_table(described_method_table.vars)
+  print(describer:string_table_to_string(described_method_table.body))
+
 end
 
 
-test_set_class()
---test_set_method()
+--test_set_class()
+test_set_method()
