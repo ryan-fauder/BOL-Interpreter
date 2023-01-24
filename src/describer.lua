@@ -137,7 +137,7 @@ function Describer:get_method()
   
 end
 
----Função que retorna uma tabela de strings em uma string só, separadas por '\n'
+---Função que transforma uma tabela de strings em uma única string com '\n' como separador.
 ---@param string_table table <string>
 ---@return string
 function Describer:string_table_to_string(string_table)
