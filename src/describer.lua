@@ -17,7 +17,7 @@ end
 
 function Describer:insert_main(main_block)
 
-  Describer.main = { table.unpack(main_block, 1, #main_block - 1) }
+  Describer.main = { table.unpack(main_block, 2, #main_block - 1) }
 
 end
 
