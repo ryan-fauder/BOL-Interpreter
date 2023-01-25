@@ -18,8 +18,7 @@ local function main()
 
         elseif line:match("^" .. _Main_body_begin_pattern_ .. "$") then
             main_block = Read_main_block(file, line)
-            -- Describe_main(main_block)
-            Print_table(main_block)
+            describer:insert_main(main_block)
             break
 
         elseif not line:match(_Empty_line_pattern_) then
@@ -35,9 +34,10 @@ local function main()
             Error("Erro em Main: Linha não vazia após a leitura do bloco principal")
         end
     end
-    Print_table(describer)
-    Print_table(describer.classes.Account.attr)
     --- Chamada da MainExecutor buscando o buffer do Describer
+    local main_block_buffer = describer:string_table_to_string(describer.main)
+    local main_env = Env:new()
+    Main_interpreter(main_env, main_block_buffer)
     file:close()
 end
 

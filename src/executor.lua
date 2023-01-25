@@ -9,10 +9,9 @@ require "args"
 
 --- Executor do corpo principal do programa
 ---@param main_block_buffer string
-function Main_interpreter(main_block_buffer)
+function Main_interpreter(main_env, main_block_buffer)
     Check_type("Main_interpreter", main_block_buffer, "main_block_buffer", "string")
 
-    local main_env = Env:new()
     local pattern, tokens, types, var_list_string, var_list, ast
     local control_flag = 0
 
@@ -50,6 +49,7 @@ function Main_interpreter(main_block_buffer)
         control_flag = 1
 
         main_block_buffer = Pop_statement(main_block_buffer, pattern)
+        if(main_block_buffer == "") then break end
     end
 
 end
@@ -82,6 +82,7 @@ function Method_interpreter(method_env, method_buffer)
         end
 
         method_buffer = Pop_statement(method_buffer, pattern)
+        if(method_buffer == "") then break end
     end
 
 end

@@ -36,9 +36,16 @@ end-class
 end-class
 
 begin
-    line 1
-    line 2
-    line 3
+    vars a, b, c
+    a = 10
+    b = 20
+    c = 5
+    io.print(a)
+    io.print(b)
+    io.print(c)
+    c = a + b
+    io.print(c)
+    a = 10
 end
 
 

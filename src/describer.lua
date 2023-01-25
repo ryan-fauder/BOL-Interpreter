@@ -155,10 +155,9 @@ function Describer:string_table_to_string(string_table)
     for i = 2, #string_table do
       result_string = result_string .. "\n" .. string_table[i]
     end
-
-  else
-    result_string = result_string .. "\n"
   end
+  
+  result_string = result_string .. "\n"
   
   return result_string
   
