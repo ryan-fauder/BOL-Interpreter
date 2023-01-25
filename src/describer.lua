@@ -83,6 +83,7 @@ function Describer:describe_class(class_block)
   return described_class_table
 end
 
+
 --- func desc
 ---@param class_name string
 function Describer:get_class(class_name)
@@ -90,12 +91,83 @@ function Describer:get_class(class_name)
 end
 
 
+local function method_dump(method_table)
+
+  if method_table then
+    local string_method_header = "  method " .. method_table.name .. "("
+    
+    if #method_table.params >= 1 then
+      for i = 1, #method_table.params - 1 do
+        string_method_header = string_method_header .. method_table.params[i] .. ", "
+      end
+
+      string_method_header = string_method_header .. method_table.params[#method_table.params]
+    end
+
+    string_method_header = string_method_header .. ")"
+
+    print(string_method_header)
+
+    if #method_table.vars >= 1 then
+      local vars_string = "  vars "
+  
+      for i = 1, #method_table.vars - 1 do
+        vars_string = vars_string .. method_table.vars[i] .. ", "
+      end
+  
+      vars_string = vars_string .. method_table.vars[#method_table.vars]
+  
+      print(vars_string)
+  
+    end
+
+    print("  begin")
+    for i = 1, #method_table.body do
+      print("    " .. method_table.body[i])
+    end
+    print("  end-method")
+
+  end
+
+end
+
+
+function Describer:class_dump(class_name)
+
+  local class = Describer.classes[class_name]
+
+  print("class " .. class.name)
+
+  if #class.attr >= 1 then
+    local vars_string = "  vars "
+
+    for i = 1, #class.attr - 1 do
+      vars_string = vars_string .. class.attr[i] .. ", "
+    end
+
+    vars_string = vars_string .. class.attr[#class.attr]
+
+    print(vars_string)
+
+  end
+
+  print("")
+  for key, method in pairs(class.methods) do
+    method_dump(method)
+    print("")
+  end
+
+  print("end-class")
+
+end
+
+
 function Describer:describe_method(method_block)
 
   local described_method_table = {
     name = nil,
-    params = nil,
-    vars = nil,
+    params = {},
+    vars = {},
     body = {}
   }
 
@@ -112,9 +184,10 @@ function Describer:describe_method(method_block)
 
   local vars_keyword, vars = method_block[i]:match("^[%s]*([%l]+)[%s]+(.-)[%s]*$")
 
-  if vars_keyword ~= nil and vars_keyword < "vars" or vars_keyword > "vars" then
+  if vars_keyword ~= nil and (vars_keyword < "vars" or vars_keyword > "vars") then
     Error("Erro em Describer:set_method: Esperado 'vars', lido " .. "'" .. vars_keyword .. "'")
-  else
+  elseif vars_keyword == "vars" then
+    
     described_method_table.vars = Arg_var_list(vars)
 
     i = i + 1 -- avança para a linha do begin
