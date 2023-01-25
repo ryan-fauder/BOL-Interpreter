@@ -38,7 +38,7 @@ end
 
 
 function Eval_method_call(env, ast)
-  -- local describer = Describer:getDescriber()
+  local describer = Get_describer()
 
   local obj_name = ast.arg.var_name
   local method_name = ast.arg.method_name
@@ -63,7 +63,7 @@ function Eval_method_call(env, ast)
     return
   end
 
-  local method_buffer = describer:get_buffer_from(method_table)
+  local method_buffer = describer:string_table_to_string(method_table.body)
   
   local method_env = Env:new()
   method_env:setVar("self", object)
@@ -146,21 +146,21 @@ function Eval_assign(env, ast)
     rhs_var = NumberVar:new(nil, lhs_var.name, rhs.arg.value)
 
   elseif rhs.type == "var_arg" then
-    var = env:getVar(rhs.arg.var_name)
-    rhs_var = var:copy(lhs_var.name)
+    local temp_var = env:getVar(rhs.arg.var_name)
+    rhs_var = temp_var:copy(lhs_var.name)
 
   elseif rhs.type == "attr_arg" then
-    local var = env:getVar(rhs.arg.var_name)
-    local rhs_attr = var:get_attr(rhs.arg.attr_name)
+    local temp_var = env:getVar(rhs.arg.var_name)
+    local rhs_attr = temp_var:get_attr(rhs.arg.attr_name)
     rhs_var = rhs_attr:copy(lhs_var.name)
 
   elseif rhs.type == "method_call_arg" then
-    local var = Eval_method_call(env, ast.rhs)
-    if var == nil then
+    local temp_var = Eval_method_call(env, ast.rhs)
+    if temp_var == nil then
       Error("Erro em Parser_assign: Retorno de metodo vazio")
       return
     end
-    rhs_var = var:copy()
+    rhs_var = temp_var:copy()
 
   elseif rhs.type == "obj_creation_arg" then
     ast.rhs.arg.obj_name = lhs_var.name
@@ -174,38 +174,42 @@ function Eval_assign(env, ast)
     return {}
   end
 
-  env:setVar(lhs_var.name, rhs_var)
+    
+  if lhs.type == "var_case" then
+    env:setVar(lhs_var.name, rhs_var)
+  elseif lhs.type == "attr_case" then
+    var:set_attr(lhs.arg.attr_name, rhs_var)
+  end
 
 end
 
 
-function Eval_meta_action(env, ast, method_table)
+function Eval_meta_action(env, ast)
   local class_name = ast.arg.var_name
   local method_name = ast.arg.method_name
   local line_number = ast.arg.params.line_number
   local str_no_nl = ast.str_no_nl
   local action_type = ast.action_type
 
-  -- local describer = Describer:get_describer()
-  -- local method_table = describer:get_method(class_name, method_name)
-
-  if line_number < 0 or line_number > #method_table + 1 then
+  local describer = Get_describer()
+  local method_table = describer:get_method(class_name, method_name)
+  local method_body_table = method_table.body
+  if line_number < 0 or line_number > #method_body_table + 1 then
     Error("Erro em Eval_meta_action: Número de linha inválido")
   end
 
   str_no_nl = Trim(str_no_nl)
-
   if action_type == "_insert" and str_no_nl ~= "" then
-    if line_number == 0 then line_number = #method_table + 1 end
-    table.insert(method_table, line_number, str_no_nl)
+    if line_number == 0 then line_number = #method_body_table + 1 end
+    table.insert(method_body_table, line_number, str_no_nl)
 
   elseif action_type == "_delete" and line_number > 0 and
-      line_number <= #method_table then
-    table.remove(method_table, line_number)
+      line_number <= #method_body_table then
+    table.remove(method_body_table, line_number)
 
   elseif action_type == "_replace" and line_number > 0 and
-      str_no_nl ~= "" and line_number <= #method_table then
-    method_table[line_number] = str_no_nl
+      str_no_nl ~= "" and line_number <= #method_body_table then
+        method_body_table[line_number] = str_no_nl
 
   else
     Error("Erro em Eval_meta_action: Meta-ação inválida")
@@ -285,7 +289,7 @@ function Eval_controller(env, ast)
     return Eval_method_call(env, ast)
   elseif statement_type == "assignment" then
     return Eval_assign(env, ast)
-  elseif statement_type == "meta_acion" then
+  elseif statement_type == "meta_action" then
     return Eval_meta_action(env, ast)
   elseif statement_type == "prototype" then
     return Eval_prototype(env, ast)
