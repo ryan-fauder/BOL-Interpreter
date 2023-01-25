@@ -83,9 +83,10 @@ function Describer:describe_class(class_block)
   return described_class_table
 end
 
-
-function Describer:get_class()
-  
+--- func desc
+---@param class_name string
+function Describer:get_class(class_name)
+  return self.classes[class_name]
 end
 
 
@@ -133,8 +134,8 @@ function Describer:describe_method(method_block)
 end
 
 
-function Describer:get_method()
-  
+function Describer:get_method(class_name, method_name)
+  return self.classes[class_name].methods[method_name]
 end
 
 ---Função que transforma uma tabela de strings em uma única string com '\n' como separador.

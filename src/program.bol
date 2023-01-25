@@ -39,13 +39,19 @@ begin
     vars a, b, c
     a = 10
     b = 20
-    c = 5
-    io.print(a)
+    c = new Pessoa
+
+    c.name = 5
+    b = c.name
     io.print(b)
-    io.print(c)
-    c = a + b
-    io.print(c)
-    a = 10
+    c.setName(a)
+    a = c.name
+    io.print(a)
+    a = 500
+    Pessoa.setName._delete(1):
+    c.setName(a)
+    a = c.name
+    io.print(a)
 end
 
 
