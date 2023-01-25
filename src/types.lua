@@ -62,7 +62,7 @@ function ClassVar:new(object, name, class_table, methods_table)
     local attr = {}
 
     for index, name in pairs(class_table.attr) do
-        attr[name] = 0
+        attr[name] = NumberVar:new(nil, name, 0)
     end
 
     if (attr == {}) then
