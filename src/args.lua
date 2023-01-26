@@ -29,7 +29,7 @@ function Arg_var_list(vars_list_string)
     return {}
   end
   
-  local var = string.match(vars_list_string, "^" .. _Variable_Last_def_pattern_ .. "$")
+  local var = string.match(vars_list_string, "^" .. _Variable_last_def_pattern_ .. "$")
 
   if var == nil then
     Error("Erro em Arg_var_list: Vars inválido")

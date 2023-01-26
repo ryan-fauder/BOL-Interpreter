@@ -1,8 +1,7 @@
-  class Pessoa
+class Pessoa
     vars name, age
 
     method setName(name)
-    vars a
     begin
         self.name = name
         io.print(name)
@@ -17,13 +16,28 @@
 
 end-class
 
-  class Account
-    vars id, owner
-
+class Account
+    vars id, owner, value
+    
     method setId(id)
     vars a
     begin
       self.id = id
+      a = self.id
+      io.print(a)
+
+    end-method
+
+    method transfer(valueA, tax)
+    vars aux, temp
+    begin
+      aux = valueA * tax
+      aux = valueA + aux
+      temp = self.value
+      self.value = temp + aux
+      temp = self.value
+      io.print(temp)
+      return temp
     end-method
 
     method printId()
@@ -35,23 +49,47 @@ end-class
 
 end-class
 
-begin
-    vars a, b, c
-    a = 10
-    b = 20
-    c = new Pessoa
+class Root
 
-    c.name = 5
-    b = c.name
-    io.print(b)
-    c.setName(a)
-    a = c.name
-    io.print(a)
-    a = 500
-    Pessoa.setName._delete(1):
-    c.setName(a)
-    a = c.name
-    io.print(a)
+  method calc()
+  begin
+    io.print()
+  end-method
+
+end-class
+
+
+class Bhaskara
+  vars a, b, c, delta
+
+  method getDelta()
+  vars bSquare, aTimesC, negFour, temp
+  begin
+    bSquare = self.b * self.b
+    aTimesC = self.a * self*c
+    negFour = -4
+    temp = self.delta
+    self.delta = negFour * aTimesC
+    self.delta = bSquare + temp
+    temp = self.delta
+    return temp
+  end-method
+
+end-class
+
+
+begin
+  vars account, person, temp
+  person = new Pessoa
+  account = new Account
+
+  person._prototype = account
+  person.id = 10
+  temp = person.id
+  io.print(temp)
+  temp = account.id
+  io.print(temp)
+
 end
 
 

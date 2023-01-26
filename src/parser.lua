@@ -189,7 +189,7 @@ end
 ---- arg: Arg_var
 function Parser_return(lexer)
   check_lexer(lexer, "Parser_return", "return", 1)
-
+  
   local ast = {}
   ast.type = lexer.types.type
   ast.arg = Arg_var(lexer.tokens[1])
@@ -278,6 +278,8 @@ function Parser_main_stmt(lexer)
     return Parser_if(lexer)
   elseif lexer.types.type == "assignment" then
     return Parser_assign(lexer)
+  elseif lexer.types.type == "prototype" then
+    return Parser_prototype(lexer)
   else
     Error("Erro em Parser_main_stmt: Declaração com sintaxe incorreta")
     return {}

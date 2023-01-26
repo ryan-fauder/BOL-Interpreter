@@ -1,8 +1,8 @@
 require "utils"
 
 --- Verifica se o arquivo é válido, se ele existe e o abre para leitura
----@param file_name string
----@return file*
+---@param file_name string: Nome do arquivo
+---@return file*: Arquivo
 function Get_file(file_name)
     if type(file_name) ~= "string" then
         Error("Erro em Get_file: Nome do arquivo diferente de string")
@@ -15,12 +15,4 @@ function Get_file(file_name)
     end
 
     return file or {}
-end
-
-
---- Lê a próxima linha do arquivo
----@param file file*
----@return string
-function Read_line(file)
-    return file:read("*line")
 end

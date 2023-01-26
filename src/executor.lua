@@ -1,4 +1,3 @@
--- Executor
 require "utils"
 require "patterns"
 require "env"
@@ -8,7 +7,8 @@ require "args"
 
 
 --- Executor do corpo principal do programa
----@param main_block_buffer string
+---@param main_env table: Ambiente de variáveis
+---@param main_block_buffer string: Buffer do corpo principal
 function Main_interpreter(main_env, main_block_buffer)
     Check_type("Main_interpreter", main_block_buffer, "main_block_buffer", "string")
 
@@ -20,14 +20,13 @@ function Main_interpreter(main_env, main_block_buffer)
     var_list_string = main_block_buffer:match("^" .. _Variables_def_pattern_ .. "\n")
 
     if var_list_string then
-        var_list = Parser_vars_def({types={type="vars_def"}, tokens={var_list_string}})
+        var_list = Parser_vars_def({ types={type="vars_def"}, tokens={var_list_string} })
         Eval_vars_def(main_env, var_list)
         main_block_buffer = Pop_statement(main_block_buffer, "^" .. _Variables_def_pattern_ .. "\n")
         control_flag = 1
     end
 
-    while true do
-
+    while main_block_buffer ~= "" do
         for index, pattern_info in ipairs(Statements_patterns) do
             types, pattern = table.unpack(pattern_info)
             tokens = { main_block_buffer:match("^" .. pattern .. "\n") }
@@ -49,7 +48,6 @@ function Main_interpreter(main_env, main_block_buffer)
         control_flag = 1
 
         main_block_buffer = Pop_statement(main_block_buffer, pattern)
-        if(main_block_buffer == "") then break end
     end
 
 end
@@ -61,7 +59,7 @@ function Method_interpreter(method_env, method_buffer)
 
     local pattern, tokens, types, ast, eval_return
 
-    while true do
+    while method_buffer ~= "" do
         for index, pattern_info in ipairs(Statements_patterns) do
             types, pattern = table.unpack(pattern_info)
             tokens = { method_buffer:match("^" .. pattern .. "\n") }
@@ -82,7 +80,6 @@ function Method_interpreter(method_env, method_buffer)
         end
 
         method_buffer = Pop_statement(method_buffer, pattern)
-        if(method_buffer == "") then break end
     end
 
 end
@@ -94,7 +91,7 @@ function If_interpreter(if_env, if_buffer)
 
     local pattern, tokens, types, ast, eval_return
 
-    while true do
+    while if_buffer ~= "" do
         for index, pattern_info in ipairs(Statements_patterns) do
             types, pattern = table.unpack(pattern_info)
             tokens = { if_buffer:match("^" .. pattern .. "\n") }
@@ -115,7 +112,51 @@ function If_interpreter(if_env, if_buffer)
         end
 
         if_buffer = Pop_statement(if_buffer, pattern)
-        if(if_buffer == "") then break end
+    end
+
+end
+
+
+--- Realiza a execução de um bloco
+--- O bloco pode ser um método ou um if/else
+---@param env table: Ambiente de variáveis
+---@param block_buffer string: Buffer do bloco
+---@param parser_function function: Função parser (Parser_method_stmt | Parser_if_stmt)
+---@return table|nil: Retorno de um statement "return <value>", caso exista
+function Block_executor(env, block_buffer, parser_function)
+    Check_type("Block_executor", env, "env", "table")
+    Check_type("Block_executor", block_buffer, "block_buffer", "string")
+
+    local pattern, tokens, types, ast, eval_return
+
+    while block_buffer ~= "" do
+        for index, pattern_info in ipairs(Statements_patterns) do
+            types, pattern = table.unpack(pattern_info)
+
+            -- Aplicação de regex no início do buffer
+            tokens = { block_buffer:match("^" .. pattern .. "\n") }
+
+            -- Match válido
+            if #tokens >= 1 then
+                -- Criação da abstract syntax tree
+                ast = parser_function({types=types, tokens=tokens})
+
+                eval_return = Eval_controller(env, ast)
+
+                if eval_return then
+                    return eval_return
+                end
+
+                break
+            end
+        end
+
+        if #tokens < 1 then
+            Error("Erro em Block_executor: Sintaxe incorreta")
+        end
+
+        -- Retirando o statement já analisado
+        block_buffer = Pop_statement(block_buffer, pattern)
     end
 
 end

@@ -24,28 +24,25 @@ _Main_body_end_pattern_ = "[%s]*end[%s]*"
 -- Method header
 _Method_header_pattern_ = "[%s]*method[%s]+[%a]+%(.-%)[%s]*"
 _Method_body_begin_pattern_ = "[%s]*begin[%s]*"
-_Method_end_pattern_ = "[%s]*end%-method[%s]*"
+_Method_body_end_pattern_ = "[%s]*end%-method[%s]*"
 
 
 -- Variables definition
 _Variables_def_pattern_ = "[%s]*vars[%s]+(.-)[%s]*"
 _Variable_def_pattern_ = "[%s]*([%a]+),[%s]*"
-_Variable_Last_def_pattern_ = "[%s]*[%a]+[%s]*"
+_Variable_last_def_pattern_ = "[%s]*[%a]+[%s]*"
 
 
 -- Empty line
 _Empty_line_pattern_ = "^[%s]*$"
-
-
-
 
 -- =================================================================================== --
 --- Statements patterns
 
 -- Assignments
 _Assignment_pattern_ = {
-    var_case = {},
-    attr_case = {}
+    var_case = {},  -- <name>        = <arg>
+    attr_case = {}  -- <name>.<name> = <arg>
 }
 
 local var_case_base = "[%s]*([%a]+)[%s]*=[%s]*{mask}[%s]*"
@@ -53,21 +50,21 @@ local attr_case_base = "[%s]*([%a]+)%.([%a]+)[%s]*=[%s]*{mask}[%s]*"
 
 
 _Assignment_pattern_.var_case = {
-    ["number_arg"] = var_case_base:gsub("{mask}", _number_patt_),
-    ["var_arg"] = var_case_base:gsub("{mask}", _name_patt_),
-    ["attr_arg"] = var_case_base:gsub("{mask}", _class_attr_patt_),
-    ["method_call_arg"] = var_case_base:gsub("{mask}", _method_call_patt_),
-    ["obj_creation_arg"] = var_case_base:gsub("{mask}", _obj_creation_patt_),
-    ["bin_operation_arg"] = var_case_base:gsub("{mask}", _bin_operation_patt_)
+    number_arg          = var_case_base:gsub("{mask}", _number_patt_),          -- <name> = <number>
+    var_arg             = var_case_base:gsub("{mask}", _name_patt_),            -- <name> = <name>
+    attr_arg            = var_case_base:gsub("{mask}", _class_attr_patt_),      -- <name> = <name>.<name>
+    method_call_arg     = var_case_base:gsub("{mask}", _method_call_patt_),     -- <name> = <method-call>
+    obj_creation_arg    = var_case_base:gsub("{mask}", _obj_creation_patt_),    -- <name> = <obj-creation>
+    bin_operation_arg   = var_case_base:gsub("{mask}", _bin_operation_patt_)    -- <name> = <arg-bin> <op> <arg-bin>
 }
 
 _Assignment_pattern_.attr_case = {
-    ["number_arg"] = attr_case_base:gsub("{mask}", _number_patt_),
-    ["var_arg"] = attr_case_base:gsub("{mask}", _name_patt_),
-    ["attr_arg"] = attr_case_base:gsub("{mask}", _class_attr_patt_),
-    ["method_call_arg"] = attr_case_base:gsub("{mask}", _method_call_patt_),
-    ["obj_creation_arg"] = attr_case_base:gsub("{mask}", _obj_creation_patt_),
-    ["bin_operation_arg"] = attr_case_base:gsub("{mask}", _bin_operation_patt_)
+    number_arg          = attr_case_base:gsub("{mask}", _number_patt_),         -- <name>.<name> = <number>
+    var_arg             = attr_case_base:gsub("{mask}", _name_patt_),           -- <name>.<name> = <name>
+    attr_arg            = attr_case_base:gsub("{mask}", _class_attr_patt_),     -- <name>.<name> = <name>.<name>
+    method_call_arg     = attr_case_base:gsub("{mask}", _method_call_patt_),    -- <name>.<name> = <method-call>
+    obj_creation_arg    = attr_case_base:gsub("{mask}", _obj_creation_patt_),   -- <name>.<name> = <obj-creation>
+    bin_operation_arg   = attr_case_base:gsub("{mask}", _bin_operation_patt_)   -- <name>.<name> = <arg-bin> <op> <arg-bin>
 }
 
 
@@ -78,14 +75,15 @@ _Method_call_pattern_ = "[%s]*([%a]+)%.([%a]+)%((.-)%)[%s]*"
 -- If-then
 _If_pattern_ = "[%s]*if[%s]+([%a]+)[%s]+([%l][%l])[%s]+([%a]+)[%s]+then[%s]*\n(.-\n)[%s]*end%-if[%s]*"
 
+
 -- If-then-else
 _If_else_pattern_ = "[%s]*if[%s]+[%a]+[%s]+[%l][%l][%s]+[%a]+[%s]+then[%s]*\n.-\n[%s]*else[%s]*\n.-\n[%s]*end%-if[%s]*"
-
 _Else_pattern_ = "(.-\n)[%s]*else[%s]*\n(.*)"
+
 
 -- Meta action
 _Meta_action_pattern_ = "[%s]*([%a]+)%.([%a]+)%.(_[%a]+)%([%s]*([%d]+)[%s]*%)[%s]*:([^\n]*)[%s]*"
- 
+
 
 -- Prototype
 _Prototype_pattern_ = "[%s]*([%a]+)%._prototype[%s]+=[%s]+([%a]+)[%s]*"
@@ -95,7 +93,7 @@ _Prototype_pattern_ = "[%s]*([%a]+)%._prototype[%s]+=[%s]+([%a]+)[%s]*"
 _Return_pattern_ = "[%s]*return[%s]+([%a]+)[%s]*"
 
 
--- Vetor contendo os padrões de statements (regexs)
+-- Vetor contendo os padrões de statements
 Statements_patterns = {
     { { type = "method_call" },
         _Method_call_pattern_ },

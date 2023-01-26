@@ -14,11 +14,11 @@ function NumberVar:new(object, name, value)
 
     value = value or 0
 
-    if (type(value) ~= "number") then
+    if type(value) ~= "number" then
         Error("Erro em Create_number_var: value não é um Number")
         return
     end
-    if (name == nil or value == nil) then
+    if name == nil or value == nil then
         Error("Erro em Create_number_var: name ou value não definido")
         return
     end
@@ -92,7 +92,7 @@ end
 ---@return table
 function ClassVar:get_attr(name)
     local value = self.attr[name]
-    if(value == nil and self._prototype ~= nil) then
+    if value == nil and self._prototype ~= nil then
         value = self._prototype:get_attr(name)
     end
     return value
@@ -103,7 +103,7 @@ end
 ---@return table
 function ClassVar:get_method(name)
     local method = self.methods[name]
-    if(method == nil and self._prototype ~= nil) then
+    if method == nil and self._prototype ~= nil then
         method = self._prototype:get_method(name)
     end
     return method

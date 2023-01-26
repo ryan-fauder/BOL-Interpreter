@@ -86,7 +86,7 @@ function Read_method_block(class_block_content, index)
             Error("Erro em Read_method_block: 'end-method' não encontrado")
         end
         index = index + 1
-    until class_block_content[index - 1]:match("^".._Method_end_pattern_.."$")
+    until class_block_content[index - 1]:match("^" .. _Method_body_end_pattern_ .. "$")
 
     return method_block_content, index
 end

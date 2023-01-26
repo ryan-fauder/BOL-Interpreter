@@ -1,6 +1,7 @@
 require "env"
 require "describer"
 require "types"
+require "math"
 
 
 function Eval_vars_def(env, ast)
@@ -13,15 +14,15 @@ end
 
 
 function Eval_io_dump(env, ast)
-  local var_name = ast.arg.params
+  local var_name = ast.arg.params[1]
   local var = env:getVar(var_name)
-
+  local describer = Get_describer()
   if var.type ~= "Class" then
     Error("Erro em Eval_io_dump: Variável " .. var_name .. " não é um objeto de uma classe")
     return
   end
 
-  Describer:class_dump(var.class.name)
+  describer:class_dump(var.class.name)
 end
 
 
@@ -83,9 +84,7 @@ function Eval_method_call(env, ast)
     local var = env:getVar(var_name)
     method_env:setVar(method_table.params[index], var)
   end
-
   local return_value = Method_interpreter(method_env, method_buffer)
-
   return return_value
 end
 
@@ -97,7 +96,12 @@ function Eval_binary_operation(env, ast)
   local operations_functions = {
     ["+"] = function(var1, var2) return (var1 + var2) end,
     ["-"] = function(var1, var2) return (var1 - var2) end,
-    ["/"] = function(var1, var2) return (var1 / var2) end,
+    ["/"] = function(var1, var2)
+      if var2 == 0 then
+        Error("Erro em Eval_binary_operation: Divisão por zero")
+      end
+      return (var1 / var2)
+    end,
     ["*"] = function(var1, var2) return (var1 * var2) end
   }
 
@@ -116,7 +120,7 @@ function Eval_binary_operation(env, ast)
     return
   end
 
-  local result = operation_function(first_var.value, second_var.value)
+  local result = math.floor(operation_function(first_var.value, second_var.value))
   local var = NumberVar:new(nil, ast.arg.var_name, result)
 
   return var
@@ -140,6 +144,10 @@ function Eval_assign(env, ast)
     lhs_var = var
   elseif lhs.type == "attr_case" then
     lhs_var = var:get_attr(lhs.arg.attr_name)
+    if lhs_var == nil then
+      Error("Erro em Parser_assign: Atributo '"..lhs.arg.attr_name .."' não existe em '" .. lhs.arg.var_name .. "'")
+      return
+    end
   end
 
   if rhs.type == "number_arg" then
@@ -152,15 +160,21 @@ function Eval_assign(env, ast)
   elseif rhs.type == "attr_arg" then
     local temp_var = env:getVar(rhs.arg.var_name)
     local rhs_attr = temp_var:get_attr(rhs.arg.attr_name)
+
+    if rhs_attr == nil then
+      Error("Erro em Parser_assign: Atributo '"..rhs.arg.attr_name .."' não existe em '" .. rhs.arg.var_name .. "'")
+      return
+    end
+
     rhs_var = rhs_attr:copy(lhs_var.name)
 
   elseif rhs.type == "method_call_arg" then
     local temp_var = Eval_method_call(env, ast.rhs)
     if temp_var == nil then
-      Error("Erro em Parser_assign: Retorno de metodo vazio")
+      Error("Erro em Parser_assign: Retorno de método vazio")
       return
     end
-    rhs_var = temp_var:copy()
+    rhs_var = temp_var:copy(lhs_var.name)
 
   elseif rhs.type == "obj_creation_arg" then
     ast.rhs.arg.obj_name = lhs_var.name
@@ -173,8 +187,7 @@ function Eval_assign(env, ast)
     Error("Erro em Parser_assign: Tipo de rhs não reconhecido")
     return {}
   end
-
-    
+  
   if lhs.type == "var_case" then
     env:setVar(lhs_var.name, rhs_var)
   elseif lhs.type == "attr_case" then
