@@ -59,6 +59,24 @@ class Root
 end-class
 
 
+class Math
+  method factorial(n)
+  vars f, temp, ret, one
+  begin
+  one = 1
+  if n eq one then
+    return n
+  else
+    temp = n - one
+    f = self.factorial(temp)
+    ret = f * n
+    return ret
+  end-if
+
+  end-method
+
+end-class
+
 class Bhaskara
   vars a, b, c, delta
 
@@ -79,17 +97,12 @@ end-class
 
 
 begin
-  vars account, person, temp
-  person = new Pessoa
-  account = new Account
-
-  person._prototype = account
-  person.id = 10
-  temp = person.id
-  io.print(temp)
-  temp = account.id
-  io.print(temp)
-
+  vars n, f, m
+  m = new Math
+  n = 5
+  f = m.factorial(n)
+  io.print(n)
+  io.print(f)
 end
 
 
