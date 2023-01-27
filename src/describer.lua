@@ -10,18 +10,22 @@ local Describer = {
 }
 
 
+---Retorna o descritor do programa rodando.
+---@return table
 function Get_describer()
   return Describer
 end
 
-
+---Armazena o corpo da 'main' no descritor.
+---@param main_block table<string>
 function Describer:insert_main(main_block)
 
   Describer.main = { table.unpack(main_block, 2, #main_block - 1) }
 
 end
 
-
+---Armazena uma classe do programa no descritor.
+---@param class_block table<string> Tabela com o bloco de uma classe.
 function Describer:insert_class(class_block)
 
   local described_class_table = Describer:describe_class(class_block)
@@ -30,7 +34,9 @@ function Describer:insert_class(class_block)
 
 end
 
-
+---Descreve uma classe a partir de uma tabela de strings e retorna a classe descrita.
+---@param class_block table<string> Tabela com o bloco de uma classe.
+---@return table
 function Describer:describe_class(class_block)
 
   local described_class_table = {
@@ -49,25 +55,25 @@ function Describer:describe_class(class_block)
 
   described_class_table.name = name
 
-  index = index + 1 -- avança para a linha de atributos da classe ou começo de método
+  index = index + 1
 
   local attrs_keyword, attrs = class_block[index]:match("^[%s]*([%l]+)[%s]+(.-)[%s]*$")
-  
+
   if attrs_keyword ~= nil and attrs_keyword == "vars" then
     described_class_table.attr = Arg_var_list(attrs)
-    
-    index = index + 1 -- avança para a linha do method
+
+    index = index + 1
 
   elseif attrs_keyword == nil then
     Error("Erro em Describer:set_class: Esperado uma declaração de atributos ou início de método na linha:\n" .. class_block[index])
   end
 
-  -- Seção de leitura dos métodos da classe
+
   local method_block
   local class_block_size = #class_block
 
   local match = class_block[index]:match("[%s]*method[%s]+([%a]+)%(.-%)[%s]*")
-  
+
   while match do
     method_block, index = Read_method_block(class_block, index)
 
@@ -84,13 +90,16 @@ function Describer:describe_class(class_block)
 end
 
 
---- func desc
----@param class_name string
+---Retorna uma classe descrita.
+---@param class_name string Nome da classe procurada.
+---@return table
 function Describer:get_class(class_name)
   return self.classes[class_name]
 end
 
 
+---Função auxiliar que "printa" uma método na saída padrão de forma indentada.
+---@param method_table table
 local function method_dump(method_table)
 
   if method_table then
@@ -132,6 +141,8 @@ local function method_dump(method_table)
 end
 
 
+---Função que "printa" uma classe na saída padrão de forma indentada.
+---@param class_name any
 function Describer:class_dump(class_name)
 
   local class = Describer.classes[class_name]
@@ -162,6 +173,9 @@ function Describer:class_dump(class_name)
 end
 
 
+---Descreve um método e retorna ele.
+---@param method_block table<string>
+---@return table
 function Describer:describe_method(method_block)
 
   local described_method_table = {
@@ -180,7 +194,7 @@ function Describer:describe_method(method_block)
 
   described_method_table.params = Arg_var_list(params)
 
-  i = i + 1 -- avança para a linha de vars ou begin, caso não tenha vars
+  i = i + 1
 
   local vars_keyword, vars = method_block[i]:match("^[%s]*([%l]+)[%s]+(.-)[%s]*$")
 
@@ -190,14 +204,14 @@ function Describer:describe_method(method_block)
     
     described_method_table.vars = Arg_var_list(vars)
 
-    i = i + 1 -- avança para a linha do begin
+    i = i + 1
   end
 
   if not method_block[i]:match(_Method_body_begin_pattern_) then
     Error("Erro em Describer:set_method: Esperado um 'begin' na funcao " .. "'" .. name .. "'")
   end
 
-  i = i + 1 -- avança para a primeira linha do method-body
+  i = i + 1
 
   local method_body = { table.unpack(method_block, i, #method_block - 1) }
 
