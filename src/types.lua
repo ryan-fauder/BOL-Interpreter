@@ -40,6 +40,10 @@ function NumberVar:print()
     print("Name: " .. self.name .. " = { Type: " .. self.type .. ", Value: " .. self.value .. "}")
 end
 
+function NumberVar:new_referee(var)
+    self = var
+end
+
 ClassVar = {}
 
 --- Cria um objeto ClassVar
@@ -94,6 +98,25 @@ function ClassVar:get_attr(name)
         value = self._prototype:get_attr(name)
     end
     return value
+end
+
+--- Captura um atributo de um objeto
+---@param name string
+---@return table|nil
+function ClassVar:find_attr(name)
+    local value = self.attr[name]
+    local table = self
+    if value == nil and self._prototype == nil then
+        return nil
+    end
+    if value == nil and self._prototype ~= nil then
+        table = self._prototype:find_attr(name)
+    end
+    return table
+end
+
+function ClassVar:new_referee(var)
+    self = var
 end
 
 --- Captura um atributo de um objeto

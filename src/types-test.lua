@@ -86,5 +86,50 @@ local function Test_types_classvar()
 
 end
 
+
+local function Test_types_classvar_findattr()
+    local class_var1 = ClassVar:new(nil, "OBJ1", Class_table1, Class_table1.methods)
+    local class_var2 = ClassVar:new(nil, "OBJ2", Class_table2, Class_table2.methods)
+
+    if class_var1 == nil then return end
+    if class_var2 == nil then return end
+
+    class_var1._prototype = class_var2
+
+    class_var1:print()
+    class_var2:print()
+    local attr = class_var1:find_attr("no_attr")
+    print(attr)
+    local attr = class_var2:find_attr("no_attr_and_proto")
+    print(attr)
+    print("OBJ1")
+    local attr = class_var2:find_attr("address")
+    Print_table(attr)
+    
+    print("\nOBJ2")
+    local attr = class_var1:find_attr("address")
+    Print_table(attr)
+end
+
+
+local function Test_types_var()
+    local class_var1 = ClassVar:new(nil, "OBJ1", Class_table1, Class_table1.methods)
+    local class_var2 = ClassVar:new(nil, "OBJ2", Class_table2, Class_table2.methods)
+    local number_var2 = NumberVar:new(nil, "VAR2", 0)
+
+
+    if class_var1 == nil then return end
+    if class_var2 == nil then return end
+    if number_var2 == nil then return end
+
+    class_var1._prototype = class_var2
+
+    number_var2:new_referee(class_var1)
+    print("\nOBJ2")
+    local attr = number_var2:find_attr("address")
+    Print_table(attr)
+end
+Test_types_var()
+-- Test_types_classvar_findattr()
 -- Test_types_numbervar()
 -- Test_types_classvar()

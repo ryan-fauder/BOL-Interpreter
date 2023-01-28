@@ -133,7 +133,8 @@ function Eval_arg(env, ast)
     local arg_var
     -- ast: {type: string, arg: Arg_Number | Arg_Var | Arg_Attr | Arg_Obj_Creation | Arg_Method_Call}
     if ast.type == "number_arg" then
-        arg_var = NumberVar:new(nil, arg.var_name, arg.value)
+        local var_name = "Number var"
+        arg_var = NumberVar:new(nil, var_name, arg.value)
 
     elseif ast.type == "var_arg" then
         arg_var = env:getVar(arg.var_name)
@@ -184,8 +185,17 @@ function Eval_assign(env, ast)
     local lhs_var = Eval_arg(env, lhs)
     local rhs_var = Eval_arg(env, rhs)
 
-    Clear_table(lhs_var)
-    Deep_copy(lhs_var, rhs_var)
+    if lhs.type == "var_arg" then
+        Clear_table(lhs_var)
+        Deep_copy(lhs_var, rhs_var)
+        Print_table(lhs_var)
+        -- env:setVar(lhs_var.name, rhs_var)
+    elseif lhs.type == "attr_arg" then
+        Clear_table(lhs_var)
+        Deep_copy(lhs_var, rhs_var)
+    end
+    env:print()
+
 end
 
 
