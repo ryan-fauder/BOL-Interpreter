@@ -30,12 +30,10 @@ function NumberVar:new(object, name, value)
     return object
 end
 
-
 function NumberVar:copy(name)
     local clone = NumberVar:new(nil, name, self.value)
     return clone
 end
-
 
 ---@description Imprime um NumberVar
 function NumberVar:print()
@@ -109,11 +107,9 @@ function ClassVar:get_method(name)
     return method
 end
 
-
 function ClassVar:copy()
     return self
 end
-
 
 --- Imprime um objeto de ClassVar
 function ClassVar:print()

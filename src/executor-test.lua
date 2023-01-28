@@ -1,5 +1,5 @@
 require "executor"
-
+require "env"
 local main_block_buffer = [==[
 begin
     vars a, b, c
@@ -26,8 +26,8 @@ local function main_interpreter_test()
     print("Main block buffer:")
     print(main_block_buffer)
     print("================================")
-    Main_interpreter(main_block_buffer)
+    local main_env = Env:new()
+    Main_interpreter(main_env, main_block_buffer)
 end
-
 
 main_interpreter_test()

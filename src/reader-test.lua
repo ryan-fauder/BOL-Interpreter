@@ -23,7 +23,6 @@ function Test_read_class()
     print()
 end
 
-
 function Test_read_main()
     print("========== Test_read_main ==========")
     -- lua reader.lua program.bol
@@ -43,7 +42,6 @@ function Test_read_main()
     print()
 end
 
-
 function Test_read_method()
     print("========== Test_read_method ==========\n")
 
@@ -55,14 +53,14 @@ function Test_read_method()
         "method myMethodOne(x, y)",
         "vars i, j",
         "begin",
-            "self.a = x + y",
-            "i = 10",
-            "return y",
+        "self.a = x + y",
+        "i = 10",
+        "return y",
         "end-method",
 
         "method myMethodTwo()",
         "begin",
-            "self.a = 20",
+        "self.a = 20",
         "end-method",
     }
 
@@ -82,7 +80,6 @@ function Test_read_method()
     print("Next index = " .. next_index)
 
 end
-
 
 -- Test_read_class()
 -- Test_read_main()

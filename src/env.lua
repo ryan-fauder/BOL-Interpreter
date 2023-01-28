@@ -5,12 +5,11 @@ Env = {}
 
 --- Cria um objeto Env
 function Env:new()
-    env = {vars = {}}
+    local env = { vars = {} }
     setmetatable(env, self)
     self.__index = self
     return env
 end
-
 
 --- Define uma variável no ambiente
 ---@param name string
@@ -23,7 +22,6 @@ function Env:setVar(name, var)
     self.vars[name] = var
 end
 
-
 --- comment
 ---@param name string
 function Env:getVar(name)
@@ -35,12 +33,11 @@ function Env:getVar(name)
     return self.vars[name] or Error("Erro em Env_getVar: '" .. name .. "' não definida")
 end
 
-
 --- Imprime um objeto Env
 function Env:print()
     print("~ Env - vars: ~")
     for name, var in pairs(self.vars) do
-        print("=>> "..name..":")
+        print("=>> " .. name .. ":")
         var:print()
     end
 end

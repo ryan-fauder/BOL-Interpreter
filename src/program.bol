@@ -97,27 +97,15 @@ end-class
 
 
 begin
-  vars n, f, m
-  m = new Math
-  n = 5
-  f = m.factorial(n)
-  io.print(n)
-  io.print(f)
+  vars account, person, temp
+  person = new Pessoa
+  account = new Account
+
+  person._prototype = account
+  person.id = 10
+  temp = person.id
+  io.print(temp)
+  temp = account.id
+  io.print(temp)
 end
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

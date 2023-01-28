@@ -20,7 +20,7 @@ function Main_interpreter(main_env, main_block_buffer)
     var_list_string = main_block_buffer:match("^" .. _Variables_def_pattern_ .. "\n")
 
     if var_list_string then
-        var_list = Parser_vars_def({ types={type="vars_def"}, tokens={var_list_string} })
+        var_list = Parser_vars_def({ types = { type = "vars_def" }, tokens = { var_list_string } })
         Eval_vars_def(main_env, var_list)
         main_block_buffer = Pop_statement(main_block_buffer, "^" .. _Variables_def_pattern_ .. "\n")
         control_flag = 1
@@ -42,7 +42,7 @@ function Main_interpreter(main_env, main_block_buffer)
         Error("Erro em Main_interpreter: Sintaxe incorreta")
 
         ::parsing::
-        ast = Parser_main_stmt({types=types, tokens=tokens})
+        ast = Parser_main_stmt({ types = types, tokens = tokens })
 
         Eval_controller(main_env, ast)
         control_flag = 1
@@ -51,7 +51,6 @@ function Main_interpreter(main_env, main_block_buffer)
     end
 
 end
-
 
 function Method_interpreter(method_env, method_buffer)
     Check_type("Method_interpreter", method_env, "method_env", "table")
@@ -71,7 +70,7 @@ function Method_interpreter(method_env, method_buffer)
         Error("Erro em Method_interpreter: Sintaxe incorreta")
 
         ::parsing::
-        ast = Parser_method_stmt({types=types, tokens=tokens})
+        ast = Parser_method_stmt({ types = types, tokens = tokens })
 
         eval_return = Eval_controller(method_env, ast)
 
@@ -83,7 +82,6 @@ function Method_interpreter(method_env, method_buffer)
     end
 
 end
-
 
 function If_interpreter(if_env, if_buffer)
     Check_type("If_interpreter", if_env, "if_env", "table")
@@ -103,7 +101,7 @@ function If_interpreter(if_env, if_buffer)
         Error("Erro em If_interpreter: Sintaxe incorreta")
 
         ::parsing::
-        ast = Parser_if_stmt({types=types, tokens=tokens})
+        ast = Parser_if_stmt({ types = types, tokens = tokens })
 
         eval_return = Eval_controller(if_env, ast)
 
@@ -115,7 +113,6 @@ function If_interpreter(if_env, if_buffer)
     end
 
 end
-
 
 --- Realiza a execução de um bloco
 --- O bloco pode ser um método ou um if/else
@@ -139,7 +136,7 @@ function Block_executor(env, block_buffer, parser_function)
             -- Match válido
             if #tokens >= 1 then
                 -- Criação da abstract syntax tree
-                ast = parser_function({types=types, tokens=tokens})
+                ast = parser_function({ types = types, tokens = tokens })
 
                 eval_return = Eval_controller(env, ast)
 

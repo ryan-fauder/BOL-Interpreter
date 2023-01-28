@@ -41,8 +41,8 @@ _Empty_line_pattern_ = "^[%s]*$"
 
 -- Assignments
 _Assignment_pattern_ = {
-    var_case = {},  -- <name>        = <arg>
-    attr_case = {}  -- <name>.<name> = <arg>
+    var_case = {}, -- <name>        = <arg>
+    attr_case = {} -- <name>.<name> = <arg>
 }
 
 local var_case_base = "[%s]*([%a]+)[%s]*=[%s]*{mask}[%s]*"
@@ -50,21 +50,21 @@ local attr_case_base = "[%s]*([%a]+)%.([%a]+)[%s]*=[%s]*{mask}[%s]*"
 
 
 _Assignment_pattern_.var_case = {
-    number_arg          = var_case_base:gsub("{mask}", _number_patt_),          -- <name> = <number>
-    var_arg             = var_case_base:gsub("{mask}", _name_patt_),            -- <name> = <name>
-    attr_arg            = var_case_base:gsub("{mask}", _class_attr_patt_),      -- <name> = <name>.<name>
-    method_call_arg     = var_case_base:gsub("{mask}", _method_call_patt_),     -- <name> = <method-call>
-    obj_creation_arg    = var_case_base:gsub("{mask}", _obj_creation_patt_),    -- <name> = <obj-creation>
-    bin_operation_arg   = var_case_base:gsub("{mask}", _bin_operation_patt_)    -- <name> = <arg-bin> <op> <arg-bin>
+    number_arg        = var_case_base:gsub("{mask}", _number_patt_),        -- <name> = <number>
+    var_arg           = var_case_base:gsub("{mask}", _name_patt_),          -- <name> = <name>
+    attr_arg          = var_case_base:gsub("{mask}", _class_attr_patt_),    -- <name> = <name>.<name>
+    method_call_arg   = var_case_base:gsub("{mask}", _method_call_patt_),   -- <name> = <method-call>
+    obj_creation_arg  = var_case_base:gsub("{mask}", _obj_creation_patt_),  -- <name> = <obj-creation>
+    bin_operation_arg = var_case_base:gsub("{mask}", _bin_operation_patt_)  -- <name> = <arg-bin> <op> <arg-bin>
 }
 
 _Assignment_pattern_.attr_case = {
-    number_arg          = attr_case_base:gsub("{mask}", _number_patt_),         -- <name>.<name> = <number>
-    var_arg             = attr_case_base:gsub("{mask}", _name_patt_),           -- <name>.<name> = <name>
-    attr_arg            = attr_case_base:gsub("{mask}", _class_attr_patt_),     -- <name>.<name> = <name>.<name>
-    method_call_arg     = attr_case_base:gsub("{mask}", _method_call_patt_),    -- <name>.<name> = <method-call>
-    obj_creation_arg    = attr_case_base:gsub("{mask}", _obj_creation_patt_),   -- <name>.<name> = <obj-creation>
-    bin_operation_arg   = attr_case_base:gsub("{mask}", _bin_operation_patt_)   -- <name>.<name> = <arg-bin> <op> <arg-bin>
+    number_arg        = attr_case_base:gsub("{mask}", _number_patt_),       -- <name>.<name> = <number>
+    var_arg           = attr_case_base:gsub("{mask}", _name_patt_),         -- <name>.<name> = <name>
+    attr_arg          = attr_case_base:gsub("{mask}", _class_attr_patt_),   -- <name>.<name> = <name>.<name>
+    method_call_arg   = attr_case_base:gsub("{mask}", _method_call_patt_),  -- <name>.<name> = <method-call>
+    obj_creation_arg  = attr_case_base:gsub("{mask}", _obj_creation_patt_), -- <name>.<name> = <obj-creation>
+    bin_operation_arg = attr_case_base:gsub("{mask}", _bin_operation_patt_) -- <name>.<name> = <arg-bin> <op> <arg-bin>
 }
 
 
@@ -112,41 +112,41 @@ Statements_patterns = {
 
 
     -- Assignments (variable case)
-    { { type = "assignment", lhs = "var_case", rhs = "number_arg" },
+    { { type = "assignment", lhs = "var_arg", rhs = "number_arg" },
         _Assignment_pattern_.var_case.number_arg },
 
-    { { type = "assignment", lhs = "var_case", rhs = "var_arg" },
+    { { type = "assignment", lhs = "var_arg", rhs = "var_arg" },
         _Assignment_pattern_.var_case.var_arg },
 
-    { { type = "assignment", lhs = "var_case", rhs = "attr_arg" },
+    { { type = "assignment", lhs = "var_arg", rhs = "attr_arg" },
         _Assignment_pattern_.var_case.attr_arg },
 
-    { { type = "assignment", lhs = "var_case", rhs = "method_call_arg" },
+    { { type = "assignment", lhs = "var_arg", rhs = "method_call_arg" },
         _Assignment_pattern_.var_case.method_call_arg },
 
-    { { type = "assignment", lhs = "var_case", rhs = "obj_creation_arg" },
+    { { type = "assignment", lhs = "var_arg", rhs = "obj_creation_arg" },
         _Assignment_pattern_.var_case.obj_creation_arg },
 
-    { { type = "assignment", lhs = "var_case", rhs = "binary_operation_arg" },
+    { { type = "assignment", lhs = "var_arg", rhs = "binary_operation_arg" },
         _Assignment_pattern_.var_case.bin_operation_arg },
 
     -- Assignments (attribute case)
-    { { type = "assignment", lhs = "attr_case", rhs = "number_arg" },
+    { { type = "assignment", lhs = "attr_arg", rhs = "number_arg" },
         _Assignment_pattern_.attr_case.number_arg },
 
-    { { type = "assignment", lhs = "attr_case", rhs = "var_arg" },
+    { { type = "assignment", lhs = "attr_arg", rhs = "var_arg" },
         _Assignment_pattern_.attr_case.var_arg },
 
-    { { type = "assignment", lhs = "attr_case", rhs = "attr_arg" },
+    { { type = "assignment", lhs = "attr_arg", rhs = "attr_arg" },
         _Assignment_pattern_.attr_case.attr_arg },
 
-    { { type = "assignment", lhs = "attr_case", rhs = "method_call_arg" },
+    { { type = "assignment", lhs = "attr_arg", rhs = "method_call_arg" },
         _Assignment_pattern_.attr_case.method_call_arg },
 
-    { { type = "assignment", lhs = "attr_case", rhs = "obj_creation_arg" },
+    { { type = "assignment", lhs = "attr_arg", rhs = "obj_creation_arg" },
         _Assignment_pattern_.attr_case.obj_creation_arg },
 
-    { { type = "assignment", lhs = "attr_case", rhs = "binary_operation_arg" },
+    { { type = "assignment", lhs = "attr_arg", rhs = "binary_operation_arg" },
         _Assignment_pattern_.attr_case.bin_operation_arg }
 
 }

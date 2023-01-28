@@ -27,7 +27,7 @@ local function main()
 
         line = Read_line(file)
     end
-    
+
     while line do
         line = Read_line(file)
         if line and not line:match(_Empty_line_pattern_) then
@@ -40,7 +40,6 @@ local function main()
     Main_interpreter(main_env, main_block_buffer)
     file:close()
 end
-
 
 -- Início da interpretação do programa
 main()

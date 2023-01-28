@@ -8,9 +8,8 @@ function Read_line(file)
     return file:read("*line")
 end
 
-
 --- Lê as linhas do arquivo até encontrar o padrão
---- especificado, armazena as linhas em uma tabela 
+--- especificado, armazena as linhas em uma tabela
 --- e retorna a tabela
 ---@param file file*
 ---@param line string
@@ -34,9 +33,8 @@ function Read_block(file, line, stop_pattern)
     return nil
 end
 
-
 --- Função de leitura de class_block
---- Lê as linhas do arquivo até "end-class", armazena as 
+--- Lê as linhas do arquivo até "end-class", armazena as
 --- linhas em uma tabela e retorna a tabela
 ---@param file file*
 ---@param line string
@@ -47,13 +45,12 @@ function Read_class_block(file, line)
     if not class_block_content then
         Error("Erro em Read_class_block: 'end-class' não encontrado")
     end
-    
+
     return class_block_content or {}
 end
 
-
 --- Função de leitura de main_block
---- Lê as linhas do arquivo até "end", armazena as 
+--- Lê as linhas do arquivo até "end", armazena as
 --- linhas em uma tabela e retorna a tabela
 ---@param file file*
 ---@param line string
@@ -67,7 +64,6 @@ function Read_main_block(file, line)
 
     return main_block_content or {}
 end
-
 
 --- Recebe a tabela de linhas da classe e o índice do header de um método
 --- O método é lido até "end-method"

@@ -66,3 +66,38 @@ io.dump(d)
   io.print(temp)
   temp = account.id
   io.print(temp)
+
+# Test 5 (URI)
+
+class For
+
+	method for(start, stop, step, A)
+	vars i
+	begin
+		i = start
+		if i ge stop then
+			return A
+		end-if
+		A = A + i
+		i = i + step 
+		i = self.for(i, stop, step, A)
+		return A
+	end-method
+end-class
+
+begin
+	vars uri, A, start, N, step, ret
+	uri = new For
+
+	start = 0
+	N = 2
+	step = 1
+	A = 3
+
+	ret = uri.for(start, N, step, A)
+
+	A = ret + A
+	
+	io.print(A)
+
+end
