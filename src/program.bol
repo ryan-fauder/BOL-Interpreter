@@ -32,10 +32,6 @@ class Pessoa
       name = self.name
       return name
     end-method
-
-
-
-
 end-class
 
 class Account
@@ -67,7 +63,6 @@ class Account
         id = self.id
         io.print(id)
     end-method
-
 end-class
 
 class Root

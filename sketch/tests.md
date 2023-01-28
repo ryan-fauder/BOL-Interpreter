@@ -1,5 +1,8 @@
+# Testes
+
 ## Test 1
 
+```
 class Pessoa
     vars name, age
 
@@ -20,7 +23,7 @@ end-class
 
 class Account
     vars id, owner, value
-    
+
     method setId(id)
     vars a
     begin
@@ -51,30 +54,33 @@ class Account
 
 end-class
 
-vars a, b, c, d
-a = 10
-b = 20
-c = new Pessoa
-d = new Account
+begin
+  vars account, ret, value, tax, person, a, b, c
+  person = new Pessoa
+  account = new Account
 
-c.name = 5
-b = c.name
-io.print(b)
-c.setName(a)
-a = c.name
-io.print(a)
-a = 500
-Pessoa.setName._delete(1):
-c.setName(a)
-a = c.name
-io.print(a)
+  person._prototype = account
+  person.id = 10
 
+  person.setAccount(account)
 
-io.dump(c)
-io.dump(d)
+  person.printId()
+  account.printId()
 
+  value = 200
+  account.value = value
+  value = 100
+  tax = 5
+
+  ret = account.transfer(value, tax)
+  io.print(ret)
+  person.setId(tax)
+  account.printId()
+end
+```
 
 ## Test 2
+
   vars account, ret, value, tax  
   account = new Account
 
@@ -86,12 +92,11 @@ io.dump(d)
 ' account.setId(value)
   io.print(ret)
 
-
 ## Test 3 (ERRO NO PROTOTYPE)
+
   vars account, ret, value, tax, person, a, b, c
   person = new Pessoa
   account = new Account
-
 
   person._prototype = account
   person.id = 10
@@ -107,10 +112,10 @@ io.dump(d)
   person.setId(tax)
 
 ## Test 4 ( NÃO PASSOU - ERRO NO PROTOTYPE)
+
   vars account, person, temp
   person = new Pessoa
   account = new Account
-
 
   person._prototype = account
   person.id = 10
@@ -123,37 +128,36 @@ io.dump(d)
 
 class For
 
-	method for(start, stop, step, A)
-	vars i
-	begin
-		i = start
-		if i ge stop then
-			return A
-		end-if
-		A = A + i
-		i = i + step 
-		i = self.for(i, stop, step, A)
-		return A
-	end-method
+ method for(start, stop, step, A)
+ vars i
+ begin
+  i = start
+  if i ge stop then
+   return A
+  end-if
+  A = A + i
+  i = i + step
+  i = self.for(i, stop, step, A)
+  return A
+ end-method
 end-class
 
 begin
-	vars uri, A, start, N, step, ret
-	uri = new For
+ vars uri, A, start, N, step, ret
+ uri = new For
 
-	start = 0
-	N = 2
-	step = 1
-	A = 3
+ start = 0
+ N = 2
+ step = 1
+ A = 3
 
-	ret = uri.for(start, N, step, A)
+ ret = uri.for(start, N, step, A)
 
-	A = ret + A
-	
-	io.print(A)
+ A = ret + A
+
+ io.print(A)
 
 end
-
 
 # ==== TESTES FINAIS ====
 
@@ -170,6 +174,7 @@ end
 ```
 
 ```
+
 ## Test 5 (If e if-else aninhados em métodos e na main)
 
 ## Test 6 (Self acessando método/atributo em um prototype)
@@ -179,8 +184,3 @@ end
 ## Test 8 (Uso de valores de parâmetros fora do método)
 
 ## Test 9 (Após realizar meta-ações, ver se as variáveis prototype foram afetadas)
-
-
-
-
-

@@ -19,14 +19,14 @@ end
 
 
 --- Armazena o corpo da 'main' no descritor
----@param main_block table<string>
+---@param main_block table:<string>
 function Describer:insert_main(main_block)
     Describer.main = { table.unpack(main_block, 2, #main_block - 1) }
 end
 
 
 --- Armazena uma classe do programa no descritor
----@param class_block table<string>: Tabela com o bloco de uma classe
+---@param class_block table:<string> Tabela com o bloco de uma classe
 function Describer:insert_class(class_block)
 
     local described_class_table = Describer:describe_class(class_block)
@@ -37,7 +37,7 @@ end
 
 
 --- Descreve uma classe a partir de uma tabela de strings e retorna a classe descrita
----@param class_block table<string>: Tabela com o bloco de uma classe
+---@param class_block table:<string> Tabela com o bloco de uma classe
 ---@return table
 function Describer:describe_class(class_block)
 
@@ -177,7 +177,7 @@ end
 
 
 --- Descreve um método e retorna ele
----@param method_block table<string>
+---@param method_block table:<string>
 ---@return table
 function Describer:describe_method(method_block)
 
@@ -232,7 +232,7 @@ end
 
 
 --- Função que transforma uma tabela de strings em uma única string com '\n' como separador
----@param string_table table<string>
+---@param string_table table:<string>
 ---@return string
 function Describer:string_table_concat(string_table)
 
