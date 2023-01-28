@@ -1,4 +1,4 @@
---- Retorna uma ast para uma lista de variáveis
+--- Retorna uma ast (abstract syntax tree) para uma lista de variáveis
 ---@param vars_list_string string
 ---@return table {[index] : [var_name]}
 function Arg_var_list(vars_list_string)
@@ -40,7 +40,8 @@ function Arg_var_list(vars_list_string)
     return vars
 end
 
---- Retorna uma ast para uma chamada de método
+
+--- Retorna uma ast (abstract syntax tree) para uma chamada de método
 ---@param var_name string
 ---@param method_name string
 ---@param params table {[index]: [param_name]}
@@ -60,7 +61,8 @@ function Arg_method_call(var_name, method_name, params)
     return { var_name = var_name, method_name = method_name, params = params }
 end
 
---- Retorna um ast para o acesso a uma variável
+
+--- Retorna uma ast (abstract syntax tree) para o acesso a uma variável
 ---@param var_name string
 ---@return table: {var_name: [var_name]}
 function Arg_var(var_name)
@@ -73,7 +75,8 @@ function Arg_var(var_name)
     return { var_name = var_name }
 end
 
---- Retorna um ast para o acesso a um atributo de um objeto
+
+--- Retorna uma ast (abstract syntax tree) para o acesso a um atributo de um objeto
 ---@param var_name string
 ---@param attr_name string
 ---@return table: {var_name: [var_name], attr_name: [attr_name]}
@@ -87,7 +90,8 @@ function Arg_attr(var_name, attr_name)
     return { var_name = var_name, attr_name = attr_name }
 end
 
---- Retorna um ast para a criação de um objeto
+
+--- Retorna uma ast (abstract syntax tree) para a criação de um objeto
 ---@param class_name string
 ---@return table: {class_name: [class_name]}
 function Arg_obj_creation(class_name)
@@ -100,7 +104,8 @@ function Arg_obj_creation(class_name)
     return { class_name = class_name }
 end
 
---- Retorna um ast para um número
+
+--- Retorna uma ast (abstract syntax tree) para um número
 ---@param value string
 ---@return table: {value: [tonumber(value)]}
 function Arg_number(value)
@@ -113,7 +118,8 @@ function Arg_number(value)
     return { value = tonumber(value) }
 end
 
---- Retorna um ast para uma operação binária entre variáveis
+
+--- Retorna uma ast (abstract syntax tree) para uma operação binária entre variáveis
 ---@param first_var string
 ---@param second_var string
 ---@param operator string

@@ -37,11 +37,7 @@ end
 
 ---@description Imprime um NumberVar
 function NumberVar:print()
-    print("Name: " .. self.name .. " = { Type: " .. self.type .. ", Value: " .. self.value .. "}")
-end
-
-function NumberVar:new_referee(var)
-    self = var
+    print("Name: " .. self.name .. " = { Type: " .. self.type .. ", Value: " .. self.value .. " }")
 end
 
 ClassVar = {}
@@ -57,7 +53,7 @@ function ClassVar:new(object, name, class_table, methods_table)
     self.__index = self
 
     if (class_table == nil) then
-        Error("Erro em ClassVar.new: class não definida")
+        Error("Erro em ClassVar:new: class não definida")
         return
     end
 
@@ -113,10 +109,6 @@ function ClassVar:find_attr(name)
         table = self._prototype:find_attr(name)
     end
     return table
-end
-
-function ClassVar:new_referee(var)
-    self = var
 end
 
 --- Captura um atributo de um objeto

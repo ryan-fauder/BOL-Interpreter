@@ -53,13 +53,13 @@ local function Test_env()
     if (number_var1 == nil) then return end
     if (number_var2 == nil) then return end
     local env = Env:new()
-    env:setVar(number_var1.name, number_var1)
-    env:setVar(number_var2.name, number_var2)
+    env:set_var(number_var1.name, number_var1)
+    env:set_var(number_var2.name, number_var2)
     env:print()
 
     local class_var2 = ClassVar:new(nil, "VAR2", Class_table1, Class_table1.methods)
     if (class_var2 == nil) then return end
-    env:setVar(class_var2.name, class_var2)
+    env:set_var(class_var2.name, class_var2)
     env:print()
 end
 

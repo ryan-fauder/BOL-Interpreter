@@ -1,4 +1,56 @@
-# Test 1
+## Test 1
+
+class Pessoa
+    vars name, age
+
+    method setName(name)
+    begin
+        self.name = name
+        io.print(name)
+    end-method
+
+    method getName()
+    vars name
+    begin
+      name = self.name
+      return name
+    end-method
+
+end-class
+
+class Account
+    vars id, owner, value
+    
+    method setId(id)
+    vars a
+    begin
+      self.id = id
+      a = self.id
+      io.print(a)
+
+    end-method
+
+    method transfer(valueA, tax)
+    vars aux, temp
+    begin
+      aux = valueA * tax
+      aux = valueA + aux
+      temp = self.value
+      self.value = temp + aux
+      temp = self.value
+      io.print(temp)
+      return temp
+    end-method
+
+    method printId()
+    vars id
+    begin
+        id = self.id
+        io.print(id)
+    end-method
+
+end-class
+
 vars a, b, c, d
 a = 10
 b = 20
@@ -22,7 +74,7 @@ io.dump(c)
 io.dump(d)
 
 
-# Test 2
+## Test 2
   vars account, ret, value, tax  
   account = new Account
 
@@ -35,7 +87,7 @@ io.dump(d)
   io.print(ret)
 
 
-# Test 3 (ERRO NO PROTOTYPE)
+## Test 3 (ERRO NO PROTOTYPE)
   vars account, ret, value, tax, person, a, b, c
   person = new Pessoa
   account = new Account
@@ -54,7 +106,7 @@ io.dump(d)
   
   person.setId(tax)
 
-# Test 4 ( NÃO PASSOU - ERRO NO PROTOTYPE)
+## Test 4 ( NÃO PASSOU - ERRO NO PROTOTYPE)
   vars account, person, temp
   person = new Pessoa
   account = new Account
@@ -67,7 +119,7 @@ io.dump(d)
   temp = account.id
   io.print(temp)
 
-# Test 5 (URI)
+## Test 5 (URI)
 
 class For
 
@@ -101,3 +153,34 @@ begin
 	io.print(A)
 
 end
+
+
+# ==== TESTES FINAIS ====
+
+## Test 1 (Meta ação de replace em uma função aninhada)
+
+## Test 2 (Recursão em duas funções aninhadas)
+
+## Test 3 (Loop FOR)
+
+## Test 4 (Passagem de parâmetro)
+
+> (Mudança de valores passados como parâmetro - uma classe e um número)
+
+```
+
+```
+## Test 5 (If e if-else aninhados em métodos e na main)
+
+## Test 6 (Self acessando método/atributo em um prototype)
+
+## Test 7 (Criação de objeto dentro de um método e retorno desse objeto)
+
+## Test 8 (Uso de valores de parâmetros fora do método)
+
+## Test 9 (Após realizar meta-ações, ver se as variáveis prototype foram afetadas)
+
+
+
+
+

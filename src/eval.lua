@@ -8,13 +8,13 @@ function Eval_vars_def(env, ast)
     local var = nil
     for index, var_name in ipairs(ast.var_list) do
         var = NumberVar:new(nil, var_name, 0)
-        env:setVar(var_name, var)
+        env:set_var(var_name, var)
     end
 end
 
 function Eval_io_dump(env, ast)
     local var_name = ast.arg.params[1]
-    local var = env:getVar(var_name)
+    local var = env:get_var(var_name)
     local describer = Get_describer()
     if var.type ~= "Class" then
         Error("Erro em Eval_io_dump: Variável " .. var_name .. " não é um objeto de uma classe")
@@ -26,7 +26,7 @@ end
 
 function Eval_io_print(env, ast)
     local var_name = ast.arg.params[1]
-    local var = env:getVar(var_name)
+    local var = env:get_var(var_name)
     if var.type ~= "Number" then
         Error("Erro em Eval_io_print: Variável " .. var_name .. " é não númerico")
         return
@@ -53,7 +53,7 @@ function Eval_method_call(env, ast)
         return
     end
 
-    local object = env:getVar(obj_name)
+    local object = env:get_var(obj_name)
 
     local method_table = object:get_method(method_name)
     if method_table == nil then
@@ -61,12 +61,12 @@ function Eval_method_call(env, ast)
         return
     end
 
-    local method_buffer = describer:string_table_to_string(method_table.body)
+    local method_buffer = describer:string_table_concat(method_table.body)
 
     local method_env = Env:new()
-    method_env:setVar("self", object)
+    method_env:set_var("self", object)
 
-    if (method_table.vars == nil) then
+    if method_table.vars == nil then
         method_table.vars = {}
     end
 
@@ -78,10 +78,13 @@ function Eval_method_call(env, ast)
     end
 
     for index, var_name in ipairs(params) do
-        local var = env:getVar(var_name)
-        method_env:setVar(method_table.params[index], var)
+        local var = env:get_var(var_name)
+        local param = var:copy(var_name)
+        method_env:set_var(method_table.params[index], param)
     end
-    local return_value = Method_interpreter(method_env, method_buffer)
+
+    local return_value = Method_executor(method_env, method_buffer)
+
     return return_value
 end
 
@@ -101,8 +104,8 @@ function Eval_binary_operation(env, ast)
         ["*"] = function(var1, var2) return (var1 * var2) end
     }
 
-    local first_var = env:getVar(first_var_name)
-    local second_var = env:getVar(second_var_name)
+    local first_var = env:get_var(first_var_name)
+    local second_var = env:get_var(second_var_name)
 
     if first_var.type ~= "Number" or second_var.type ~= "Number" then
         Error("Erro em Eval_binary_operation: Operação com valores não númericos")
@@ -131,24 +134,21 @@ end
 function Eval_arg(env, ast)
     local arg = ast.arg
     local arg_var
-    -- ast: {type: string, arg: Arg_Number | Arg_Var | Arg_Attr | Arg_Obj_Creation | Arg_Method_Call}
+
     if ast.type == "number_arg" then
         local var_name = "Number var"
         arg_var = NumberVar:new(nil, var_name, arg.value)
 
     elseif ast.type == "var_arg" then
-        arg_var = env:getVar(arg.var_name)
+        arg_var = env:get_var(arg.var_name)
 
     elseif ast.type == "attr_arg" then
-        local temp_var = env:getVar(arg.var_name)
-
+        local temp_var = env:get_var(arg.var_name)
         if temp_var.type ~= "Class" then
             Error("Erro em Eval_arg: Variável '"..temp_var.name.."' com atributo não é uma classe")
             return
         end
-
-        arg_var = temp_var:get_attr(arg.attr_name)
-
+        arg_var = temp_var:find_attr(arg.attr_name)
         if arg_var == nil then
             Error("Erro em Eval_arg: Atributo '" ..
             arg.attr_name .. "' não existe em '" .. arg.var_name .. "'")
@@ -165,9 +165,11 @@ function Eval_arg(env, ast)
     elseif ast.type == "obj_creation_arg" then
         ast.arg.var_name = arg.class_name.." object"
         arg_var = Eval_obj_creation(env, ast)
+
     elseif ast.type == "binary_operation_arg" then
         ast.arg.var_name = "Binary var"
         arg_var = Eval_binary_operation(env, ast)
+
     else
         Error("Erro em Eval_arg: Tipo de arg não reconhecido")
         return {}
@@ -180,21 +182,27 @@ end
 function Eval_assign(env, ast)
     local lhs = ast.lhs
     local rhs = ast.rhs
-    print(lhs.type)
-    print(rhs.type)
     local lhs_var = Eval_arg(env, lhs)
-    local rhs_var = Eval_arg(env, rhs)
+    local rhs_var_copy = Eval_arg(env, rhs)
+
+    if lhs_var == nil or rhs_var_copy == nil then
+        Error("Error em Eval_assign: Alguma variável de atribuição não foi reconhecida")
+        return
+    end
+
+    local rhs_var = rhs_var_copy:copy(lhs_var.name)
+    rhs_var.name = lhs_var.name
+
+    if rhs.type == "attr_arg" then
+        local attr = rhs.arg.attr_name
+        rhs_var = rhs_var.attr[attr]
+    end
 
     if lhs.type == "var_arg" then
-        Clear_table(lhs_var)
-        Deep_copy(lhs_var, rhs_var)
-        Print_table(lhs_var)
-        -- env:setVar(lhs_var.name, rhs_var)
+        env:set_var(lhs.arg.var_name, rhs_var)
     elseif lhs.type == "attr_arg" then
-        Clear_table(lhs_var)
-        Deep_copy(lhs_var, rhs_var)
+        lhs_var:set_attr(lhs.arg.attr_name, rhs_var)
     end
-    env:print()
 
 end
 
@@ -215,6 +223,7 @@ function Eval_meta_action(env, ast)
     end
 
     str_no_nl = Trim(str_no_nl)
+
     if action_type == "_insert" and str_no_nl ~= "" then
         if line_number == 0 then line_number = #method_body_table + 1 end
         table.insert(method_body_table, line_number, str_no_nl)
@@ -235,7 +244,7 @@ end
 
 function Eval_return(env, ast)
     local var_name = ast.arg.var_name
-    local return_value = env:getVar(var_name)
+    local return_value = env:get_var(var_name)
     return return_value
 end
 
@@ -247,8 +256,8 @@ function Eval_prototype(env, ast)
         Error("Erro em Eval_prototype: Objeto não pode referenciar a si próprio")
     end
 
-    local lhs_obj = env:getVar(lhs_obj_name)
-    local rhs_obj = env:getVar(rhs_obj_name)
+    local lhs_obj = env:get_var(lhs_obj_name)
+    local rhs_obj = env:get_var(rhs_obj_name)
 
     lhs_obj._prototype = rhs_obj
 end
@@ -260,8 +269,8 @@ function Eval_if(env, ast)
 
     local condition_result = nil
 
-    local lhs_var = env:getVar(lhs.var_name)
-    local rhs_var = env:getVar(rhs.var_name)
+    local lhs_var = env:get_var(lhs.var_name)
+    local rhs_var = env:get_var(rhs.var_name)
     local cmp_functions = {
         eq = function(var1, var2) return (var1 == var2) end,
         ne = function(var1, var2) return (var1 ~= var2) end,
@@ -288,29 +297,30 @@ function Eval_if(env, ast)
     local else_buffer = ast.else_block
 
     if condition_result == true and if_buffer ~= nil then
-        return If_interpreter(env, if_buffer)
+        return If_executor(env, if_buffer)
     elseif else_buffer ~= nil then
-        return If_interpreter(env, else_buffer)
+        return If_executor(env, else_buffer)
     end
 
 end
 
 function Eval_controller(env, ast)
     local statement_type = ast.type
+
     if statement_type == "method_call" then
-        return Eval_method_call(env, ast)
+        Eval_method_call(env, ast)
     elseif statement_type == "assignment" then
-        return Eval_assign(env, ast)
+        Eval_assign(env, ast)
     elseif statement_type == "meta_action" then
-        return Eval_meta_action(env, ast)
+        Eval_meta_action(env, ast)
     elseif statement_type == "prototype" then
-        return Eval_prototype(env, ast)
+        Eval_prototype(env, ast)
     elseif statement_type == "return" then
         return Eval_return(env, ast)
     elseif statement_type == "if" then
         return Eval_if(env, ast)
     elseif statement_type == "vars_def" then
-        return Eval_vars_def(env, ast)
+        Eval_vars_def(env, ast)
     else
         Error("Erro em Eval_controller: Declaração com sintaxe incorreta")
     end

@@ -1,14 +1,15 @@
---- Regex patterns module
+-- =================================================================================== --
+--- Arquivo que contém todas as expressões regulares (regex) utilizadas no projeto
+-- =================================================================================== --
 
 -- =================================================================================== --
---- Basic patterns
+--- Padrões básicos (auxiliares)
 local _number_patt_ = "([+-]?[%%d]+)"
 local _name_patt_ = "([%%a]+)"
 local _class_attr_patt_ = "([%%a]+)%%.([%%a]+)"
 local _method_call_patt_ = "([%%a]+)%%.([%%a]+)%%((.-)%%)"
 local _obj_creation_patt_ = "new[%%s]+([%%a]+)"
 local _bin_operation_patt_ = "([%%a]+)[%%s]*([%%+%%-%%*%%/])[%%s]*([%%a]+)"
-
 -- =================================================================================== --
 
 -- Class definition
@@ -22,7 +23,8 @@ _Main_body_end_pattern_ = "[%s]*end[%s]*"
 
 
 -- Method header
-_Method_header_pattern_ = "[%s]*method[%s]+[%a]+%(.-%)[%s]*"
+-- _Method_header_pattern_ = "[%s]*method[%s]+[%a]+%(.-%)[%s]*"
+_Method_header_pattern_ = "[%s]*method[%s]+([%a]+)%((.-)%)[%s]*"
 _Method_body_begin_pattern_ = "[%s]*begin[%s]*"
 _Method_body_end_pattern_ = "[%s]*end%-method[%s]*"
 
@@ -37,7 +39,7 @@ _Variable_last_def_pattern_ = "[%s]*[%a]+[%s]*"
 _Empty_line_pattern_ = "^[%s]*$"
 
 -- =================================================================================== --
---- Statements patterns
+--- Padrões de linhas de instrução (statements)
 
 -- Assignments
 _Assignment_pattern_ = {
@@ -92,8 +94,9 @@ _Prototype_pattern_ = "[%s]*([%a]+)%._prototype[%s]+=[%s]+([%a]+)[%s]*"
 -- Return
 _Return_pattern_ = "[%s]*return[%s]+([%a]+)[%s]*"
 
+-- =================================================================================== --
+--- Vetor contendo os padrões de statements
 
--- Vetor contendo os padrões de statements
 Statements_patterns = {
     { { type = "method_call" },
         _Method_call_pattern_ },

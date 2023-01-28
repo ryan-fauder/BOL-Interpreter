@@ -27,7 +27,7 @@ local function main_interpreter_test()
     print(main_block_buffer)
     print("================================")
     local main_env = Env:new()
-    Main_interpreter(main_env, main_block_buffer)
+    Main_executor(main_env, main_block_buffer)
 end
 
 main_interpreter_test()

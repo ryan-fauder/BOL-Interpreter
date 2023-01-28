@@ -1,9 +1,28 @@
 class Pessoa
-    vars name, age
+    vars name, age, account
+    
+    method setAccount(account)
+    vars id
+    begin
+      self.account = account
+      id = 27
+      self.ret()
+      io.print(id)
+      self.setId(id)
+      self.printId()
+    end-method
+
+    method ret()
+    vars r
+    begin
+      r = 0
+      return r
+    end-method
 
     method setName(name)
     begin
         self.name = name
+        name = 5
         io.print(name)
     end-method
 
@@ -13,6 +32,9 @@ class Pessoa
       name = self.name
       return name
     end-method
+
+
+
 
 end-class
 
@@ -25,7 +47,6 @@ class Account
       self.id = id
       a = self.id
       io.print(a)
-
     end-method
 
     method transfer(valueA, tax)
@@ -55,29 +76,10 @@ class Root
   begin
     io.print()
   end-method
-
 end-class
 
 
 class Math
-  method factorial(n)
-  vars f, temp, ret, one
-  begin
-  one = 1
-  if n eq one then
-    return n
-  else
-    temp = n - one
-    f = self.factorial(temp)
-    ret = f * n
-    return ret
-  end-if
-
-  end-method
-
-end-class
-
-class Bhaskara
   vars a, b, c, delta
 
   method getDelta()
@@ -93,19 +95,44 @@ class Bhaskara
     return temp
   end-method
 
+
+  method factorial(n)
+    vars f, temp, ret, one
+    begin
+    one = 1
+    if n eq one then
+      return n
+    else
+      temp = n - one
+      f = self.factorial(temp)
+      ret = f * n
+      return ret
+    end-if
+  end-method
 end-class
 
 
 begin
-  vars account, person, temp
+  vars account, ret, value, tax, person, a, b, c
   person = new Pessoa
   account = new Account
 
   person._prototype = account
   person.id = 10
-  temp = person.id
-  io.print(temp)
-  temp = account.id
-  io.print(temp)
+
+  person.setAccount(account)
+
+  person.printId()
+  account.printId()
+
+  value = 200
+  account.value = value
+  value = 100
+  tax = 5
+
+  ret = account.transfer(value, tax)
+  io.print(ret)
+  person.setId(tax)
+  account.printId()
 end
 

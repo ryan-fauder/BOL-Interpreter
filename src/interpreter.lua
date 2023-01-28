@@ -4,6 +4,7 @@ require "reader"
 require "executor"
 require "describer"
 
+
 --- Função que inicia a interpretação do programa
 local function main()
     local file = Get_file(arg[1])
@@ -12,10 +13,12 @@ local function main()
     local class_block, main_block
 
     while line do
+        -- <class-def> encontrado
         if line:match("^" .. _Class_def_begin_pattern_ .. "$") then
             class_block = Read_class_block(file, line)
             describer:insert_class(class_block)
 
+        -- <main-body> encontrado
         elseif line:match("^" .. _Main_body_begin_pattern_ .. "$") then
             main_block = Read_main_block(file, line)
             describer:insert_main(main_block)
@@ -34,12 +37,17 @@ local function main()
             Error("Erro em Main: Linha não vazia após a leitura do bloco principal")
         end
     end
-    --- Chamada da MainExecutor buscando o buffer do Describer
-    local main_block_buffer = describer:string_table_to_string(describer.main)
+
+    -- Busca o buffer da main pelo descritor
+    local main_block_buffer = describer:string_table_concat(describer.main)
     local main_env = Env:new()
-    Main_interpreter(main_env, main_block_buffer)
+
+    -- Executa a main
+    Main_executor(main_env, main_block_buffer)
+
     file:close()
 end
+
 
 -- Início da interpretação do programa
 main()

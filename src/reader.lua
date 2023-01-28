@@ -8,6 +8,7 @@ function Read_line(file)
     return file:read("*line")
 end
 
+
 --- Lê as linhas do arquivo até encontrar o padrão
 --- especificado, armazena as linhas em uma tabela
 --- e retorna a tabela
@@ -33,6 +34,7 @@ function Read_block(file, line, stop_pattern)
     return nil
 end
 
+
 --- Função de leitura de class_block
 --- Lê as linhas do arquivo até "end-class", armazena as
 --- linhas em uma tabela e retorna a tabela
@@ -48,6 +50,7 @@ function Read_class_block(file, line)
 
     return class_block_content or {}
 end
+
 
 --- Função de leitura de main_block
 --- Lê as linhas do arquivo até "end", armazena as
@@ -65,6 +68,7 @@ function Read_main_block(file, line)
     return main_block_content or {}
 end
 
+
 --- Recebe a tabela de linhas da classe e o índice do header de um método
 --- O método é lido até "end-method"
 --- Retorna uma tabela de linhas com o método e o índice depois de "end-method"
@@ -77,10 +81,10 @@ function Read_method_block(class_block_content, index)
     local itr_limit = #class_block_content + 1
 
     repeat
-        table.insert(method_block_content, class_block_content[index])
         if index == itr_limit then
             Error("Erro em Read_method_block: 'end-method' não encontrado")
         end
+        table.insert(method_block_content, class_block_content[index])
         index = index + 1
     until class_block_content[index - 1]:match("^" .. _Method_body_end_pattern_ .. "$")
 

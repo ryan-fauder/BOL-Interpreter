@@ -17,10 +17,10 @@ if number_var1 == nil then return end
 if number_var2 == nil then return end
 
 local env = Env:new()
-env:setVar(obj1.name, obj1)
-env:setVar(obj2.name, obj2)
-env:setVar(number_var1.name, number_var1)
-env:setVar(number_var2.name, number_var2)
+env:set_var(obj1.name, obj1)
+env:set_var(obj2.name, obj2)
+env:set_var(number_var1.name, number_var1)
+env:set_var(number_var2.name, number_var2)
 
 
 function Test_eval_vars_def()
@@ -60,10 +60,6 @@ function Test_eval_binary_operation()
     local result = Eval_binary_operation(env, ast.rhs)
     if result == nil then return end
     Print_table(result)
-end
-
-function Test_eval_obj_creation()
-
 end
 
 function Test_eval_method_call()
