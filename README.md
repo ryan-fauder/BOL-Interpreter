@@ -1,5 +1,14 @@
 # BOL Interpreter
 
+## Como executar
+
+Execute o comando abaixo:
+
+```
+  lua interpreter.lua program.bol
+```
+
+
 ## Desenvolvedores
 
 - Luiz Fernando de Freitas Oliveira
