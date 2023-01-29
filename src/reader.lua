@@ -42,7 +42,7 @@ end
 ---@param line string
 ---@return table
 function Read_class_block(file, line)
-    local class_block_content = Read_block(file, line, _Class_def_end_pattern_)
+    local class_block_content = Read_block(file, line, "^" .. _Class_def_end_pattern_ .. "$")
 
     if not class_block_content then
         Error("Erro em Read_class_block: 'end-class' não encontrado")
@@ -59,7 +59,7 @@ end
 ---@param line string
 ---@return table
 function Read_main_block(file, line)
-    local main_block_content = Read_block(file, line, _Main_body_end_pattern_)
+    local main_block_content = Read_block(file, line, "^" .. _Main_body_end_pattern_.. "$")
 
     if not main_block_content then
         Error("Erro em Read_main_block: 'end' nao encontrado")

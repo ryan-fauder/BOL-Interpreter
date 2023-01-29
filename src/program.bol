@@ -1,133 +1,47 @@
-class Pessoa
-    vars name, age, account
-    
-    method setAccount(account)
-    vars id
-    begin
-      self.account = account
-      id = 27
-      self.ret()
-      io.print(id)
-      self.setId(id)
-      self.printId()
-    end-method
+class Obj
+  vars value
 
-    method ret()
-    vars r
-    begin
-      r = 0
-      return r
-    end-method
-
-    method setName(name)
-    begin
-        self.name = name
-        name = 5
-        io.print(name)
-    end-method
-
-    method getName()
-    vars name
-    begin
-      name = self.name
-      return name
-    end-method
-end-class
-
-class Account
-    vars id, owner, value
-    
-    method setId(id)
-    vars a
-    begin
-      self.id = id
-      a = self.id
-      io.print(a)
-    end-method
-
-    method transfer(valueA, tax)
-    vars aux, temp
-    begin
-      aux = valueA * tax
-      aux = valueA + aux
-      temp = self.value
-      self.value = temp + aux
-      temp = self.value
-      io.print(temp)
-      return temp
-    end-method
-
-    method printId()
-    vars id
-    begin
-        id = self.id
-        io.print(id)
-    end-method
-end-class
-
-class Root
-
-  method calc()
+  method loop()
+  vars three, aux
   begin
-    io.print()
+    three = 3
+    aux = self.value
+    self.value = aux * three
   end-method
 end-class
 
+class For
 
-class Math
-  vars a, b, c, delta
+ method for(start, stop, step, obj)
+ vars i
+ begin
+  i = start
+  if i ge stop then
+   return i
+  end-if
 
-  method getDelta()
-  vars bSquare, aTimesC, negFour, temp
-  begin
-    bSquare = self.b * self.b
-    aTimesC = self.a * self*c
-    negFour = -4
-    temp = self.delta
-    self.delta = negFour * aTimesC
-    self.delta = bSquare + temp
-    temp = self.delta
-    return temp
-  end-method
-
-
-  method factorial(n)
-    vars f, temp, ret, one
-    begin
-    one = 1
-    if n eq one then
-      return n
-    else
-      temp = n - one
-      f = self.factorial(temp)
-      ret = f * n
-      return ret
-    end-if
-  end-method
+  obj.loop()
+  
+  i = i + step
+  i = self.for(i, stop, step, obj)
+  
+  
+  return i
+ end-method
 end-class
-
 
 begin
-  vars account, ret, value, tax, person, a, b, c
-  person = new Pessoa
-  account = new Account
+ vars for, obj, start, stop, step, aux
+ for = new For
+ obj = new Obj
 
-  person._prototype = account
-  person.id = 10
+ obj.value = 10
+ start = 0
+ stop = 2
+ step = 1
 
-  person.setAccount(account)
+ for.for(start, stop, step, obj)
+ aux = obj.value
+ io.print(aux)
 
-  person.printId()
-  account.printId()
-
-  value = 200
-  account.value = value
-  value = 100
-  tax = 5
-
-  ret = account.transfer(value, tax)
-  io.print(ret)
-  person.setId(tax)
-  account.printId()
 end
-

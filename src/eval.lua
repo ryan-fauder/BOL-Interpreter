@@ -4,6 +4,9 @@ require "types"
 require "math"
 
 
+--- comment
+---@param env any
+---@param ast any
 function Eval_vars_def(env, ast)
     local var = nil
     for index, var_name in ipairs(ast.var_list) do
@@ -12,6 +15,10 @@ function Eval_vars_def(env, ast)
     end
 end
 
+
+--- comment
+---@param env any
+---@param ast any
 function Eval_io_dump(env, ast)
     local var_name = ast.arg.params[1]
     local var = env:get_var(var_name)
@@ -24,6 +31,10 @@ function Eval_io_dump(env, ast)
     describer:class_dump(var.class.name)
 end
 
+
+--- comment
+---@param env any
+---@param ast any
 function Eval_io_print(env, ast)
     local var_name = ast.arg.params[1]
     local var = env:get_var(var_name)
@@ -35,6 +46,11 @@ function Eval_io_print(env, ast)
     print(var.value)
 end
 
+
+--- comment
+---@param env any
+---@param ast any
+---@return table|nil
 function Eval_method_call(env, ast)
     local describer = Get_describer()
 
@@ -83,11 +99,16 @@ function Eval_method_call(env, ast)
         method_env:set_var(method_table.params[index], param)
     end
 
-    local return_value = Method_executor(method_env, method_buffer)
+    local return_value = Block_executor(method_env, method_buffer, "method_executor", Parser_method_stmt)
 
     return return_value
 end
 
+
+--- comment
+---@param env any
+---@param ast any
+---@return table|nil
 function Eval_binary_operation(env, ast)
     local first_var_name = ast.arg.first_var
     local second_var_name = ast.arg.second_var
@@ -125,12 +146,22 @@ function Eval_binary_operation(env, ast)
     return var
 end
 
+
+--- comment
+---@param env any
+---@param ast any
+---@return table|nil
 function Eval_obj_creation(env, ast)
     local describer = Get_describer()
     local class_table = describer:get_class(ast.arg.class_name)
     return ClassVar:new(nil, ast.arg.var_name, class_table, class_table.methods)
 end
 
+
+--- comment
+---@param env any
+---@param ast any
+---@return table
 function Eval_arg(env, ast)
     local arg = ast.arg
     local arg_var
@@ -145,13 +176,13 @@ function Eval_arg(env, ast)
     elseif ast.type == "attr_arg" then
         local temp_var = env:get_var(arg.var_name)
         if temp_var.type ~= "Class" then
-            Error("Erro em Eval_arg: Variável '"..temp_var.name.."' com atributo não é uma classe")
+            Error("Erro em Eval_arg: Variável '" .. temp_var.name .. "' com atributo não é uma classe")
             return
         end
         arg_var = temp_var:find_attr(arg.attr_name)
         if arg_var == nil then
             Error("Erro em Eval_arg: Atributo '" ..
-            arg.attr_name .. "' não existe em '" .. arg.var_name .. "'")
+                arg.attr_name .. "' não existe em '" .. arg.var_name .. "'")
             return
         end
 
@@ -163,7 +194,7 @@ function Eval_arg(env, ast)
         end
 
     elseif ast.type == "obj_creation_arg" then
-        ast.arg.var_name = arg.class_name.." object"
+        ast.arg.var_name = arg.class_name .. " object"
         arg_var = Eval_obj_creation(env, ast)
 
     elseif ast.type == "binary_operation_arg" then
@@ -179,6 +210,10 @@ function Eval_arg(env, ast)
 end
 
 
+
+--- comment
+---@param env any
+---@param ast any
 function Eval_assign(env, ast)
     local lhs = ast.lhs
     local rhs = ast.rhs
@@ -207,6 +242,9 @@ function Eval_assign(env, ast)
 end
 
 
+--- comment
+---@param env any
+---@param ast any
 function Eval_meta_action(env, ast)
     local class_name = ast.arg.var_name
     local method_name = ast.arg.method_name
@@ -242,12 +280,21 @@ function Eval_meta_action(env, ast)
 
 end
 
+
+--- comment
+---@param env any
+---@param ast any
+---@return unknown
 function Eval_return(env, ast)
     local var_name = ast.arg.var_name
     local return_value = env:get_var(var_name)
     return return_value
 end
 
+
+--- comment
+---@param env any
+---@param ast any
 function Eval_prototype(env, ast)
     local lhs_obj_name = ast.lhs.var_name
     local rhs_obj_name = ast.rhs.var_name
@@ -262,6 +309,11 @@ function Eval_prototype(env, ast)
     lhs_obj._prototype = rhs_obj
 end
 
+
+--- comment
+---@param env any
+---@param ast any
+---@return table|nil
 function Eval_if(env, ast)
     local lhs = ast.lhs
     local rhs = ast.rhs
@@ -297,13 +349,18 @@ function Eval_if(env, ast)
     local else_buffer = ast.else_block
 
     if condition_result == true and if_buffer ~= nil then
-        return If_executor(env, if_buffer)
+        return Block_executor(env, if_buffer, "if_executor", Parser_if_stmt)
     elseif else_buffer ~= nil then
-        return If_executor(env, else_buffer)
+        return Block_executor(env, else_buffer, "if_executor", Parser_if_stmt)
     end
 
 end
 
+
+--- comment
+---@param env any
+---@param ast any
+---@return table|nil
 function Eval_controller(env, ast)
     local statement_type = ast.type
 

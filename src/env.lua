@@ -1,6 +1,7 @@
 require "utils"
 require "types"
 
+
 Env = {}
 
 --- Cria um objeto Env
@@ -24,7 +25,7 @@ function Env:set_var(name, var)
 end
 
 
---- Retorna uma variável
+--- Retorna uma variável do ambiente
 ---@param name string
 ---@return table
 function Env:get_var(name)

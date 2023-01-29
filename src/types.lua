@@ -30,15 +30,18 @@ function NumberVar:new(object, name, value)
     return object
 end
 
+
 function NumberVar:copy(name)
     local clone = NumberVar:new(nil, name, self.value)
     return clone
 end
 
+
 ---@description Imprime um NumberVar
 function NumberVar:print()
     print("Name: " .. self.name .. " = { Type: " .. self.type .. ", Value: " .. self.value .. " }")
 end
+
 
 ClassVar = {}
 
@@ -78,12 +81,14 @@ function ClassVar:new(object, name, class_table, methods_table)
     return object
 end
 
+
 --- Define um atributo em um objeto ClassVar
 ---@param name string
 ---@param value string
 function ClassVar:set_attr(name, value)
     self.attr[name] = value
 end
+
 
 --- Captura um atributo de um objeto
 ---@param name string
@@ -95,6 +100,7 @@ function ClassVar:get_attr(name)
     end
     return value
 end
+
 
 --- Captura um atributo de um objeto
 ---@param name string
@@ -111,6 +117,7 @@ function ClassVar:find_attr(name)
     return table
 end
 
+
 --- Captura um atributo de um objeto
 ---@param name string
 ---@return table
@@ -122,9 +129,11 @@ function ClassVar:get_method(name)
     return method
 end
 
+
 function ClassVar:copy()
     return self
 end
+
 
 --- Imprime um objeto de ClassVar
 function ClassVar:print()

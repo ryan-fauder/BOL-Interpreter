@@ -4,7 +4,7 @@ require "args"
 require "utils"
 
 
----comment
+--- comment
 ---@param lexer table {types: {}, tokens: {}}
 ---@param parser_id string
 ---@param type string
@@ -26,6 +26,7 @@ local function check_lexer(lexer, parser_id, type, qty_tokens)
         return
     end
 end
+
 
 --- func desc
 ---@param lexer table {types: {type, lhs, rhs}, tokens: {}}
@@ -93,6 +94,7 @@ function Parser_assign(lexer)
     return ast
 end
 
+
 --- Desc
 ---@param lexer table {types: {type}, tokens: {}}
 ---@return table
@@ -112,6 +114,7 @@ function Parser_var(lexer)
     return ast
 end
 
+
 --- Desc
 ---@param lexer table {types: {type}, tokens: {}}
 ---@return table
@@ -130,6 +133,7 @@ function Parser_vars_def(lexer)
 
     return ast
 end
+
 
 --- Desc
 ---@param lexer table {types: {type}, tokens: {}}
@@ -157,6 +161,7 @@ function Parser_meta_action(lexer)
     return ast
 end
 
+
 --- func desc
 ---@param lexer table {types: {type}, tokens: {}}
 ---@return table
@@ -178,6 +183,7 @@ function Parser_prototype(lexer)
     return ast
 end
 
+
 --- func desc
 ---@param lexer table {types: {type}, tokens: {}}
 ---@return table
@@ -193,6 +199,7 @@ function Parser_return(lexer)
 
     return ast
 end
+
 
 --- func desc
 ---@param lexer table {types: {type}, tokens: {}}
@@ -218,6 +225,7 @@ function Parser_method_call(lexer)
 
     return ast
 end
+
 
 --- func desc
 ---@param lexer table {types: {type}, tokens: {}}
@@ -259,6 +267,7 @@ function Parser_if(lexer)
     return ast
 end
 
+
 --- func desc
 ---@param lexer table {types: {type}, tokens: {}}
 ---@return table
@@ -279,6 +288,7 @@ function Parser_main_stmt(lexer)
         return {}
     end
 end
+
 
 --- func desc
 ---@param lexer table {types: {type}, tokens: {}}
@@ -302,6 +312,7 @@ function Parser_method_stmt(lexer)
         return {}
     end
 end
+
 
 --- func desc
 ---@param lexer table {types: {type}, tokens: {}}

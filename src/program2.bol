@@ -1,0 +1,49 @@
+class Foo
+    vars x, y
+
+    method bar(k)
+    vars a, b
+    begin
+        a = 10
+        b = 15
+        if a ge b then
+            k = k + a
+            return k
+        else
+            k = k + b
+            return k
+        end-if
+    end-method
+
+    method baz(k)
+    vars c, d
+    begin
+        c = 10
+        d = 15
+        if c ne d then
+            k = k + c
+            return k
+        else
+            k = k + d
+            return k
+        end-if
+    end-method
+
+end-class
+
+begin
+    vars f, x, y, z, k
+
+    f = new Foo
+    x = 40
+    y = 50
+
+    k = 100
+    if x eq y then
+        z = f.bar(k)
+    else
+        z = f.baz(k)
+    end-if
+
+    io.print(z)
+end
