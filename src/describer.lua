@@ -97,7 +97,13 @@ end
 ---@param class_name string: Nome da classe procurada
 ---@return table
 function Describer:get_class(class_name)
-    return self.classes[class_name]
+    local class = self.classes[class_name]
+
+    if class == nil then
+        Error("Erro em Describer:get_class: Classe inexistente")
+        return {}
+    end
+    return class
 end
 
 
@@ -227,7 +233,16 @@ end
 ---@param method_name string
 ---@return table
 function Describer:get_method(class_name, method_name)
-    return self.classes[class_name].methods[method_name]
+    local class = self:get_class(class_name)
+
+    local method = class.methods[method_name]
+
+    if method == nil then
+        Error("Erro em Describer:get_method: Método inexistente")
+        return {}
+    end
+
+    return method
 end
 
 

@@ -72,10 +72,11 @@ function Test_eval_if()
     Eval_if(env, ast)
 end
 
+
 -- Test_eval_method_call()
 -- Test_eval_assign()
 -- Test_eval_if()
 -- Test_eval_binary_operation()
 -- Test_eval_vars_def()
 -- Test_eval_return()
--- Test_eval_meta_action()
+Test_eval_meta_action()

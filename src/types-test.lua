@@ -111,6 +111,6 @@ local function Test_types_classvar_findattr()
     Print_table(attr)
 end
 
--- Test_types_classvar_findattr()
--- Test_types_numbervar()
--- Test_types_classvar()
+Test_types_classvar_findattr()
+Test_types_numbervar()
+Test_types_classvar()

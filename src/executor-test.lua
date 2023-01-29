@@ -1,7 +1,6 @@
 require "executor"
 require "env"
 local main_block_buffer = [==[
-begin
     vars a, b, c
     a = 1
     b = 10
@@ -17,7 +16,6 @@ begin
     end-if
     io.print(a)
     io.print(c)
-end
 ]==]
 
 

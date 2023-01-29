@@ -4,9 +4,11 @@ require "types"
 require "math"
 
 
---- comment
----@param env any
----@param ast any
+--- Aplica uma declaração de variáveis conforme a AST (Abstract Syntax Tree)
+---@param env table
+---@param ast table:
+---- type: string
+---- var_list: Arg_var_list
 function Eval_vars_def(env, ast)
     local var = nil
     for index, var_name in ipairs(ast.var_list) do
@@ -16,9 +18,11 @@ function Eval_vars_def(env, ast)
 end
 
 
---- comment
----@param env any
----@param ast any
+--- Aplica o método io.dump conforme a AST (Abstract Syntax Tree)
+---@param env table
+---@param ast table
+--- ast:
+---- arg: Arg_method_call {params}
 function Eval_io_dump(env, ast)
     local var_name = ast.arg.params[1]
     local var = env:get_var(var_name)
@@ -32,9 +36,11 @@ function Eval_io_dump(env, ast)
 end
 
 
---- comment
----@param env any
----@param ast any
+--- Aplica o método io.print conforme a AST (Abstract Syntax Tree)
+---@param env table
+---@param ast table
+--- ast:
+---- arg: Arg_method_call {params}
 function Eval_io_print(env, ast)
     local var_name = ast.arg.params[1]
     local var = env:get_var(var_name)
@@ -47,10 +53,13 @@ function Eval_io_print(env, ast)
 end
 
 
---- comment
----@param env any
----@param ast any
+--- Aplica uma chamada de método conforme a AST (Abstract Syntax Tree)
+---@param env table
+---@param ast table
 ---@return table|nil
+--- ast:
+---- type: string
+---- arg: Arg_method_call {var_name, method_name, params: Arg_var_list}
 function Eval_method_call(env, ast)
     local describer = Get_describer()
 
@@ -105,10 +114,12 @@ function Eval_method_call(env, ast)
 end
 
 
---- comment
----@param env any
----@param ast any
+--- Aplica uma operação binária conforme a AST (Abstract Syntax Tree)
+---@param env table
+---@param ast table
 ---@return table|nil
+--- ast:
+---- arg: {var_name, first_var, second_var, operator}
 function Eval_binary_operation(env, ast)
     local first_var_name = ast.arg.first_var
     local second_var_name = ast.arg.second_var
@@ -147,9 +158,9 @@ function Eval_binary_operation(env, ast)
 end
 
 
---- comment
----@param env any
----@param ast any
+--- Aplica uma criação de objeto conforme a AST (Abstract Syntax Tree)
+---@param env table
+---@param ast table
 ---@return table|nil
 function Eval_obj_creation(env, ast)
     local describer = Get_describer()
@@ -158,10 +169,12 @@ function Eval_obj_creation(env, ast)
 end
 
 
---- comment
----@param env any
----@param ast any
----@return table
+--- Aplica uma declaração de variáveis conforme a AST (Abstract Syntax Tree)
+---@param env table
+---@param ast table
+---@return table|nil: NumberVar or ClassVar
+--- ast:
+---- arg: Arg_Number | Arg_Var | Arg_Attr | Arg_Obj_Creation | Arg_Method_Call | Arg_Binary_Operation
 function Eval_arg(env, ast)
     local arg = ast.arg
     local arg_var
@@ -211,9 +224,12 @@ end
 
 
 
---- comment
----@param env any
----@param ast any
+--- Aplica uma atribuição conforme a AST (Abstract Syntax Tree)
+---@param env table
+---@param ast table:
+---- type: string
+---- lhs: {type: string, arg: Arg_var | Arg_attr }
+---- rhs: {type: string, arg: Arg_Number | Arg_Var | Arg_Attr | Arg_Obj_Creation | Arg_Method_Call}
 function Eval_assign(env, ast)
     local lhs = ast.lhs
     local rhs = ast.rhs
@@ -242,9 +258,13 @@ function Eval_assign(env, ast)
 end
 
 
---- comment
----@param env any
----@param ast any
+--- Aplica uma meta-ação conforme a AST (Abstract Syntax Tree)
+---@param env table
+---@param ast table:
+---- type: string
+---- action_type: string
+---- str_no_nl: string
+---- arg: Arg_Method_Call {var_name, method_name, params: line_number}
 function Eval_meta_action(env, ast)
     local class_name = ast.arg.var_name
     local method_name = ast.arg.method_name
@@ -263,11 +283,13 @@ function Eval_meta_action(env, ast)
     str_no_nl = Trim(str_no_nl)
 
     if action_type == "_insert" and str_no_nl ~= "" then
-        if line_number == 0 then line_number = #method_body_table + 1 end
+        if line_number == 0
+            then line_number = #method_body_table + 1
+        end
         table.insert(method_body_table, line_number, str_no_nl)
 
     elseif action_type == "_delete" and line_number > 0 and
-        line_number <= #method_body_table then
+        line_number <= #method_body_table and str_no_nl == "" then
         table.remove(method_body_table, line_number)
 
     elseif action_type == "_replace" and line_number > 0 and
@@ -281,10 +303,10 @@ function Eval_meta_action(env, ast)
 end
 
 
---- comment
----@param env any
----@param ast any
----@return unknown
+--- Aplica um retorno conforme a AST (Abstract Syntax Tree)
+---@param env table
+---@param ast table
+---@return table
 function Eval_return(env, ast)
     local var_name = ast.arg.var_name
     local return_value = env:get_var(var_name)
@@ -292,9 +314,11 @@ function Eval_return(env, ast)
 end
 
 
---- comment
----@param env any
----@param ast any
+--- Aplica uma declaração de variáveis conforme a AST (Abstract Syntax Tree)
+---@param env table
+---@param ast table
+--- Ast:
+---- { type: string, lhs: Arg_var {var_name}. rhs: Arg_var {var_name}}
 function Eval_prototype(env, ast)
     local lhs_obj_name = ast.lhs.var_name
     local rhs_obj_name = ast.rhs.var_name
@@ -310,10 +334,17 @@ function Eval_prototype(env, ast)
 end
 
 
---- comment
----@param env any
----@param ast any
+--- Aplica um if ou if-else conforme a AST (Abstract Syntax Tree)
+---@param env table
+---@param ast table
 ---@return table|nil
+--- ast:
+---- type: string
+---- lhs: Arg_var
+---- rhs: Arg_var
+---- cmp: string
+---- if_block: string
+---- else_block: string
 function Eval_if(env, ast)
     local lhs = ast.lhs
     local rhs = ast.rhs
@@ -357,9 +388,9 @@ function Eval_if(env, ast)
 end
 
 
---- comment
----@param env any
----@param ast any
+--- Seleciona o Eval de acordo com o tipo da AST (Abstract Syntax Tree)
+---@param env table
+---@param ast table
 ---@return table|nil
 function Eval_controller(env, ast)
     local statement_type = ast.type

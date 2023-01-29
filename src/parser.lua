@@ -4,8 +4,8 @@ require "args"
 require "utils"
 
 
---- comment
----@param lexer table {types: {}, tokens: {}}
+--- Verifica o formato do lexer
+---@param lexer table: {types: {}, tokens: {}}
 ---@param parser_id string
 ---@param type string
 ---@param qty_tokens number
@@ -28,9 +28,9 @@ local function check_lexer(lexer, parser_id, type, qty_tokens)
 end
 
 
---- func desc
----@param lexer table {types: {type, lhs, rhs}, tokens: {}}
----@return table
+--- Analisa a sintaxe de uma atribuição e constrói uma AST (Abstract Syntax Tree)
+---@param lexer table: {types: {type, lhs, rhs}, tokens: {}}
+---@return table:
 --- Returns ast:
 ---- type: string
 ---- lhs: {type: string, arg: Arg_var | Arg_attr }
@@ -95,29 +95,9 @@ function Parser_assign(lexer)
 end
 
 
---- Desc
----@param lexer table {types: {type}, tokens: {}}
----@return table
---- Returns ast:
----- type: string
----- var_list: Arg_var_list
-function Parser_var(lexer)
-    check_lexer(lexer, "Parser_vars_def", "vars_def", 1)
-
-    local ast = {}
-    local vars_string
-
-    vars_string = lexer.tokens[1]
-    ast.type = lexer.types.type
-    ast.var_list = Arg_var_list(vars_string)
-
-    return ast
-end
-
-
---- Desc
----@param lexer table {types: {type}, tokens: {}}
----@return table
+--- Analisa a sintaxe de uma declaração de variáveis e constrói uma AST (Abstract Syntax Tree)
+---@param lexer table: {types: {type}, tokens: {}}
+---@return table:
 --- Returns ast:
 ---- type: string
 ---- var_list: Arg_var_list
@@ -135,9 +115,9 @@ function Parser_vars_def(lexer)
 end
 
 
---- Desc
----@param lexer table {types: {type}, tokens: {}}
----@return table
+--- Analisa a sintaxe de uma meta-ação e constrói uma AST (Abstract Syntax Tree)
+---@param lexer table: {types: {type}, tokens: {}}
+---@return table:
 --- Returns ast:
 ---- type: string
 ---- action_type: string
@@ -162,9 +142,9 @@ function Parser_meta_action(lexer)
 end
 
 
---- func desc
----@param lexer table {types: {type}, tokens: {}}
----@return table
+--- Analisa a sintaxe de um _prototype e constrói uma AST (Abstract Syntax Tree)
+---@param lexer table: {types: {type}, tokens: {}}
+---@return table:
 --- Returns ast:
 ---- type: string
 ---- lhs: Arg_var {var_name}
@@ -184,9 +164,9 @@ function Parser_prototype(lexer)
 end
 
 
---- func desc
----@param lexer table {types: {type}, tokens: {}}
----@return table
+--- Analisa a sintaxe de um retorno e constrói uma AST (Abstract Syntax Tree)
+---@param lexer table: {types: {type}, tokens: {}}
+---@return table:
 --- Returns ast:
 ---- type: string
 ---- arg: Arg_var
@@ -201,9 +181,9 @@ function Parser_return(lexer)
 end
 
 
---- func desc
----@param lexer table {types: {type}, tokens: {}}
----@return table
+--- Analisa a sintaxe de uma chamada de método e constrói uma AST (Abstract Syntax Tree)
+---@param lexer table: {types: {type}, tokens: {}}
+---@return table:
 --- Returns ast:
 ---- type: string
 ---- arg: Arg_method_call {var_name, method_name, params: Arg_var_list}
@@ -227,9 +207,9 @@ function Parser_method_call(lexer)
 end
 
 
---- func desc
----@param lexer table {types: {type}, tokens: {}}
----@return table
+--- Analisa a sintaxe de um if ou if-else e constrói uma AST (Abstract Syntax Tree)
+---@param lexer table: {types: {type}, tokens: {}}
+---@return table:
 --- Returns ast:
 ---- type: string
 ---- lhs: Arg_var
@@ -268,9 +248,9 @@ function Parser_if(lexer)
 end
 
 
---- func desc
----@param lexer table {types: {type}, tokens: {}}
----@return table
+--- Seleciona o Parser de acordo com o tipo de lexer da Main
+---@param lexer table: {types: {type}, tokens: {}}
+---@return table:
 --- Returns ast
 function Parser_main_stmt(lexer)
     if lexer.types.type == "method_call" then
@@ -290,9 +270,9 @@ function Parser_main_stmt(lexer)
 end
 
 
---- func desc
----@param lexer table {types: {type}, tokens: {}}
----@return table
+--- Seleciona o Parser de acordo com o tipo de lexer da Method
+---@param lexer table: {types: {type}, tokens: {}}
+---@return table:
 --- Returns ast
 function Parser_method_stmt(lexer)
     if lexer.types.type == "method_call" then
@@ -314,9 +294,9 @@ function Parser_method_stmt(lexer)
 end
 
 
---- func desc
----@param lexer table {types: {type}, tokens: {}}
----@return table
+--- Seleciona o Parser de acordo com o tipo de lexer da If
+---@param lexer table: {types: {type}, tokens: {}}
+---@return table:
 --- Returns ast
 function Parser_if_stmt(lexer)
     if lexer.types.type == "method_call" then
@@ -332,20 +312,3 @@ function Parser_if_stmt(lexer)
         return {}
     end
 end
-
---- Desc
---- lexer table {types: {type}, tokens: {}}
----
---- Returns ast:
----- type: string
----- lhs: {type: string, arg: Arg_var | Arg_attr }
----- rhs: {type: string, arg: Arg_Number | Arg_Var | Arg_Attr | Arg_Obj_Creation | Arg_Method_Call}
----- var_list: Arg_var_list
----- action_type: string
----- str_no_nl: string
----- arg: Arg_Method_Call {var_name, method_name, params: line_number}
----- lhs: Arg_var
----- rhs: Arg_var
----- cmp: string
----- if_block: string
----- else_block: string

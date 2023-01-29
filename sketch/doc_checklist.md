@@ -3,13 +3,12 @@
 - [x] args.lua
 - [x] describer.lua
 - [x] env.lua
-- [ ] eval.lua
+- [x] eval.lua
 - [x] executor.lua
 - [x] files.lua
 - [x] interpreter.lua
-- [ ] parser.lua
+- [x] parser.lua
 - [x] patterns.lua
 - [x] reader.lua
 - [x] types.lua
 - [x] utils.lua
-- [] 

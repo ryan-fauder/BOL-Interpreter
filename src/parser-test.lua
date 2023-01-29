@@ -188,10 +188,10 @@ function Test_parser_assign()
     return ast
 end
 
-Test_parser_assign()
-Test_parser_vars_def()
-Test_parser_if()
-Test_parser_method_call()
-Test_parser_prototype()
-Test_parser_return()
-Test_arg_var_list()
+-- Test_parser_assign()
+-- Test_parser_vars_def()
+-- Test_parser_if()
+-- Test_parser_method_call()
+-- Test_parser_prototype()
+-- Test_parser_return()
+-- Test_arg_var_list()
