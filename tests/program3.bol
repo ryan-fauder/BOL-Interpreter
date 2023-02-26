@@ -1,0 +1,49 @@
+class Foo
+    vars x, y
+
+    method temp()
+    vars a
+    begin
+        a = self.x
+        io.print(a)
+    end-method
+end-class
+
+
+class Bar
+    vars a, b
+    
+end-class
+
+
+class Baz
+    vars x, y
+
+    method qux()
+    vars a
+    begin
+        a = 8001
+        io.print(a)
+    end-method
+end-class
+
+
+begin
+    vars foo, bar, baz
+
+    foo = new Foo
+    bar = new Bar
+    baz = new Baz
+
+    bar._prototype = baz
+    foo._prototype = bar
+    foo.qux()
+
+    foo._prototype = bar
+    bar._prototype = baz
+    foo.qux()
+
+    baz.qux()
+
+    bar.qux()
+end

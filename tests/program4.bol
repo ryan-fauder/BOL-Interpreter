@@ -1,0 +1,57 @@
+class Foo
+    vars x, y
+
+    method bar()
+    vars k, a, b
+    begin
+        a = self.x
+        b = self.y
+        k = self.baz(a, b)
+        io.print(k)
+        k = k * k
+        io.print(k)
+    end-method
+
+    method baz(a, b)
+    vars temp
+    begin
+        temp = a + b
+        return temp
+    end-method
+
+end-class
+
+
+begin
+    vars foo, separator, constOne, constTwo
+
+    separator = 1000000000000001
+    constOne = 4
+    constTwo = 7
+
+    foo = new Foo
+
+    foo.x = constOne
+    foo.y = constTwo
+
+    io.dump(foo)
+
+    io.print(separator)
+    foo.bar()
+
+    io.print(separator)
+    Foo.bar._replace(3): k = a - b
+    foo.bar()
+
+    io.print(separator)
+    Foo.bar._delete(5):
+    foo.bar()
+    
+    io.print(separator)
+    Foo.bar._insert(5): k = -15
+    foo.bar()
+
+    io.print(separator)
+    io.dump(foo)
+
+end
