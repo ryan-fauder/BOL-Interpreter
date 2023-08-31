@@ -5,7 +5,7 @@
 ## Descrição
 
 - Trabalho desenvolvido em grupo durante a disciplina de Linguagens e Paradigmas de Programação (curso de Ciência da Computação da Universidade Federal de Goiás - UFG)
-- O programa consiste em um interpretador da linguagem BOL (Bruno's Object-Oriented Language)
+- O programa consiste em um interpretador da linguagem orientada a objeto BOL (Bruno's Object-Oriented Language)
 - Linguagem utilizada para a implementação do interpretador: Lua 5.4
 
 ---
